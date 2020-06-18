@@ -3,11 +3,12 @@ package com.eaglesakura.swagger2.languages
 import com.eaglesakura.swagger2.extensions.normalize
 import io.swagger.codegen.CliOption
 import io.swagger.codegen.CodegenConstants
+import io.swagger.codegen.CodegenProperty
 import io.swagger.codegen.CodegenType
 import io.swagger.codegen.SupportingFile
 import io.swagger.codegen.languages.AbstractKotlinCodegen
 import io.swagger.models.Swagger
-import io.swagger.models.parameters.BodyParameter
+import io.swagger.models.properties.Property
 import java.io.File
 
 class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
@@ -31,13 +32,12 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
     override fun processOpts() {
         super.processOpts()
         supportingFiles.add(SupportingFile("internal_utils.mustache",
-                ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "InternalUtils.kt"));
+                ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "InternalUtils.kt"))
         supportingFiles.add(SupportingFile("api_enum_factory.mustache",
-                ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "ApiEnumFactory.kt"));
+                ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "ApiEnumFactory.kt"))
 
         supportingFiles.add(SupportingFile("dependencies.gradle.mustache",
-                sourceFolder.replace(".", "${File.separatorChar}"), "dependencies.gradle"));
-
+                sourceFolder.replace(".", "${File.separatorChar}"), "dependencies.gradle"))
     }
 
     override fun preprocessSwagger(swagger: Swagger) {
@@ -48,6 +48,14 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
         } else {
             swagger.basePath ?: ""
         }
+    }
+
+    override fun fromProperty(name: String?, p: Property?): CodegenProperty {
+        val result = super.fromProperty(name, p)
+        if (result.nameInCamelCase.isNotEmpty()) {
+            result.nameInCamelCase = result.nameInCamelCase[0].toLowerCase() + result.nameInCamelCase.substring(1)
+        }
+        return result
     }
 
     override fun getTag(): CodegenType = CodegenType.CLIENT

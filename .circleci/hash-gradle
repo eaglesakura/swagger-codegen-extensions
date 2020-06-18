@@ -1,0 +1,7 @@
+df838a2a8a2da642aa62cce0ef32e9ff : /build.gradle
+d825fd38da35d65a25360718cb6d5881 : /configure.gradle.kts
+b2111cd00e8443ddfaeb9d083e021b0a : /dsl/bintray.gradle
+23f86ff0ef353dea619601fbf1789cb9 : /dsl/formatter.gradle
+c723ef91b7eec66dbbf536236d9d609e : /dsl/lineseparator.gradle.kts
+7afff1611572539403eba58caefe8944 : /settings.gradle.kts
+29b8fc2780143a2f35df8f7c1ff9158a : /swagger2-codegen/build.gradle

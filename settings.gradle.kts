@@ -1,1 +1,3 @@
-rootProject.name = "swagger2-codegen"
+rootProject.name = "swagger-codegen-extensions"
+
+include(":swagger2-codegen")

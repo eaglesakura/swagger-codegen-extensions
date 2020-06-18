@@ -61,10 +61,10 @@ data class {{classname}}(
      */
     @Json(name = "{{baseName}}")
     {{#isEnum}}
-    val {{name}}: {{classname}}{{datatypeWithEnum}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+    val {{nameInCamelCase}}: {{classname}}{{datatypeWithEnum}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
     {{/isEnum}}
     {{^isEnum}}
-    val {{name}}: {{{datatype}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+    val {{nameInCamelCase}}: {{{datatype}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
     {{/isEnum}}
 {{/vars}}
 ) {

@@ -15,13 +15,29 @@ fun Swagger.normalize() {
                     .forEach { param ->
                         param.schema.title = "${path}_${method}_${param.name}"
                                 .replace("/", "_")
+                                .replace("__", "_")
                                 .toLowerCase()
+                                .let {
+                                    if (it.startsWith("_")) {
+                                        it.substring(1)
+                                    } else {
+                                        it
+                                    }
+                                }
                     }
             op.responses.forEach { (status, resp) ->
                 if (resp.responseSchema?.properties?.isNotEmpty() == true) {
-                    resp.responseSchema.title = "${path}_${method}_${status}"
+                    resp.responseSchema.title = "${path}_${method}_$status"
                             .replace("/", "_")
+                            .replace("__", "_")
                             .toLowerCase()
+                            .let {
+                                if (it.startsWith("_")) {
+                                    it.substring(1)
+                                } else {
+                                    it
+                                }
+                            }
                 }
             }
         }

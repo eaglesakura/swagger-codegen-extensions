@@ -1,0 +1,45 @@
+class {{classname}} {
+  /// The underlying value of this enum member.
+  {{dataType}} _value;
+
+  {{classname}}._internal(this._value);
+
+  {{dataType}} get value => _value;
+
+    @override
+    bool operator ==(Object other) =>
+        identical(this, other) ||
+        other is Role &&
+        runtimeType == other.runtimeType &&
+        _value == other._value;
+
+    @override
+    int get hashCode => _value.hashCode;
+
+    @override
+    String toString() {
+        return '{{classname}}($_value)';
+    }
+
+  {{#allowableValues}}
+    {{#values}}
+      {{#description}}
+  /// {{description}}
+      {{/description}}
+  static {{classname}} {{name}}_{{.}} = {{classname}}._internal("{{.}}");
+    {{/values}}
+  {{/allowableValues}}
+
+  {{classname}}.fromJson(dynamic data) {
+    _value = "$data";
+  }
+
+  static List<{{classname}}> listFromJson(List<dynamic> json) {
+    return json == null ? new List<{{classname}}>() : json.map((value) => {{classname}}.fromJson(value)).toList();
+  }
+
+  static dynamic encode({{classname}} data) {
+    return data.value;
+  }
+
+}
