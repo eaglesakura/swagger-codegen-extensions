@@ -1,0 +1,115 @@
+package {{package}}
+
+import java.math.* // ktlint-disable
+import java.util.* // ktlint-disable
+import java.io.* // ktlint-disable
+import com.squareup.moshi.* // ktlint-disable
+
+{{#models}}
+{{#model}}
+/**
+ * {{description}}
+ *
+ * @link https://github.com/eaglesakura/lightweight-swagger-codegen
+ **/
+{{#isEnum}}
+data class {{classname}}(private val value: String) {
+    override fun toString(): String {
+        return value
+    }
+    companion object {
+{{#allowableValues}}{{#values}}
+        val {{{.}}} = {{classname}}("{{.}}")
+{{/values}}{{/allowableValues}}
+
+        val MoshiTypeAdapter = object : JsonAdapter<{{classname}}>() {
+            @Throws(IOException::class)
+            override fun fromJson(reader: JsonReader): {{classname}} {
+                return parse(reader.nextString())
+            }
+
+            @Throws(IOException::class)
+            override fun toJson(writer: JsonWriter, value: {{classname}}?) {
+                if(value == null) {
+                    return
+                }
+                writer.value(value.toString())
+            }
+
+            override fun toString(): String {
+                return "JsonAdapter({{classname}})"
+            }
+        }
+        fun parse(value: String): {{classname}} {
+            return when(value) {
+                "" -> throw IllegalArgumentException("Invalid enum($value)")
+                {{#allowableValues}}{{#values}}
+                "{{{.}}}" -> {{{.}}}
+                {{/values}}{{/allowableValues}}
+                else -> {{classname}}(value)
+            }
+        }
+    }
+}
+{{/isEnum}}
+{{^isEnum}}
+data class {{classname}}(
+{{#vars}}
+
+    /**
+     * {{{description}}}
+     */
+    @Json(name = "{{baseName}}")
+    {{#isEnum}}
+    val {{name}}: {{classname}}{{datatypeWithEnum}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+    {{/isEnum}}
+    {{^isEnum}}
+    val {{name}}: {{{datatype}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+    {{/isEnum}}
+{{/vars}}
+) {
+    companion object
+}
+
+{{#vars}}{{#isEnum}}
+data class {{classname}}{{datatypeWithEnum}}(private val value: String) {
+    override fun toString(): String {
+        return value
+    }
+    companion object {
+{{#allowableValues}}{{#values}}
+        val {{{.}}} = {{classname}}{{datatypeWithEnum}}("{{.}}")
+{{/values}}{{/allowableValues}}
+        val MoshiTypeAdapter = object : JsonAdapter<{{classname}}{{datatypeWithEnum}}>() {
+            @Throws(IOException::class)
+            override fun fromJson(reader: JsonReader): {{classname}}{{datatypeWithEnum}} {
+                return parse(reader.nextString())
+            }
+
+            @Throws(IOException::class)
+            override fun toJson(writer: JsonWriter, value: {{classname}}{{datatypeWithEnum}}?) {
+                if(value == null) {
+                    return
+                }
+                writer.value(value.toString())
+            }
+
+            override fun toString(): String {
+                return "JsonAdapter({{classname}}{{datatypeWithEnum}})"
+            }
+        }
+        fun parse(value: String): {{classname}}{{datatypeWithEnum}} {
+            return when(value) {
+                "" -> throw IllegalArgumentException("Invalid enum($value)")
+                {{#allowableValues}}{{#values}}
+                "{{{.}}}" -> {{{.}}}
+                {{/values}}{{/allowableValues}}
+                else -> {{classname}}{{datatypeWithEnum}}(value)
+            }
+        }
+    }
+}
+{{/isEnum}}{{/vars}}
+{{/isEnum}}
+{{/model}}
+{{/models}}

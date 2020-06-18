@@ -1,0 +1,126 @@
+package {{package}}
+
+import {{modelPackage}}.* // ktlint-disable
+import java.util.* // ktlint-disable
+import java.io.* // ktlint-disable
+import java.math.* // ktlint-disable
+import retrofit2.Response // ktlint-disable
+import okhttp3.ResponseBody // ktlint-disable
+import okhttp3.OkHttpClient // ktlint-disable
+import retrofit2.* // ktlint-disable
+import retrofit2.http.* // ktlint-disable
+import com.squareup.moshi.* // ktlint-disable
+import retrofit2.converter.moshi.* // ktlint-disable
+
+/**
+ * {{classname}} Client.
+ *
+ * e.g.)
+ * // build.gradle
+ * dependencies {
+ *      implementation "com.squareup.moshi:moshi:1.5.0"
+ *      implementation "com.squareup.moshi:moshi-kotlin:1.5.0"
+ *      implementation "com.squareup.retrofit2:retrofit:2.9.0"
+ *      implementation "com.squareup.retrofit2:converter-moshi:2.4.0"
+ * }
+ *
+ * // Example.kt
+ * suspend fun callApiSample() {
+ *      val exampleApi: {{classname}} = {{classname}}.create("https://example.com")
+ *      exampleApi.fooApi()
+ * }
+ *
+ * @link https://github.com/eaglesakura/lightweight-swagger-codegen
+ */
+{{#operations}}
+interface {{classname}} {
+{{#operation}}
+    /**
+     * {{summary}}
+     * {{notes}}
+     *
+{{#allParams}}     * @param {{{paramName}}} {{{description}}}{{#example}}/ example :: {{{example}}}{{/example}}
+{{/allParams}}
+     * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}
+     * @link https://github.com/eaglesakura/lightweight-swagger-codegen
+     */
+    @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
+    suspend fun {{nickname}}(
+        {{#allParams}}
+            {{#-first}}@HeaderMap customHeaders: Map<String, String> = emptyMap(),{{/-first}}
+            {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Header("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
+            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+        {{/allParams}}
+        {{^allParams}}
+            @HeaderMap customHeaders: Map<String, String> = emptyMap()
+        {{/allParams}}
+    ): {{#returnType}}Response<{{{returnType}}}>{{/returnType}}{{^returnType}}Response<ResponseBody>{{/returnType}}
+
+    /**
+     * {{summary}}
+     * {{notes}}
+     *
+{{#allParams}}     * @param {{{paramName}}} {{{description}}}{{#example}}/ example :: {{{example}}}{{/example}}
+{{/allParams}}
+     * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}
+     * @link https://github.com/eaglesakura/lightweight-swagger-codegen
+     */
+    @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
+    suspend fun {{nickname}}Body(
+        {{#allParams}}
+            {{#-first}}@HeaderMap customHeaders: Map<String, String> = emptyMap(),{{/-first}}
+            {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Header("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
+            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+        {{/allParams}}
+        {{^allParams}}
+            @HeaderMap customHeaders: Map<String, String> = emptyMap()
+        {{/allParams}}
+    ): Response<ResponseBody>
+
+    /**
+     * {{summary}}
+     * {{notes}}
+     *
+{{#allParams}}     * @param {{{paramName}}} {{{description}}}{{#example}}/ example :: {{{example}}}{{/example}}
+{{/allParams}}
+     * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}
+     * @link https://github.com/eaglesakura/lightweight-swagger-codegen
+     */
+    @Streaming
+    @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
+    suspend fun {{nickname}}Streaming(
+        {{#allParams}}
+            {{#-first}}@HeaderMap customHeaders: Map<String, String> = emptyMap(),
+            {{/-first}}
+            {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Header("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
+            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+        {{/allParams}}
+        {{^allParams}}
+            @HeaderMap customHeaders: Map<String, String> = emptyMap()
+        {{/allParams}}
+    ): Response<ResponseBody>
+{{/operation}}
+    companion object {
+        /**
+         * Default {{classname}} Factory.
+         *
+         * @link https://github.com/eaglesakura/lightweight-swagger-codegen
+         */
+        fun create(baseUrl: String{{#host}} = {{host}}{{/host}}, okHttpClient: OkHttpClient? = null, moshi: Moshi = InternalUtils.moshi, block: (builder: Retrofit.Builder)->Retrofit.Builder = { it }): {{classname}} {
+            val url = if(baseUrl.endsWith("/")) {
+                baseUrl
+            } else {
+                "$baseUrl/"
+            }
+            val builder = Retrofit.Builder()
+                                .baseUrl(url)
+                                .addConverterFactory(MoshiConverterFactory.create(moshi))
+            if(okHttpClient != null) {
+                builder.client(okHttpClient)
+            }
+            return  block(builder).build().create({{classname}}::class.java)
+        }
+    }
+}
+
+{{/operations}}
