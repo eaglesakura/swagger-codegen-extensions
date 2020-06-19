@@ -17,7 +17,6 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
         packageName = "io.swagger.client"
 
         outputFolder = "generated-code" + File.separator + "kotlin-retrofit2-client"
-        sourceFolder = "kotlin"
         modelTemplateFiles["model.mustache"] = ".kt"
         apiTemplateFiles["api.mustache"] = ".kt"
         embeddedTemplateDir = "kotlin-retrofit2-client".also { templateDir = it }
@@ -36,8 +35,7 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
         supportingFiles.add(SupportingFile("api_enum_factory.mustache",
                 ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "ApiEnumFactory.kt"))
 
-        supportingFiles.add(SupportingFile("dependencies.gradle.mustache",
-                sourceFolder.replace(".", "${File.separatorChar}"), "dependencies.gradle"))
+        supportingFiles.add(SupportingFile("build.gradle.mustache", "build.gradle"))
     }
 
     override fun preprocessSwagger(swagger: Swagger) {

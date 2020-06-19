@@ -24,6 +24,4 @@ subprojects {
         jcenter()
         mavenCentral()
     }
-
-    apply from: rootProject.file("configure.gradle.kts")
 }

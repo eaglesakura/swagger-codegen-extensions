@@ -1,0 +1,4 @@
+{
+  "modelPackage": "com.example.petstore.client",
+  "apiPackage": "com.example.petstore.client"
+}

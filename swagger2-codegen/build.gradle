@@ -1,4 +1,5 @@
 apply plugin: "kotlin"
+apply from: rootProject.file("configure.gradle.kts")
 apply from: rootProject.file("dsl/bintray.gradle")
 apply from: rootProject.file("dsl/formatter.gradle")
 apply from: rootProject.file("dsl/lineseparator.gradle.kts")

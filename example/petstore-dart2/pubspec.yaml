@@ -1,0 +1,5 @@
+name: client_petstore
+version: 1.0.0
+description: Swagger API client
+dependencies:
+  http: '>=0.11.1 <0.12.0'

@@ -30,7 +30,7 @@ import retrofit2.converter.moshi.* // ktlint-disable
  *      exampleApi.fooApi()
  * }
  *
- * @link https://github.com/eaglesakura/lightweight-swagger-codegen
+ * @link https://github.com/eaglesakura/swagger-codegen-extensions
  */
 {{#operations}}
 interface {{classname}} {
@@ -42,7 +42,6 @@ interface {{classname}} {
 {{#allParams}}     * @param {{{paramName}}} {{{description}}}{{#example}}/ example :: {{{example}}}{{/example}}
 {{/allParams}}
      * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}
-     * @link https://github.com/eaglesakura/lightweight-swagger-codegen
      */
     @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
     suspend fun {{nickname}}(
@@ -63,7 +62,6 @@ interface {{classname}} {
 {{#allParams}}     * @param {{{paramName}}} {{{description}}}{{#example}}/ example :: {{{example}}}{{/example}}
 {{/allParams}}
      * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}
-     * @link https://github.com/eaglesakura/lightweight-swagger-codegen
      */
     @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
     suspend fun {{nickname}}Body(
@@ -84,7 +82,6 @@ interface {{classname}} {
 {{#allParams}}     * @param {{{paramName}}} {{{description}}}{{#example}}/ example :: {{{example}}}{{/example}}
 {{/allParams}}
      * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}
-     * @link https://github.com/eaglesakura/lightweight-swagger-codegen
      */
     @Streaming
     @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
@@ -103,8 +100,6 @@ interface {{classname}} {
     companion object {
         /**
          * Default {{classname}} Factory.
-         *
-         * @link https://github.com/eaglesakura/lightweight-swagger-codegen
          */
         fun create(baseUrl: String{{#host}} = {{host}}{{/host}}, okHttpClient: OkHttpClient? = null, moshi: Moshi = InternalUtils.moshi, block: (builder: Retrofit.Builder)->Retrofit.Builder = { it }): {{classname}} {
             val url = if(baseUrl.endsWith("/")) {

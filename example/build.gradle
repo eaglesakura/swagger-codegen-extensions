@@ -1,0 +1,44 @@
+buildscript {
+    repositories {
+        google()
+        jcenter()
+        mavenCentral()
+    }
+}
+
+plugins {
+    id("org.hidetake.swagger.generator") version "2.18.2"
+}
+
+repositories {
+    mavenLocal()
+    google()
+    jcenter()
+    mavenCentral()
+    maven { url "https://dl.bintray.com/eaglesakura/maven/" }
+}
+
+dependencies {
+    swaggerCodegen 'com.eaglesakura.swagger.swagger2-codegen:swagger2-codegen:1.0.build-24'
+}
+
+swaggerSources {
+    petstore_retrofit2 {
+        inputFile = file("petstore.yaml")
+        code {
+            language = "com.eaglesakura.swagger2.languages.Retrofit2ClientCodegen"
+            configFile = file("petstore-config-retrofit2.json")
+            outputDir = file("petstore-retrofit2")
+//            templateDir = file('path/to/custom/template/directory')
+        }
+    }
+    petstore_dart2 {
+        inputFile = file("petstore.yaml")
+        code {
+            language = "com.eaglesakura.swagger2.languages.Dart2ClientCodegen"
+            configFile = file("petstore-config-dart2.json")
+            outputDir = file("petstore-dart2")
+//            templateDir = file('path/to/custom/template/directory')
+        }
+    }
+}

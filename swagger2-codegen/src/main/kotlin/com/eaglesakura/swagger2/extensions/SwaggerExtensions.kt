@@ -11,7 +11,7 @@ fun Swagger.normalize() {
         pathModel.operationMap.forEach { (method, op) ->
             op.parameters
                     .filterIsInstance(BodyParameter::class.java)
-                    .filter { it.schema.properties.isNotEmpty() }
+                    .filter { it.schema?.properties?.isNotEmpty() == true }
                     .forEach { param ->
                         param.schema.title = "${path}_${method}_${param.name}"
                                 .replace("/", "_")
