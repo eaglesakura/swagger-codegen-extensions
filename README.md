@@ -39,7 +39,10 @@ repositories {
 }
 
 dependencies {
-    swaggerCodegen 'com.eaglesakura.swagger.swagger2-codegen:swagger2-codegen:1.0.build-24'
+    // Replace swagger-codegen-extensions version!!
+    // https://github.com/eaglesakura/swagger-codegen-extensions/tags
+    // https://bintray.com/eaglesakura/maven/swagger2-codegen
+    swaggerCodegen 'com.eaglesakura.swagger.swagger2-codegen:swagger2-codegen:+'
 }
 
 swaggerSources {
