@@ -33,7 +33,7 @@ func NewStoreApi() *StoreApi {
             /*
             ID of the order that needs to be deleted
             */
-            orderId   *int64
+            OrderId   *int64
 
         }
 
@@ -44,14 +44,14 @@ func NewStoreApi() *StoreApi {
           result: void
         */
         func (it *StoreApi)DeleteOrder(_client swagger.FetchClient, _request *StoreApiDeleteOrderRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.orderId, _request.orderId == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'orderId' when calling DeleteOrder")
+            if(!_client.NewValidator(_request.OrderId, _request.OrderId == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'OrderId' when calling DeleteOrder")
             }
 
         // create path and map variables
         {
             localVarPath := strings.Replace("/store/order/{orderId}","{format}","json", -1)
-                localVarPath = strings.Replace(localVarPath, "{" + "orderId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.orderId)), -1)
+                localVarPath = strings.Replace(localVarPath, "{" + "orderId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.OrderId)), -1)
             _client.SetApiPath(utils.AddPath(it.BasePath, localVarPath))
             _client.SetMethod(strings.ToUpper("Delete"))
         }
@@ -112,7 +112,7 @@ func NewStoreApi() *StoreApi {
             /*
             ID of pet that needs to be fetched
             */
-            orderId   *int64
+            OrderId   *int64
 
         }
 
@@ -123,14 +123,14 @@ func NewStoreApi() *StoreApi {
           result: Order
         */
         func (it *StoreApi)GetOrderById(_client swagger.FetchClient, _request *StoreApiGetOrderByIdRequest, result *Order) error {
-            if(!_client.NewValidator(_request.orderId, _request.orderId == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'orderId' when calling GetOrderById")
+            if(!_client.NewValidator(_request.OrderId, _request.OrderId == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'OrderId' when calling GetOrderById")
             }
 
         // create path and map variables
         {
             localVarPath := strings.Replace("/store/order/{orderId}","{format}","json", -1)
-                localVarPath = strings.Replace(localVarPath, "{" + "orderId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.orderId)), -1)
+                localVarPath = strings.Replace(localVarPath, "{" + "orderId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.OrderId)), -1)
             _client.SetApiPath(utils.AddPath(it.BasePath, localVarPath))
             _client.SetMethod(strings.ToUpper("Get"))
         }
@@ -156,7 +156,7 @@ func NewStoreApi() *StoreApi {
             /*
             order placed for purchasing the pet
             */
-            body   *Order
+            Body   *Order
 
         }
 
@@ -167,8 +167,8 @@ func NewStoreApi() *StoreApi {
           result: Order
         */
         func (it *StoreApi)PlaceOrder(_client swagger.FetchClient, _request *StoreApiPlaceOrderRequest, result *Order) error {
-            if(!_client.NewValidator(_request.body, _request.body == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'body' when calling PlaceOrder")
+            if(!_client.NewValidator(_request.Body, _request.Body == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Body' when calling PlaceOrder")
             }
 
         // create path and map variables
@@ -188,8 +188,8 @@ func NewStoreApi() *StoreApi {
             _client.SetPayload(utils.NewFormPayload(localVarFormParams))
         }
 
-            if _request.body != nil {
-                _client.SetPayload(utils.NewJsonPayload(_request.body))
+            if _request.Body != nil {
+                _client.SetPayload(utils.NewJsonPayload(_request.Body))
             }
 
             return _client.Fetch(result)

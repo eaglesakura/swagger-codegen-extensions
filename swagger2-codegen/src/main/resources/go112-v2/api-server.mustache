@@ -1,0 +1,188 @@
+package {{packageName}}
+
+// link: https://github.com/eaglesakura/swagger-codegen-extensions
+
+import (
+	"encoding/json"
+	"fmt"
+	"github.com/gorilla/mux"
+	"golang.org/x/xerrors"
+	"io"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+    "path"
+	"strings"
+)
+
+
+{{#operations}}{{#operation}}
+type {{{nickname}}}{{httpMethod}}Params struct {
+    Request     *http.Request
+{{#allParams}}
+	// {{description}}
+	{{paramName}}   *{{{dataType}}}
+{{/allParams}}
+}
+
+{{#allParams}}
+// Require value of {{paramName}}
+func (it *{{{nickname}}}{{httpMethod}}Params)Require{{paramName}}() {{{dataType}}} {
+    if it.{{paramName}} == nil {
+        panic(xerrors.Errorf(".{{paramName}} is nil"))
+    }
+    return *it.{{paramName}}
+}
+
+// Get value of {{paramName}} / or default
+func (it *{{{nickname}}}{{httpMethod}}Params)Get{{paramName}}() {{{dataType}}} {
+    if it.{{paramName}} != nil {
+        return *it.{{paramName}}
+    }
+    result := new({{{dataType}}})
+    return *result
+}
+{{/allParams}}
+
+// Validation parameter
+func (it *{{{nickname}}}{{httpMethod}}Params)Valid() error {
+{{#allParams}}{{#required}}
+    if it.{{paramName}} == nil {
+        return xerrors.Errorf("required parameter({{paramName}}) read failed")
+    }
+{{/required}}{{/allParams}}
+    return nil
+}
+
+func Parse{{{nickname}}}{{httpMethod}}Params(request *http.Request) (*{{{nickname}}}{{httpMethod}}Params, error) {
+    result := &{{{nickname}}}{{httpMethod}}Params{
+        Request: request,
+    }
+
+	pathValues := mux.Vars(request)
+	queryValues := request.URL.Query()
+	headerValues := request.Header
+
+    {{#pathParams}}
+        _ = parsePath(pathValues, "{{baseName}}", &result.{{paramName}})
+    {{/pathParams}}
+
+    {{#queryParams}}
+        _ = parseValues(queryValues, "{{baseName}}", &result.{{paramName}})
+    {{/queryParams}}
+
+    {{#headerParams}}
+        _ = parseValues(headerValues, "{{baseName}}", &result.{{paramName}})
+    {{/headerParams}}
+
+    {{#bodyParam}}
+        if body, err := ioutil.ReadAll(request.Body); err != nil {
+            return nil, xerrors.Errorf("Request body read failed, %w", err)
+        } else {
+            var model {{{dataType}}}
+            err = json.Unmarshal(body, &model)
+            if err != nil {
+                return nil, xerrors.Errorf("Request body parse failed, %w", err)
+            }
+            result.{{paramName}} = &model
+        }
+    {{/bodyParam}}
+
+	// dummy access for Compiler
+    //noinspection GoSelfAssignment
+	pathValues = pathValues
+    //noinspection GoSelfAssignment
+	queryValues = queryValues
+    //noinspection GoSelfAssignment
+	headerValues = headerValues
+
+    return result, nil
+}
+
+{{/operation}}{{/operations}}
+
+type {{classname}}Controller struct {
+    router *mux.Router
+
+	// Custom response write handler.
+	Responder func(writer http.ResponseWriter, request *http.Request, handlerResponse SwaggerResponse, handlerError error)
+}
+
+{{#operations}}{{#operation}}
+    // Register handler to Router.
+    // {{{summary}}}
+    // {{{descripotion}}}
+    // {{{notes}}}
+    func (it *{{classname}}Controller)Handle{{{nickname}}}{{{httpMethod}}}(handler func(request *http.Request, params *{{{nickname}}}{{{httpMethod}}}Params) (response SwaggerResponse, err error)) {
+        r := it.router
+        r.Methods(strings.ToUpper("{{httpMethod}}")).Path(path.Join("{{basePathWithoutHost}}", "{{path}}")).HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+            var response SwaggerResponse
+            var responseError error
+            defer func() {
+                recoverError := recover()
+                if err, ok := recoverError.(error); ok {
+                    responseError = err
+                }
+
+                it.Responder(writer, request, response, responseError)
+            }()
+
+            params, err := Parse{{{nickname}}}{{{httpMethod}}}Params(request)
+            if err != nil {
+                responseError = err
+            } else {
+                response, responseError = handler(request, params)
+            }
+        })
+    }
+{{/operation}}{{/operations}}
+
+// make controller.
+//
+//
+// e.g.) How to use on HttpServer.
+//  router := mux.NewRouter()
+//  controller := {{packageName}}.New{{classname}}Controller(router)
+//  controller.Handlers.HandlePathToFooApi(func(req, params) (SwaggerResponse, error) {
+//      // Handle Foo API.
+//  })
+//  controller.Handlers.HandlePathToBarApi(func(req, params) (SwaggerResponse, error) {
+//      // Handle Bar API.
+//  })
+//  http.Handle("/", router)
+//
+// e.g.) How to use on Google Cloud Functions
+//  func FooCloudFunction(writer http.ResponseWriter, request *http.Request) {
+//      router.ServeHTTP(writer, request)
+//  }
+func New{{classname}}Controller(router *mux.Router) *{{classname}}Controller {
+    return &{{classname}}Controller {
+        router: router,
+		Responder: func(writer http.ResponseWriter, request *http.Request, handlerResponse SwaggerResponse, handlerError error) {
+			if handlerError != nil {
+				writer.WriteHeader(http.StatusInternalServerError)
+				_, _ = writer.Write([]byte(handlerError.Error()))
+				return
+			}
+
+			if handlerResponse != nil {
+				handlerResponse.Write(writer, request)
+				return
+			}
+
+			writer.WriteHeader(http.StatusNoContent)
+		},
+    }
+}
+
+
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func _{{classname}}_this_is_call_dummy() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
+}

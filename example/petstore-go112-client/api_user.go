@@ -33,7 +33,7 @@ func NewUserApi() *UserApi {
             /*
             Created user object
             */
-            body   *User
+            Body   *User
 
         }
 
@@ -44,8 +44,8 @@ func NewUserApi() *UserApi {
           result: void
         */
         func (it *UserApi)CreateUser(_client swagger.FetchClient, _request *UserApiCreateUserRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.body, _request.body == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'body' when calling CreateUser")
+            if(!_client.NewValidator(_request.Body, _request.Body == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Body' when calling CreateUser")
             }
 
         // create path and map variables
@@ -65,8 +65,8 @@ func NewUserApi() *UserApi {
             _client.SetPayload(utils.NewFormPayload(localVarFormParams))
         }
 
-            if _request.body != nil {
-                _client.SetPayload(utils.NewJsonPayload(_request.body))
+            if _request.Body != nil {
+                _client.SetPayload(utils.NewJsonPayload(_request.Body))
             }
 
             return _client.Fetch(result)
@@ -79,7 +79,7 @@ func NewUserApi() *UserApi {
             /*
             List of user object
             */
-            body   *[]User
+            Body   *[]User
 
         }
 
@@ -90,8 +90,8 @@ func NewUserApi() *UserApi {
           result: void
         */
         func (it *UserApi)CreateUsersWithArrayInput(_client swagger.FetchClient, _request *UserApiCreateUsersWithArrayInputRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.body, _request.body == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'body' when calling CreateUsersWithArrayInput")
+            if(!_client.NewValidator(_request.Body, _request.Body == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Body' when calling CreateUsersWithArrayInput")
             }
 
         // create path and map variables
@@ -111,8 +111,8 @@ func NewUserApi() *UserApi {
             _client.SetPayload(utils.NewFormPayload(localVarFormParams))
         }
 
-            if _request.body != nil {
-                _client.SetPayload(utils.NewJsonPayload(_request.body))
+            if _request.Body != nil {
+                _client.SetPayload(utils.NewJsonPayload(_request.Body))
             }
 
             return _client.Fetch(result)
@@ -125,7 +125,7 @@ func NewUserApi() *UserApi {
             /*
             List of user object
             */
-            body   *[]User
+            Body   *[]User
 
         }
 
@@ -136,8 +136,8 @@ func NewUserApi() *UserApi {
           result: void
         */
         func (it *UserApi)CreateUsersWithListInput(_client swagger.FetchClient, _request *UserApiCreateUsersWithListInputRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.body, _request.body == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'body' when calling CreateUsersWithListInput")
+            if(!_client.NewValidator(_request.Body, _request.Body == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Body' when calling CreateUsersWithListInput")
             }
 
         // create path and map variables
@@ -157,8 +157,8 @@ func NewUserApi() *UserApi {
             _client.SetPayload(utils.NewFormPayload(localVarFormParams))
         }
 
-            if _request.body != nil {
-                _client.SetPayload(utils.NewJsonPayload(_request.body))
+            if _request.Body != nil {
+                _client.SetPayload(utils.NewJsonPayload(_request.Body))
             }
 
             return _client.Fetch(result)
@@ -171,7 +171,7 @@ func NewUserApi() *UserApi {
             /*
             The name that needs to be deleted
             */
-            username   *string
+            Username   *string
 
         }
 
@@ -182,14 +182,14 @@ func NewUserApi() *UserApi {
           result: void
         */
         func (it *UserApi)DeleteUser(_client swagger.FetchClient, _request *UserApiDeleteUserRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.username, _request.username == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'username' when calling DeleteUser")
+            if(!_client.NewValidator(_request.Username, _request.Username == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Username' when calling DeleteUser")
             }
 
         // create path and map variables
         {
             localVarPath := strings.Replace("/user/{username}","{format}","json", -1)
-                localVarPath = strings.Replace(localVarPath, "{" + "username" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.username)), -1)
+                localVarPath = strings.Replace(localVarPath, "{" + "username" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.Username)), -1)
             _client.SetApiPath(utils.AddPath(it.BasePath, localVarPath))
             _client.SetMethod(strings.ToUpper("Delete"))
         }
@@ -215,7 +215,7 @@ func NewUserApi() *UserApi {
             /*
             The name that needs to be fetched. Use user1 for testing. 
             */
-            username   *string
+            Username   *string
 
         }
 
@@ -226,14 +226,14 @@ func NewUserApi() *UserApi {
           result: User
         */
         func (it *UserApi)GetUserByName(_client swagger.FetchClient, _request *UserApiGetUserByNameRequest, result *User) error {
-            if(!_client.NewValidator(_request.username, _request.username == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'username' when calling GetUserByName")
+            if(!_client.NewValidator(_request.Username, _request.Username == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Username' when calling GetUserByName")
             }
 
         // create path and map variables
         {
             localVarPath := strings.Replace("/user/{username}","{format}","json", -1)
-                localVarPath = strings.Replace(localVarPath, "{" + "username" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.username)), -1)
+                localVarPath = strings.Replace(localVarPath, "{" + "username" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.Username)), -1)
             _client.SetApiPath(utils.AddPath(it.BasePath, localVarPath))
             _client.SetMethod(strings.ToUpper("Get"))
         }
@@ -259,12 +259,12 @@ func NewUserApi() *UserApi {
             /*
             The user name for login
             */
-            username   *string
+            Username   *string
 
             /*
             The password for login in clear text
             */
-            password   *string
+            Password   *string
 
         }
 
@@ -275,11 +275,11 @@ func NewUserApi() *UserApi {
           result: string
         */
         func (it *UserApi)LoginUser(_client swagger.FetchClient, _request *UserApiLoginUserRequest, result *string) error {
-            if(!_client.NewValidator(_request.username, _request.username == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'username' when calling LoginUser")
+            if(!_client.NewValidator(_request.Username, _request.Username == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Username' when calling LoginUser")
             }
-            if(!_client.NewValidator(_request.password, _request.password == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'password' when calling LoginUser")
+            if(!_client.NewValidator(_request.Password, _request.Password == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Password' when calling LoginUser")
             }
 
         // create path and map variables
@@ -289,11 +289,11 @@ func NewUserApi() *UserApi {
             _client.SetMethod(strings.ToUpper("Get"))
         }
 
-            if _request.username != nil {
-                _client.AddQueryParam("username", utils.ParameterToString(_request.username))
+            if _request.Username != nil {
+                _client.AddQueryParam("username", utils.ParameterToString(_request.Username))
             }
-            if _request.password != nil {
-                _client.AddQueryParam("password", utils.ParameterToString(_request.password))
+            if _request.Password != nil {
+                _client.AddQueryParam("password", utils.ParameterToString(_request.Password))
             }
 
 
@@ -351,12 +351,12 @@ func NewUserApi() *UserApi {
             /*
             name that need to be updated
             */
-            username   *string
+            Username   *string
 
             /*
             Updated user object
             */
-            body   *User
+            Body   *User
 
         }
 
@@ -367,17 +367,17 @@ func NewUserApi() *UserApi {
           result: void
         */
         func (it *UserApi)UpdateUser(_client swagger.FetchClient, _request *UserApiUpdateUserRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.username, _request.username == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'username' when calling UpdateUser")
+            if(!_client.NewValidator(_request.Username, _request.Username == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Username' when calling UpdateUser")
             }
-            if(!_client.NewValidator(_request.body, _request.body == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'body' when calling UpdateUser")
+            if(!_client.NewValidator(_request.Body, _request.Body == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Body' when calling UpdateUser")
             }
 
         // create path and map variables
         {
             localVarPath := strings.Replace("/user/{username}","{format}","json", -1)
-                localVarPath = strings.Replace(localVarPath, "{" + "username" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.username)), -1)
+                localVarPath = strings.Replace(localVarPath, "{" + "username" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.Username)), -1)
             _client.SetApiPath(utils.AddPath(it.BasePath, localVarPath))
             _client.SetMethod(strings.ToUpper("Put"))
         }
@@ -392,8 +392,8 @@ func NewUserApi() *UserApi {
             _client.SetPayload(utils.NewFormPayload(localVarFormParams))
         }
 
-            if _request.body != nil {
-                _client.SetPayload(utils.NewJsonPayload(_request.body))
+            if _request.Body != nil {
+                _client.SetPayload(utils.NewJsonPayload(_request.Body))
             }
 
             return _client.Fetch(result)

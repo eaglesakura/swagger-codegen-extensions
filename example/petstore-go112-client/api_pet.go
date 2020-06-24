@@ -33,7 +33,7 @@ func NewPetApi() *PetApi {
             /*
             Pet object that needs to be added to the store
             */
-            body   *Pet
+            Body   *Pet
 
         }
 
@@ -44,8 +44,8 @@ func NewPetApi() *PetApi {
           result: void
         */
         func (it *PetApi)AddPet(_client swagger.FetchClient, _request *PetApiAddPetRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.body, _request.body == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'body' when calling AddPet")
+            if(!_client.NewValidator(_request.Body, _request.Body == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Body' when calling AddPet")
             }
 
         // create path and map variables
@@ -65,8 +65,8 @@ func NewPetApi() *PetApi {
             _client.SetPayload(utils.NewFormPayload(localVarFormParams))
         }
 
-            if _request.body != nil {
-                _client.SetPayload(utils.NewJsonPayload(_request.body))
+            if _request.Body != nil {
+                _client.SetPayload(utils.NewJsonPayload(_request.Body))
             }
 
             return _client.Fetch(result)
@@ -79,12 +79,12 @@ func NewPetApi() *PetApi {
             /*
             Pet id to delete
             */
-            petId   *int64
+            PetId   *int64
 
             /*
             
             */
-            apiKey   *string
+            ApiKey   *string
 
         }
 
@@ -95,24 +95,24 @@ func NewPetApi() *PetApi {
           result: void
         */
         func (it *PetApi)DeletePet(_client swagger.FetchClient, _request *PetApiDeletePetRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.petId, _request.petId == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'petId' when calling DeletePet")
+            if(!_client.NewValidator(_request.PetId, _request.PetId == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'PetId' when calling DeletePet")
             }
-            if(!_client.NewValidator(_request.apiKey, _request.apiKey == nil).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'apiKey' when calling DeletePet")
+            if(!_client.NewValidator(_request.ApiKey, _request.ApiKey == nil).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'ApiKey' when calling DeletePet")
             }
 
         // create path and map variables
         {
             localVarPath := strings.Replace("/pet/{petId}","{format}","json", -1)
-                localVarPath = strings.Replace(localVarPath, "{" + "petId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.petId)), -1)
+                localVarPath = strings.Replace(localVarPath, "{" + "petId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.PetId)), -1)
             _client.SetApiPath(utils.AddPath(it.BasePath, localVarPath))
             _client.SetMethod(strings.ToUpper("Delete"))
         }
 
 
-            if _request.apiKey != nil {
-                _client.AddHeader("api_key", utils.ParameterToString(_request.apiKey))
+            if _request.ApiKey != nil {
+                _client.AddHeader("api_key", utils.ParameterToString(_request.ApiKey))
             }
 
         localVarFormParams := url.Values{}
@@ -134,7 +134,7 @@ func NewPetApi() *PetApi {
             /*
             Status values that need to be considered for filter
             */
-            status   *[]string
+            Status   *[]string
 
         }
 
@@ -145,8 +145,8 @@ func NewPetApi() *PetApi {
           result: []Pet
         */
         func (it *PetApi)FindPetsByStatus(_client swagger.FetchClient, _request *PetApiFindPetsByStatusRequest, result *[]Pet) error {
-            if(!_client.NewValidator(_request.status, _request.status == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'status' when calling FindPetsByStatus")
+            if(!_client.NewValidator(_request.Status, _request.Status == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Status' when calling FindPetsByStatus")
             }
 
         // create path and map variables
@@ -156,8 +156,8 @@ func NewPetApi() *PetApi {
             _client.SetMethod(strings.ToUpper("Get"))
         }
 
-            if _request.status != nil {
-                _client.AddQueryParam("status", utils.ParameterToString(_request.status))
+            if _request.Status != nil {
+                _client.AddQueryParam("status", utils.ParameterToString(_request.Status))
             }
 
 
@@ -180,7 +180,7 @@ func NewPetApi() *PetApi {
             /*
             Tags to filter by
             */
-            tags   *[]string
+            Tags   *[]string
 
         }
 
@@ -191,8 +191,8 @@ func NewPetApi() *PetApi {
           result: []Pet
         */
         func (it *PetApi)FindPetsByTags(_client swagger.FetchClient, _request *PetApiFindPetsByTagsRequest, result *[]Pet) error {
-            if(!_client.NewValidator(_request.tags, _request.tags == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'tags' when calling FindPetsByTags")
+            if(!_client.NewValidator(_request.Tags, _request.Tags == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Tags' when calling FindPetsByTags")
             }
 
         // create path and map variables
@@ -202,8 +202,8 @@ func NewPetApi() *PetApi {
             _client.SetMethod(strings.ToUpper("Get"))
         }
 
-            if _request.tags != nil {
-                _client.AddQueryParam("tags", utils.ParameterToString(_request.tags))
+            if _request.Tags != nil {
+                _client.AddQueryParam("tags", utils.ParameterToString(_request.Tags))
             }
 
 
@@ -226,7 +226,7 @@ func NewPetApi() *PetApi {
             /*
             ID of pet to return
             */
-            petId   *int64
+            PetId   *int64
 
         }
 
@@ -237,14 +237,14 @@ func NewPetApi() *PetApi {
           result: Pet
         */
         func (it *PetApi)GetPetById(_client swagger.FetchClient, _request *PetApiGetPetByIdRequest, result *Pet) error {
-            if(!_client.NewValidator(_request.petId, _request.petId == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'petId' when calling GetPetById")
+            if(!_client.NewValidator(_request.PetId, _request.PetId == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'PetId' when calling GetPetById")
             }
 
         // create path and map variables
         {
             localVarPath := strings.Replace("/pet/{petId}","{format}","json", -1)
-                localVarPath = strings.Replace(localVarPath, "{" + "petId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.petId)), -1)
+                localVarPath = strings.Replace(localVarPath, "{" + "petId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.PetId)), -1)
             _client.SetApiPath(utils.AddPath(it.BasePath, localVarPath))
             _client.SetMethod(strings.ToUpper("Get"))
         }
@@ -270,7 +270,7 @@ func NewPetApi() *PetApi {
             /*
             Pet object that needs to be added to the store
             */
-            body   *Pet
+            Body   *Pet
 
         }
 
@@ -281,8 +281,8 @@ func NewPetApi() *PetApi {
           result: void
         */
         func (it *PetApi)UpdatePet(_client swagger.FetchClient, _request *PetApiUpdatePetRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.body, _request.body == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'body' when calling UpdatePet")
+            if(!_client.NewValidator(_request.Body, _request.Body == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Body' when calling UpdatePet")
             }
 
         // create path and map variables
@@ -302,8 +302,8 @@ func NewPetApi() *PetApi {
             _client.SetPayload(utils.NewFormPayload(localVarFormParams))
         }
 
-            if _request.body != nil {
-                _client.SetPayload(utils.NewJsonPayload(_request.body))
+            if _request.Body != nil {
+                _client.SetPayload(utils.NewJsonPayload(_request.Body))
             }
 
             return _client.Fetch(result)
@@ -316,17 +316,17 @@ func NewPetApi() *PetApi {
             /*
             ID of pet that needs to be updated
             */
-            petId   *int64
+            PetId   *int64
 
             /*
             Updated name of the pet
             */
-            name   *string
+            Name   *string
 
             /*
             Updated status of the pet
             */
-            status   *string
+            Status   *string
 
         }
 
@@ -337,20 +337,20 @@ func NewPetApi() *PetApi {
           result: void
         */
         func (it *PetApi)UpdatePetWithForm(_client swagger.FetchClient, _request *PetApiUpdatePetWithFormRequest, result interface{} ) error {
-            if(!_client.NewValidator(_request.petId, _request.petId == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'petId' when calling UpdatePetWithForm")
+            if(!_client.NewValidator(_request.PetId, _request.PetId == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'PetId' when calling UpdatePetWithForm")
             }
-            if(!_client.NewValidator(_request.name, _request.name == nil).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'name' when calling UpdatePetWithForm")
+            if(!_client.NewValidator(_request.Name, _request.Name == nil).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Name' when calling UpdatePetWithForm")
             }
-            if(!_client.NewValidator(_request.status, _request.status == nil).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'status' when calling UpdatePetWithForm")
+            if(!_client.NewValidator(_request.Status, _request.Status == nil).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'Status' when calling UpdatePetWithForm")
             }
 
         // create path and map variables
         {
             localVarPath := strings.Replace("/pet/{petId}","{format}","json", -1)
-                localVarPath = strings.Replace(localVarPath, "{" + "petId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.petId)), -1)
+                localVarPath = strings.Replace(localVarPath, "{" + "petId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.PetId)), -1)
             _client.SetApiPath(utils.AddPath(it.BasePath, localVarPath))
             _client.SetMethod(strings.ToUpper("Post"))
         }
@@ -362,14 +362,14 @@ func NewPetApi() *PetApi {
         
             // form params
             formEnable = true
-            if _request.name != nil {
-                localVarFormParams.Add("name", utils.ParameterToString(_request.name))
+            if _request.Name != nil {
+                localVarFormParams.Add("name", utils.ParameterToString(_request.Name))
             }
         
             // form params
             formEnable = true
-            if _request.status != nil {
-                localVarFormParams.Add("status", utils.ParameterToString(_request.status))
+            if _request.Status != nil {
+                localVarFormParams.Add("status", utils.ParameterToString(_request.Status))
             }
         
 
@@ -388,17 +388,17 @@ func NewPetApi() *PetApi {
             /*
             ID of pet to update
             */
-            petId   *int64
+            PetId   *int64
 
             /*
             Additional data to pass to server
             */
-            additionalMetadata   *string
+            AdditionalMetadata   *string
 
             /*
             file to upload
             */
-            file   *io.Reader
+            File   *io.Reader
 
         }
 
@@ -409,20 +409,20 @@ func NewPetApi() *PetApi {
           result: ApiResponse
         */
         func (it *PetApi)UploadFile(_client swagger.FetchClient, _request *PetApiUploadFileRequest, result *ApiResponse) error {
-            if(!_client.NewValidator(_request.petId, _request.petId == nil).Required(true).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'petId' when calling UploadFile")
+            if(!_client.NewValidator(_request.PetId, _request.PetId == nil).Required(true).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'PetId' when calling UploadFile")
             }
-            if(!_client.NewValidator(_request.additionalMetadata, _request.additionalMetadata == nil).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'additionalMetadata' when calling UploadFile")
+            if(!_client.NewValidator(_request.AdditionalMetadata, _request.AdditionalMetadata == nil).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'AdditionalMetadata' when calling UploadFile")
             }
-            if(!_client.NewValidator(_request.file, _request.file == nil).Valid(_client)) {
-                return errors.New(0, "Missing the required parameter 'file' when calling UploadFile")
+            if(!_client.NewValidator(_request.File, _request.File == nil).Valid(_client)) {
+                return errors.New(0, "Missing the required parameter 'File' when calling UploadFile")
             }
 
         // create path and map variables
         {
             localVarPath := strings.Replace("/pet/{petId}/uploadImage","{format}","json", -1)
-                localVarPath = strings.Replace(localVarPath, "{" + "petId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.petId)), -1)
+                localVarPath = strings.Replace(localVarPath, "{" + "petId" + "}", utils.EscapeString(fmt.Sprintf("%v", *_request.PetId)), -1)
             _client.SetApiPath(utils.AddPath(it.BasePath, localVarPath))
             _client.SetMethod(strings.ToUpper("Post"))
         }
@@ -434,8 +434,8 @@ func NewPetApi() *PetApi {
         
             // form params
             formEnable = true
-            if _request.additionalMetadata != nil {
-                localVarFormParams.Add("additionalMetadata", utils.ParameterToString(_request.additionalMetadata))
+            if _request.AdditionalMetadata != nil {
+                localVarFormParams.Add("additionalMetadata", utils.ParameterToString(_request.AdditionalMetadata))
             }
         
 

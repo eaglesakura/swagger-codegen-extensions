@@ -15,6 +15,7 @@ import (
 	"strings"
 )
 
+// petstore
 type StoreApi struct {
 	// API Endpoint
 	// e.g.) "https://example.com/"
@@ -97,7 +98,7 @@ func (it *StoreApiDeleteOrderDeleteRequest) Fetch(ctx context.Context) (*http.Re
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -178,7 +179,7 @@ func (it *StoreApiGetInventoryGetRequest) Fetch(ctx context.Context) (*http.Resp
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -270,7 +271,7 @@ func (it *StoreApiGetOrderByIdGetRequest) Fetch(ctx context.Context) (*http.Resp
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -363,7 +364,7 @@ func (it *StoreApiPlaceOrderPostRequest) Fetch(ctx context.Context) (*http.Respo
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {

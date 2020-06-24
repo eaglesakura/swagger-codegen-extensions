@@ -39,12 +39,11 @@ interface StoreApi {
      *
      * @param orderId ID of the order that needs to be deleted/ example :: 789
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @DELETE("/v2/store/order/{orderId}")
     suspend fun deleteOrder(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("orderId")
+            @Path("orderId")
             orderId: kotlin.Long
     ): Response<ResponseBody>
 
@@ -54,12 +53,11 @@ interface StoreApi {
      *
      * @param orderId ID of the order that needs to be deleted/ example :: 789
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @DELETE("/v2/store/order/{orderId}")
     suspend fun deleteOrderBody(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("orderId")
+            @Path("orderId")
             orderId: kotlin.Long
     ): Response<ResponseBody>
 
@@ -69,13 +67,12 @@ interface StoreApi {
      *
      * @param orderId ID of the order that needs to be deleted/ example :: 789
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @DELETE("/v2/store/order/{orderId}")
     suspend fun deleteOrderStreaming(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("orderId")
+            @Path("orderId")
             orderId: kotlin.Long
     ): Response<ResponseBody>
     /**
@@ -83,7 +80,6 @@ interface StoreApi {
      * Returns a map of status codes to quantities
      *
      * @return kotlin.collections.Map<kotlin.String, kotlin.Int>
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/store/inventory")
     suspend fun getInventory(
@@ -95,7 +91,6 @@ interface StoreApi {
      * Returns a map of status codes to quantities
      *
      * @return kotlin.collections.Map<kotlin.String, kotlin.Int>
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/store/inventory")
     suspend fun getInventoryBody(
@@ -107,7 +102,6 @@ interface StoreApi {
      * Returns a map of status codes to quantities
      *
      * @return kotlin.collections.Map<kotlin.String, kotlin.Int>
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @GET("/v2/store/inventory")
@@ -120,12 +114,11 @@ interface StoreApi {
      *
      * @param orderId ID of pet that needs to be fetched/ example :: 789
      * @return Order
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/store/order/{orderId}")
     suspend fun getOrderById(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("orderId")
+            @Path("orderId")
             orderId: kotlin.Long
     ): Response<Order>
 
@@ -135,12 +128,11 @@ interface StoreApi {
      *
      * @param orderId ID of pet that needs to be fetched/ example :: 789
      * @return Order
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/store/order/{orderId}")
     suspend fun getOrderByIdBody(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("orderId")
+            @Path("orderId")
             orderId: kotlin.Long
     ): Response<ResponseBody>
 
@@ -150,13 +142,12 @@ interface StoreApi {
      *
      * @param orderId ID of pet that needs to be fetched/ example :: 789
      * @return Order
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @GET("/v2/store/order/{orderId}")
     suspend fun getOrderByIdStreaming(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("orderId")
+            @Path("orderId")
             orderId: kotlin.Long
     ): Response<ResponseBody>
     /**
@@ -165,7 +156,6 @@ interface StoreApi {
      *
      * @param body order placed for purchasing the pet
      * @return Order
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @POST("/v2/store/order")
     suspend fun placeOrder(
@@ -180,7 +170,6 @@ interface StoreApi {
      *
      * @param body order placed for purchasing the pet
      * @return Order
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @POST("/v2/store/order")
     suspend fun placeOrderBody(
@@ -195,7 +184,6 @@ interface StoreApi {
      *
      * @param body order placed for purchasing the pet
      * @return Order
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @POST("/v2/store/order")
@@ -207,8 +195,6 @@ interface StoreApi {
     companion object {
         /**
          * Default StoreApi Factory.
-         *
-         * @link https://github.com/eaglesakura/swagger-codegen-extensions
          */
         fun create(baseUrl: String, okHttpClient: OkHttpClient? = null, moshi: Moshi = InternalUtils.moshi, block: (builder: Retrofit.Builder)->Retrofit.Builder = { it }): StoreApi {
             val url = if(baseUrl.endsWith("/")) {

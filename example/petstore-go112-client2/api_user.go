@@ -15,6 +15,7 @@ import (
 	"strings"
 )
 
+// petstore
 type UserApi struct {
 	// API Endpoint
 	// e.g.) "https://example.com/"
@@ -97,7 +98,7 @@ func (it *UserApiCreateUserPostRequest) Fetch(ctx context.Context) (*http.Respon
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -185,7 +186,7 @@ func (it *UserApiCreateUsersWithArrayInputPostRequest) Fetch(ctx context.Context
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -273,7 +274,7 @@ func (it *UserApiCreateUsersWithListInputPostRequest) Fetch(ctx context.Context)
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -361,7 +362,7 @@ func (it *UserApiDeleteUserDeleteRequest) Fetch(ctx context.Context) (*http.Resp
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -454,7 +455,7 @@ func (it *UserApiGetUserByNameGetRequest) Fetch(ctx context.Context) (*http.Resp
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -557,7 +558,7 @@ func (it *UserApiLoginUserGetRequest) Fetch(ctx context.Context) (*http.Response
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -634,7 +635,7 @@ func (it *UserApiLogoutUserGetRequest) Fetch(ctx context.Context) (*http.Respons
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -731,7 +732,7 @@ func (it *UserApiUpdateUserPutRequest) Fetch(ctx context.Context) (*http.Respons
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {

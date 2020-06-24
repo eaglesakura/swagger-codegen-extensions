@@ -3,9 +3,10 @@ package {{packageName}}
 // link: https://github.com/eaglesakura/swagger-codegen-extensions
 
 import (
+	"encoding/json"
+	"golang.org/x/xerrors"
+    "net/http"
     "time"
-    "encoding/json"
-    "golang.org/x/xerrors"
 )
 
 
@@ -98,6 +99,7 @@ type {{classname}} struct {
 	{{name}} *{{#isEnum}}{{classname}}{{datatypeWithEnum}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}} `json:"{{baseName}}{{^required}},omitempty{{/required}}"`
 {{/vars}}
 }
+type {{classname}}Array []{{classname}}
 
 // Update self from builder callback.
 func (it *{{classname}})Update(builder func(ref *{{classname}})) *{{classname}} {
@@ -110,6 +112,16 @@ func (it *{{classname}})Copy(builder func(copied *{{classname}})) *{{classname}}
     result := *it
     builder(&result)
     return &result
+}
+
+// DeepCopy to result ptr.
+func (it *{{classname}})MarshalCopy(result interface{}) error {
+    body, _ := json.Marshal(it)
+    err := json.Unmarshal(body, result)
+    if err != nil {
+        return xerrors.Errorf("{{classname}}.MarshalCopy failed, to='%v', %w", result, err)
+    }
+    return nil
 }
 
 {{#vars}}
@@ -141,12 +153,15 @@ func (it {{classname}})String() string {
     buf, _ := json.Marshal(it)
     return string(buf)
 }
-func (it {{classname}})Json() string {
+func (it *{{classname}})Json() string {
     buf, _ := json.Marshal(it)
     return string(buf)
 }
 
-type {{classname}}Array []{{classname}}
+func (it *{{classname}}) Write(writer http.ResponseWriter, request *http.Request) {
+    buf, _ := json.Marshal(it)
+    _, _ = writer.Write(buf)
+}
 
 func (it *{{classname}}) Valid() error {
     {{#vars}}
@@ -181,6 +196,12 @@ func (it *{{classname}}) Valid() error {
 func (it *{{classname}})this_is_call_dummy() {
     time.Now()
     xerrors.Errorf("")
+
+    var model {{classname}}
+    var swaggerModelRef swaggerModel = &model
+    var swaggerResponseRef SwaggerResponse = &model
+    swaggerModelRef = swaggerModelRef
+    swaggerResponseRef = swaggerResponseRef
 }
 
 {{/isEnum}}

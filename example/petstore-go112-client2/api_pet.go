@@ -15,6 +15,7 @@ import (
 	"strings"
 )
 
+// petstore
 type PetApi struct {
 	// API Endpoint
 	// e.g.) "https://example.com/"
@@ -97,7 +98,7 @@ func (it *PetApiAddPetPostRequest) Fetch(ctx context.Context) (*http.Response, e
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -196,7 +197,7 @@ func (it *PetApiDeletePetDeleteRequest) Fetch(ctx context.Context) (*http.Respon
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -290,7 +291,7 @@ func (it *PetApiFindPetsByStatusGetRequest) Fetch(ctx context.Context) (*http.Re
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -383,7 +384,7 @@ func (it *PetApiFindPetsByTagsGetRequest) Fetch(ctx context.Context) (*http.Resp
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -476,7 +477,7 @@ func (it *PetApiGetPetByIdGetRequest) Fetch(ctx context.Context) (*http.Response
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -564,7 +565,7 @@ func (it *PetApiUpdatePetPutRequest) Fetch(ctx context.Context) (*http.Response,
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -666,7 +667,7 @@ func (it *PetApiUpdatePetWithFormPostRequest) Fetch(ctx context.Context) (*http.
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -775,7 +776,7 @@ func (it *PetApiUploadFilePostRequest) Fetch(ctx context.Context) (*http.Respons
 	request.URL.RawQuery = query.Encode()
 
 	if it.Intercept != nil {
-		it.Intercept(client, request)
+		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
