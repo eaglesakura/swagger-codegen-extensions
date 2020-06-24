@@ -47,7 +47,7 @@ interface {{classname}} {
     suspend fun {{nickname}}(
         {{#allParams}}
             {{#-first}}@HeaderMap customHeaders: Map<String, String> = emptyMap(),{{/-first}}
-            {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Header("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
+            {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Path("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
             {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
         {{/allParams}}
         {{^allParams}}

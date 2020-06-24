@@ -1,15 +1,9 @@
-# システムディレクトリ, システムファイル
 .gradle/
 build/
 .idea/
 .DS_Store
 Thumbs.db
 *.iml
-
-# 成果物ディレクトリ
-ci-release/
-
-# 中間ファイル
 bin
 local.properties
 *.o
@@ -20,13 +14,9 @@ gdbserver
 obj/
 latex/
 dependencies.txt
-
-# 外部ライブラリ
-# 必要に応じてsyncする
-eglibrary/
 private/
 /output
 /out
-
 test.sh
 docker/*.jar
+go.sum

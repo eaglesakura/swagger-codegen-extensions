@@ -1,0 +1,172 @@
+package {{packageName}}
+
+// link: https://github.com/eaglesakura/swagger-codegen-extensions
+
+import (
+"context"
+"encoding/json"
+"fmt"
+"golang.org/x/xerrors"
+"io"
+"io/ioutil"
+"net/http"
+"net/url"
+"path"
+"strings"
+)
+
+{{#operations}}
+    type {{classname}} struct {
+    // API Endpoint
+    // e.g.) "https://example.com/"
+    Endpoint string
+
+    // http.Client prefetch intercept function.
+    Intercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)
+    }
+
+    func New{{classname}}() *{{classname}} {
+    return &{{classname}}{
+    Endpoint: "{{host}}",
+    }
+    }
+
+    {{#operation}}
+        // {{summary}}
+        // {{notes}}
+        type {{classname}}{{operationIdCamelCase}}{{httpMethod}}Request struct {
+        api *{{classname}}
+
+        // API Endpoint
+        // e.g.) "https://example.com/"
+        Endpoint string
+
+        // http.Client prefetch intercept function.
+        Intercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)
+
+        {{#allParams}}
+            // {{description}}
+            {{paramName}}   *{{{dataType}}}
+        {{/allParams}}
+        }
+
+        {{#allParams}}
+            // Set {{paramName}} from non pointer
+            func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Set{{paramName}}(new{{paramName}} {{{dataType}}}) {
+                it.{{paramName}} = &new{{paramName}}
+            }
+        {{/allParams}}
+
+        // Fetch http request, returns raw response.
+        // {{description}}
+        func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Execute(ctx context.Context) (success {{#returnType}}*{{{returnType}}}{{/returnType}}{{^returnType}}[]byte{{/returnType}}, responseBody []byte, resp *http.Response, err error) {
+        resp, err = it.Fetch(ctx)
+        if resp != nil && resp.Body != nil {
+        defer func() {
+        _ = resp.Body.Close()
+        }()
+        }
+        if err != nil {
+        return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+        }
+
+        body, err := ioutil.ReadAll(resp.Body)
+        if err != nil {
+        return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+        }
+        if resp.StatusCode / 100 != 2 {
+        return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+        }
+
+        {{#returnType}}
+            var model {{{returnType}}}
+            err = json.Unmarshal(body, &model)
+            if err != nil {
+            return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+            }
+            return &model, body, resp, nil
+        {{/returnType}}
+        {{^returnType}}
+            return body, body, resp, nil
+        {{/returnType}}
+        }
+
+        // Fetch http request, returns raw response.
+        // {{description}}
+        func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Fetch(ctx context.Context) (*http.Response, error) {
+        client := http.DefaultClient
+        apiUrl := path.Join(it.Endpoint, "{{basePathWithoutHost}}", "{{path}}")
+        method := strings.ToUpper("{{httpMethod}}")
+        var body io.Reader
+
+        {{#allParams}}
+            {{#isPathParam}}
+                if it.{{paramName}} != nil {
+                apiUrl = strings.ReplaceAll(apiUrl, "{" + "{{baseName}}" + "}", url.PathEscape(fmt.Sprintf("%v", *it.{{paramName}})))
+                }
+            {{/isPathParam}}
+            {{#isBodyParam}}
+                if it.{{paramName}} != nil {
+                body = bodyToReader(it.{{paramName}})
+                }
+            {{/isBodyParam}}
+        {{/allParams}}
+
+        request, err := http.NewRequest(method, apiUrl, body)
+        if err != nil {
+        return nil, xerrors.Errorf("create request failed, %w", err)
+        }
+
+        query := request.URL.Query()
+
+        {{#allParams}}
+            {{#isQueryParam}}
+                if it.{{paramName}} != nil {
+                query.Set("{{baseName}}", url.QueryEscape(fmt.Sprintf("%v", *it.{{paramName}})))
+                }
+            {{/isQueryParam}}
+            {{#isHeaderParam}}
+                if it.{{paramName}} != nil {
+                request.Header.Set("{{{baseName}}}", fmt.Sprintf("%v", *it.{{paramName}}))
+                }
+            {{/isHeaderParam}}
+        {{/allParams}}
+
+        request.URL.RawQuery = query.Encode()
+
+        if it.Intercept != nil {
+        it.Intercept(client, request)
+        }
+        response, err := client.Do(request)
+        if err != nil {
+        return nil, xerrors.Errorf("http fetch failed, %w", err)
+        }
+        return response, nil
+        }
+
+        // New request with Parameters.
+        {{#allParams}}
+            // {{baseName}}: {{description}}
+        {{/allParams}}
+        func (it *{{classname}}){{operationIdCamelCase}}{{httpMethod}}(builder func(*{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)) *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request {
+        result := &{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request {
+        api:        it,
+        Endpoint:   it.Endpoint,
+        Intercept:  it.Intercept,
+        }
+        builder(result)
+        return result
+        }
+
+    {{/operation}}
+{{/operations}}
+
+
+func (it *{{classname}})this_is_call_dummy() {
+url.Parse("")
+xerrors.Errorf("")
+strings.ToUpper("")
+fmt.Sprintf("%v", "")
+io.ReadAtLeast(nil, nil, 0)
+json.Unmarshal(nil, nil)
+}

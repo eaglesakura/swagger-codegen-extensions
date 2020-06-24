@@ -1,0 +1,189 @@
+package {{packageName}}
+
+// link: https://github.com/eaglesakura/swagger-codegen-extensions
+
+import (
+    "time"
+    "encoding/json"
+    "golang.org/x/xerrors"
+)
+
+
+{{#models}}
+{{#model}}
+{{#isEnum}}
+{{#allowableValues}}
+type {{classname}} string
+type {{classname}}Array []{{classname}}
+{{#values}}
+const {{classname}}_{{.}} {{classname}} = {{classname}}("{{.}}")
+{{/values}}{{/allowableValues}}
+func (it {{classname}})Ptr() *{{classname}} {
+    return &it
+}
+func (it {{classname}})StringPtr() *string {
+    temp := string(it)
+    return &temp
+}
+func (it *{{classname}})Value() {{classname}} {
+    return *it
+}
+
+func (it *{{classname}})StringValue() string {
+    return string(*it)
+}
+func (it {{classname}}Array)Ptr() *{{classname}}Array {
+    return &it
+}
+
+
+// Exist Patterns
+var {{classname}}Pattern []string = []string{
+{{#allowableValues}}{{#values}}
+    "{{.}}", {{/values}}
+{{/allowableValues}}
+}
+func (it *{{classname}})Valid() bool {
+    if it == nil {
+        return false
+    }
+    value := string(*it)
+    for _, v := range {{classname}}Pattern {
+        if v == value {
+            return true
+        }
+    }
+    return false
+}
+
+{{/isEnum}}
+
+{{^isEnum}}
+
+{{#vars}}{{#isEnum}}
+type {{classname}}{{datatypeWithEnum}} string
+type {{classname}}{{datatypeWithEnum}}Array []{{classname}}{{datatypeWithEnum}}
+{{#allowableValues}}{{#values}}
+const {{classname}}{{datatypeWithEnum}}_{{.}} {{classname}}{{datatypeWithEnum}} = {{classname}}{{datatypeWithEnum}}("{{.}}"){{/values}}
+{{/allowableValues}}
+var {{classname}}{{datatypeWithEnum}}Pattern []string = []string{
+{{#allowableValues}}{{#values}}
+    "{{.}}", {{/values}}
+{{/allowableValues}}
+}
+func (it {{classname}}{{datatypeWithEnum}})Ptr() *{{classname}}{{datatypeWithEnum}} {
+    return &it
+}
+func (it *{{classname}}{{datatypeWithEnum}})Value() {{classname}}{{datatypeWithEnum}} {
+    return *it
+}
+func (it *{{classname}}{{datatypeWithEnum}})Valid() bool {
+    if it == nil {
+        return false
+    }
+    value := string(*it)
+    for _, v := range {{classname}}{{datatypeWithEnum}}Pattern {
+        if v == value {
+            return true
+        }
+    }
+    return false
+}
+{{/isEnum}}{{/vars}}
+
+// {{{description}}}
+type {{classname}} struct {
+{{#vars}}{{#description}}
+	// {{{description}}}{{/description}}
+	{{name}} *{{#isEnum}}{{classname}}{{datatypeWithEnum}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}} `json:"{{baseName}}{{^required}},omitempty{{/required}}"`
+{{/vars}}
+}
+
+// Update self from builder callback.
+func (it *{{classname}})Update(builder func(ref *{{classname}})) *{{classname}} {
+    builder(it)
+    return it
+}
+
+// Copy and Update self from builder callback.
+func (it *{{classname}})Copy(builder func(copied *{{classname}})) *{{classname}} {
+    result := *it
+    builder(&result)
+    return &result
+}
+
+{{#vars}}
+// Set {{name}}
+func (it *{{classname}})Set{{name}}(new{{name}} {{#isEnum}}{{classname}}{{datatypeWithEnum}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}}) {
+    it.{{name}} = &new{{name}}
+}
+
+// Require value of {{name}}
+func (it *{{classname}})Require{{name}}() {{#isEnum}}{{classname}}{{datatypeWithEnum}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}} {
+    if it.{{name}} == nil {
+        panic(xerrors.Errorf("{{classname}}.{{name}} is nil"))
+    }
+    return *it.{{name}}
+}
+
+// Get value of {{name}} / or default
+func (it *{{classname}})Get{{name}}() {{#isEnum}}{{classname}}{{datatypeWithEnum}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}} {
+    if it.{{name}} != nil {
+        return *it.{{name}}
+    }
+    result := new({{#isEnum}}{{classname}}{{datatypeWithEnum}}{{/isEnum}}{{^isEnum}}{{{datatype}}}{{/isEnum}})
+    return *result
+}
+{{/vars}}
+
+// encode to json
+func (it {{classname}})String() string {
+    buf, _ := json.Marshal(it)
+    return string(buf)
+}
+func (it {{classname}})Json() string {
+    buf, _ := json.Marshal(it)
+    return string(buf)
+}
+
+type {{classname}}Array []{{classname}}
+
+func (it *{{classname}}) Valid() error {
+    {{#vars}}
+        {{#required}}
+            if it.{{name}} == nil {
+                return xerrors.Errorf("'{{classname}}.{{name}}' is required")
+            }
+        {{/required}}
+        {{#pattern}}
+        // TODO: pattern check / "{{pattern}}"
+        {{/pattern}}
+        {{#minLength}}
+            if it.{{name}} != nil && len(*it.{{name}}) < {{minLength}} {
+                return xerrors.Errorf("'{{classname}}.{{name}}' invalid length(min >= {{minLength}})")
+            }
+        {{/minLength}}
+        {{#maxLength}}
+            if it.{{name}} != nil && len(*it.{{name}}) > {{maxLength}} {
+                return xerrors.Errorf("'{{classname}}.{{name}}' invalid length(max >= {{maxLength}})")
+            }
+        {{/maxLength}}
+        {{#isEnum}}
+            if it.{{name}} != nil && !it.{{name}}.Valid() {
+                return xerrors.Errorf("'{{classname}}.{{name}}' is invalid")
+            }
+        {{/isEnum}}
+    {{/vars}}
+
+    return nil
+}
+
+func (it *{{classname}})this_is_call_dummy() {
+    time.Now()
+    xerrors.Errorf("")
+}
+
+{{/isEnum}}
+{{/model}}{{/models}}
+
+
