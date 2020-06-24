@@ -10,11 +10,58 @@ import (
 )
 
 //
+// ApiResponse Interface for alternative definitions.
+type IApiResponse interface {
+	// JsonCopy to result ptr.
+	MarshalCopy(result interface{}) error
+
+	// Marshal json string.
+	Json() []byte
+
+	// Remove Code property
+	RemoveCode()
+
+	// Get Code property or default value.
+	GetCode() int32
+
+	// Get Code property or panic().
+	RequireCode() int32
+
+	// Set Code property.
+	SetCode(newCode int32)
+
+	// Remove Type property
+	RemoveType()
+
+	// Get Type property or default value.
+	GetType() string
+
+	// Get Type property or panic().
+	RequireType() string
+
+	// Set Type property.
+	SetType(newType string)
+
+	// Remove Message property
+	RemoveMessage()
+
+	// Get Message property or default value.
+	GetMessage() string
+
+	// Get Message property or panic().
+	RequireMessage() string
+
+	// Set Message property.
+	SetMessage(newMessage string)
+}
+
+//
 type ApiResponse struct {
+	//
 	Code *int32 `json:"code,omitempty"`
-
+	//
 	Type *string `json:"type,omitempty"`
-
+	//
 	Message *string `json:"message,omitempty"`
 }
 type ApiResponseArray []ApiResponse
@@ -42,6 +89,11 @@ func (it *ApiResponse) MarshalCopy(result interface{}) error {
 	return nil
 }
 
+// Remove Code
+func (it *ApiResponse) RemoveCode() {
+	it.Code = nil
+}
+
 // Set Code
 func (it *ApiResponse) SetCode(newCode int32) {
 	it.Code = &newCode
@@ -64,6 +116,11 @@ func (it *ApiResponse) GetCode() int32 {
 	return *result
 }
 
+// Remove Type
+func (it *ApiResponse) RemoveType() {
+	it.Type = nil
+}
+
 // Set Type
 func (it *ApiResponse) SetType(newType string) {
 	it.Type = &newType
@@ -84,6 +141,11 @@ func (it *ApiResponse) GetType() string {
 	}
 	result := new(string)
 	return *result
+}
+
+// Remove Message
+func (it *ApiResponse) RemoveMessage() {
+	it.Message = nil
 }
 
 // Set Message
@@ -113,9 +175,9 @@ func (it ApiResponse) String() string {
 	buf, _ := json.Marshal(it)
 	return string(buf)
 }
-func (it *ApiResponse) Json() string {
+func (it *ApiResponse) Json() []byte {
 	buf, _ := json.Marshal(it)
-	return string(buf)
+	return buf
 }
 
 func (it *ApiResponse) Write(writer http.ResponseWriter, request *http.Request) {
@@ -124,17 +186,50 @@ func (it *ApiResponse) Write(writer http.ResponseWriter, request *http.Request) 
 }
 
 func (it *ApiResponse) Valid() error {
+	if it.Code != nil {
+		if err := validationValue(it.Code); err != nil {
+			return xerrors.Errorf("'ApiResponse.Code' validation error, %w", err)
+		}
+	}
+	if it.Type != nil {
+		if err := validationValue(it.Type); err != nil {
+			return xerrors.Errorf("'ApiResponse.Type' validation error, %w", err)
+		}
+	}
+	if it.Message != nil {
+		if err := validationValue(it.Message); err != nil {
+			return xerrors.Errorf("'ApiResponse.Message' validation error, %w", err)
+		}
+	}
 
 	return nil
 }
 
-func (it *ApiResponse) this_is_call_dummy() {
+func (it ApiResponseArray) Write(writer http.ResponseWriter, request *http.Request) {
+	buf, _ := json.Marshal(it)
+	_, _ = writer.Write(buf)
+}
+
+func (it ApiResponseArray) Json() []byte {
+	buf, _ := json.Marshal(it)
+	return buf
+}
+
+func (it *ApiResponse) compilerDummy() {
 	time.Now()
-	xerrors.Errorf("")
+	_ = xerrors.Errorf("")
 
 	var model ApiResponse
+	var iModel IApiResponse = &model
 	var swaggerModelRef swaggerModel = &model
 	var swaggerResponseRef SwaggerResponse = &model
+	var swaggerValidatableRef swaggerValidatable = &model
+
+	var modelArray ApiResponseArray
+	swaggerResponseRef = modelArray
+
+	iModel = iModel
 	swaggerModelRef = swaggerModelRef
 	swaggerResponseRef = swaggerResponseRef
+	swaggerValidatableRef = swaggerValidatableRef
 }

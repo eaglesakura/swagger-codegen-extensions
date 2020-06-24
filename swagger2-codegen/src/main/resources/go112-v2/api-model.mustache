@@ -1,0 +1,185 @@
+package {{packageName}}
+
+// link: https://github.com/eaglesakura/swagger-codegen-extensions
+
+import (
+    "context"
+	"encoding/json"
+	"fmt"
+	"golang.org/x/xerrors"
+	"io"
+	"io/ioutil"
+	"net/http"
+	"net/url"
+    "path"
+	"strings"
+)
+
+{{#operations}}{{#operation}}
+// {{summary}}
+// {{notes}}
+type {{classname}}{{operationIdCamelCase}}{{httpMethod}}Request struct {
+    // API Endpoint
+    // e.g.) "https://example.com/"
+    Endpoint string
+
+    // http.Client prefetch intercept function.
+    Intercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)
+
+    {{#allParams}}
+        // {{description}}
+        {{paramName}}   *{{{dataType}}}
+    {{/allParams}}
+}
+
+
+// Validation parameter
+func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Valid() error {
+{{#allParams}}{{#required}}
+    if it.{{paramName}} == nil {
+        return xerrors.Errorf("required parameter({{paramName}}) read failed")
+    }
+{{/required}}{{/allParams}}
+    return nil
+}
+
+{{#allParams}}
+    // Set {{paramName}} from non pointer
+    func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Set{{paramName}}(new{{paramName}} {{{dataType}}}) {
+        it.{{paramName}} = &new{{paramName}}
+    }
+
+    // Remove {{paramName}} property.
+    func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Remove{{paramName}}() {
+        it.{{paramName}} = nil
+    }
+
+    // Require value of {{paramName}}
+    func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Require{{paramName}}() {{{dataType}}} {
+        if it.{{paramName}} == nil {
+            panic(xerrors.Errorf("{{classname}}.{{paramName}} is nil"))
+        }
+        return *it.{{paramName}}
+    }
+
+    // Get value of {{paramName}} / or default
+    func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Get{{paramName}}() {{{dataType}}} {
+        if it.{{paramName}} != nil {
+            return *it.{{paramName}}
+        }
+        result := new({{{dataType}}})
+        return *result
+    }
+{{/allParams}}
+
+// Fetch http request, returns raw response.
+// {{description}}
+func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Execute(ctx context.Context) (success {{#returnType}}*{{{returnType}}}{{/returnType}}{{^returnType}}[]byte{{/returnType}}, responseBody []byte, resp *http.Response, err error) {
+    resp, err = it.Fetch(ctx)
+    if resp != nil && resp.Body != nil {
+        defer func() {
+            _ = resp.Body.Close()
+        }()
+    }
+    if err != nil {
+        return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+    }
+
+    body, err := ioutil.ReadAll(resp.Body)
+    if err != nil {
+        return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+    }
+    if resp.StatusCode / 100 != 2 {
+        return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+    }
+
+    {{#returnType}}
+        var model {{{returnType}}}
+        err = json.Unmarshal(body, &model)
+        if err != nil {
+            return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+        }
+        return &model, body, resp, nil
+    {{/returnType}}
+    {{^returnType}}
+        return body, body, resp, nil
+    {{/returnType}}
+}
+
+// Build http request
+func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)BuildHttpRequest() (*http.Request, error) {
+    endpoint := it.Endpoint
+    if len(endpoint) == 0 {
+        endpoint = "http://127.0.0.1/"
+    }
+    apiUrl := path.Join(endpoint, "{{basePathWithoutHost}}", "{{path}}")
+    method := strings.ToUpper("{{httpMethod}}")
+    var body io.Reader
+
+    {{#allParams}}
+        {{#isPathParam}}
+            if it.{{paramName}} != nil {
+                apiUrl = strings.ReplaceAll(apiUrl, "{" + "{{baseName}}" + "}", url.PathEscape(fmt.Sprintf("%v", *it.{{paramName}})))
+            }
+        {{/isPathParam}}
+        {{#isBodyParam}}
+            if it.{{paramName}} != nil {
+                body = bodyToReader(it.{{paramName}})
+            }
+        {{/isBodyParam}}
+    {{/allParams}}
+
+    request, err := http.NewRequest(method, apiUrl, body)
+    if err != nil {
+        return nil, xerrors.Errorf("create request failed, %w", err)
+    }
+
+    query := request.URL.Query()
+
+    {{#allParams}}
+        {{#isQueryParam}}
+            if it.{{paramName}} != nil {
+                query.Set("{{baseName}}", url.QueryEscape(fmt.Sprintf("%v", *it.{{paramName}})))
+            }
+        {{/isQueryParam}}
+        {{#isHeaderParam}}
+            if it.{{paramName}} != nil {
+                request.Header.Set("{{{baseName}}}", fmt.Sprintf("%v", *it.{{paramName}}))
+            }
+        {{/isHeaderParam}}
+    {{/allParams}}
+    request.URL.RawQuery = query.Encode()
+    return request, nil
+}
+
+// Fetch http request, returns raw response.
+// {{description}}
+func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Fetch(ctx context.Context) (*http.Response, error) {
+    client := http.DefaultClient
+    request, err := it.BuildHttpRequest()
+    if err != nil {
+        return nil, xerrors.Errorf("http request builed failed, %w", err)
+    }
+    if it.Intercept != nil {
+        client, request = it.Intercept(client, request)
+    }
+    response, err := client.Do(request)
+    if err != nil {
+        return nil, xerrors.Errorf("http fetch failed, %w", err)
+    }
+    return response, nil
+}
+
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
+}
+
+{{/operation}}{{/operations}}
+

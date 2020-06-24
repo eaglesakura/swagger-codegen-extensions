@@ -10,9 +10,44 @@ import (
 )
 
 //
-type Category struct {
-	Id *int64 `json:"id,omitempty"`
+// Category Interface for alternative definitions.
+type ICategory interface {
+	// JsonCopy to result ptr.
+	MarshalCopy(result interface{}) error
 
+	// Marshal json string.
+	Json() []byte
+
+	// Remove Id property
+	RemoveId()
+
+	// Get Id property or default value.
+	GetId() int64
+
+	// Get Id property or panic().
+	RequireId() int64
+
+	// Set Id property.
+	SetId(newId int64)
+
+	// Remove Name property
+	RemoveName()
+
+	// Get Name property or default value.
+	GetName() string
+
+	// Get Name property or panic().
+	RequireName() string
+
+	// Set Name property.
+	SetName(newName string)
+}
+
+//
+type Category struct {
+	//
+	Id *int64 `json:"id,omitempty"`
+	//
 	Name *string `json:"name,omitempty"`
 }
 type CategoryArray []Category
@@ -40,6 +75,11 @@ func (it *Category) MarshalCopy(result interface{}) error {
 	return nil
 }
 
+// Remove Id
+func (it *Category) RemoveId() {
+	it.Id = nil
+}
+
 // Set Id
 func (it *Category) SetId(newId int64) {
 	it.Id = &newId
@@ -60,6 +100,11 @@ func (it *Category) GetId() int64 {
 	}
 	result := new(int64)
 	return *result
+}
+
+// Remove Name
+func (it *Category) RemoveName() {
+	it.Name = nil
 }
 
 // Set Name
@@ -89,9 +134,9 @@ func (it Category) String() string {
 	buf, _ := json.Marshal(it)
 	return string(buf)
 }
-func (it *Category) Json() string {
+func (it *Category) Json() []byte {
 	buf, _ := json.Marshal(it)
-	return string(buf)
+	return buf
 }
 
 func (it *Category) Write(writer http.ResponseWriter, request *http.Request) {
@@ -100,17 +145,45 @@ func (it *Category) Write(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (it *Category) Valid() error {
+	if it.Id != nil {
+		if err := validationValue(it.Id); err != nil {
+			return xerrors.Errorf("'Category.Id' validation error, %w", err)
+		}
+	}
+	if it.Name != nil {
+		if err := validationValue(it.Name); err != nil {
+			return xerrors.Errorf("'Category.Name' validation error, %w", err)
+		}
+	}
 
 	return nil
 }
 
-func (it *Category) this_is_call_dummy() {
+func (it CategoryArray) Write(writer http.ResponseWriter, request *http.Request) {
+	buf, _ := json.Marshal(it)
+	_, _ = writer.Write(buf)
+}
+
+func (it CategoryArray) Json() []byte {
+	buf, _ := json.Marshal(it)
+	return buf
+}
+
+func (it *Category) compilerDummy() {
 	time.Now()
-	xerrors.Errorf("")
+	_ = xerrors.Errorf("")
 
 	var model Category
+	var iModel ICategory = &model
 	var swaggerModelRef swaggerModel = &model
 	var swaggerResponseRef SwaggerResponse = &model
+	var swaggerValidatableRef swaggerValidatable = &model
+
+	var modelArray CategoryArray
+	swaggerResponseRef = modelArray
+
+	iModel = iModel
 	swaggerModelRef = swaggerModelRef
 	swaggerResponseRef = swaggerResponseRef
+	swaggerValidatableRef = swaggerValidatableRef
 }

@@ -10,21 +10,127 @@ import (
 )
 
 //
+// User Interface for alternative definitions.
+type IUser interface {
+	// JsonCopy to result ptr.
+	MarshalCopy(result interface{}) error
+
+	// Marshal json string.
+	Json() []byte
+
+	// Remove Id property
+	RemoveId()
+
+	// Get Id property or default value.
+	GetId() int64
+
+	// Get Id property or panic().
+	RequireId() int64
+
+	// Set Id property.
+	SetId(newId int64)
+
+	// Remove Username property
+	RemoveUsername()
+
+	// Get Username property or default value.
+	GetUsername() string
+
+	// Get Username property or panic().
+	RequireUsername() string
+
+	// Set Username property.
+	SetUsername(newUsername string)
+
+	// Remove FirstName property
+	RemoveFirstName()
+
+	// Get FirstName property or default value.
+	GetFirstName() string
+
+	// Get FirstName property or panic().
+	RequireFirstName() string
+
+	// Set FirstName property.
+	SetFirstName(newFirstName string)
+
+	// Remove LastName property
+	RemoveLastName()
+
+	// Get LastName property or default value.
+	GetLastName() string
+
+	// Get LastName property or panic().
+	RequireLastName() string
+
+	// Set LastName property.
+	SetLastName(newLastName string)
+
+	// Remove Email property
+	RemoveEmail()
+
+	// Get Email property or default value.
+	GetEmail() string
+
+	// Get Email property or panic().
+	RequireEmail() string
+
+	// Set Email property.
+	SetEmail(newEmail string)
+
+	// Remove Password property
+	RemovePassword()
+
+	// Get Password property or default value.
+	GetPassword() string
+
+	// Get Password property or panic().
+	RequirePassword() string
+
+	// Set Password property.
+	SetPassword(newPassword string)
+
+	// Remove Phone property
+	RemovePhone()
+
+	// Get Phone property or default value.
+	GetPhone() string
+
+	// Get Phone property or panic().
+	RequirePhone() string
+
+	// Set Phone property.
+	SetPhone(newPhone string)
+
+	// Remove UserStatus property
+	RemoveUserStatus()
+
+	// Get UserStatus property or default value.
+	GetUserStatus() int32
+
+	// Get UserStatus property or panic().
+	RequireUserStatus() int32
+
+	// Set UserStatus property.
+	SetUserStatus(newUserStatus int32)
+}
+
+//
 type User struct {
+	//
 	Id *int64 `json:"id,omitempty"`
-
+	//
 	Username *string `json:"username,omitempty"`
-
+	//
 	FirstName *string `json:"firstName,omitempty"`
-
+	//
 	LastName *string `json:"lastName,omitempty"`
-
+	//
 	Email *string `json:"email,omitempty"`
-
+	//
 	Password *string `json:"password,omitempty"`
-
+	//
 	Phone *string `json:"phone,omitempty"`
-
 	// User Status
 	UserStatus *int32 `json:"userStatus,omitempty"`
 }
@@ -53,6 +159,11 @@ func (it *User) MarshalCopy(result interface{}) error {
 	return nil
 }
 
+// Remove Id
+func (it *User) RemoveId() {
+	it.Id = nil
+}
+
 // Set Id
 func (it *User) SetId(newId int64) {
 	it.Id = &newId
@@ -73,6 +184,11 @@ func (it *User) GetId() int64 {
 	}
 	result := new(int64)
 	return *result
+}
+
+// Remove Username
+func (it *User) RemoveUsername() {
+	it.Username = nil
 }
 
 // Set Username
@@ -97,6 +213,11 @@ func (it *User) GetUsername() string {
 	return *result
 }
 
+// Remove FirstName
+func (it *User) RemoveFirstName() {
+	it.FirstName = nil
+}
+
 // Set FirstName
 func (it *User) SetFirstName(newFirstName string) {
 	it.FirstName = &newFirstName
@@ -117,6 +238,11 @@ func (it *User) GetFirstName() string {
 	}
 	result := new(string)
 	return *result
+}
+
+// Remove LastName
+func (it *User) RemoveLastName() {
+	it.LastName = nil
 }
 
 // Set LastName
@@ -141,6 +267,11 @@ func (it *User) GetLastName() string {
 	return *result
 }
 
+// Remove Email
+func (it *User) RemoveEmail() {
+	it.Email = nil
+}
+
 // Set Email
 func (it *User) SetEmail(newEmail string) {
 	it.Email = &newEmail
@@ -161,6 +292,11 @@ func (it *User) GetEmail() string {
 	}
 	result := new(string)
 	return *result
+}
+
+// Remove Password
+func (it *User) RemovePassword() {
+	it.Password = nil
 }
 
 // Set Password
@@ -185,6 +321,11 @@ func (it *User) GetPassword() string {
 	return *result
 }
 
+// Remove Phone
+func (it *User) RemovePhone() {
+	it.Phone = nil
+}
+
 // Set Phone
 func (it *User) SetPhone(newPhone string) {
 	it.Phone = &newPhone
@@ -205,6 +346,11 @@ func (it *User) GetPhone() string {
 	}
 	result := new(string)
 	return *result
+}
+
+// Remove UserStatus
+func (it *User) RemoveUserStatus() {
+	it.UserStatus = nil
 }
 
 // Set UserStatus
@@ -234,9 +380,9 @@ func (it User) String() string {
 	buf, _ := json.Marshal(it)
 	return string(buf)
 }
-func (it *User) Json() string {
+func (it *User) Json() []byte {
 	buf, _ := json.Marshal(it)
-	return string(buf)
+	return buf
 }
 
 func (it *User) Write(writer http.ResponseWriter, request *http.Request) {
@@ -245,17 +391,75 @@ func (it *User) Write(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (it *User) Valid() error {
+	if it.Id != nil {
+		if err := validationValue(it.Id); err != nil {
+			return xerrors.Errorf("'User.Id' validation error, %w", err)
+		}
+	}
+	if it.Username != nil {
+		if err := validationValue(it.Username); err != nil {
+			return xerrors.Errorf("'User.Username' validation error, %w", err)
+		}
+	}
+	if it.FirstName != nil {
+		if err := validationValue(it.FirstName); err != nil {
+			return xerrors.Errorf("'User.FirstName' validation error, %w", err)
+		}
+	}
+	if it.LastName != nil {
+		if err := validationValue(it.LastName); err != nil {
+			return xerrors.Errorf("'User.LastName' validation error, %w", err)
+		}
+	}
+	if it.Email != nil {
+		if err := validationValue(it.Email); err != nil {
+			return xerrors.Errorf("'User.Email' validation error, %w", err)
+		}
+	}
+	if it.Password != nil {
+		if err := validationValue(it.Password); err != nil {
+			return xerrors.Errorf("'User.Password' validation error, %w", err)
+		}
+	}
+	if it.Phone != nil {
+		if err := validationValue(it.Phone); err != nil {
+			return xerrors.Errorf("'User.Phone' validation error, %w", err)
+		}
+	}
+	if it.UserStatus != nil {
+		if err := validationValue(it.UserStatus); err != nil {
+			return xerrors.Errorf("'User.UserStatus' validation error, %w", err)
+		}
+	}
 
 	return nil
 }
 
-func (it *User) this_is_call_dummy() {
+func (it UserArray) Write(writer http.ResponseWriter, request *http.Request) {
+	buf, _ := json.Marshal(it)
+	_, _ = writer.Write(buf)
+}
+
+func (it UserArray) Json() []byte {
+	buf, _ := json.Marshal(it)
+	return buf
+}
+
+func (it *User) compilerDummy() {
 	time.Now()
-	xerrors.Errorf("")
+	_ = xerrors.Errorf("")
 
 	var model User
+	var iModel IUser = &model
 	var swaggerModelRef swaggerModel = &model
 	var swaggerResponseRef SwaggerResponse = &model
+	var swaggerValidatableRef swaggerValidatable = &model
+
+	var modelArray UserArray
+	swaggerResponseRef = modelArray
+
+	iModel = iModel
 	swaggerModelRef = swaggerModelRef
 	swaggerResponseRef = swaggerResponseRef
+	swaggerValidatableRef = swaggerValidatableRef
 }

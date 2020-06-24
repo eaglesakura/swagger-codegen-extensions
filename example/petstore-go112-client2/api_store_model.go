@@ -15,27 +15,9 @@ import (
 	"strings"
 )
 
-// petstore
-type StoreApi struct {
-	// API Endpoint
-	// e.g.) "https://example.com/"
-	Endpoint string
-
-	// http.Client prefetch intercept function.
-	Intercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)
-}
-
-func NewStoreApi() *StoreApi {
-	return &StoreApi{
-		Endpoint: "",
-	}
-}
-
 // Delete purchase order by ID
 // For valid response try integer IDs with positive integer value.         Negative or non-integer values will generate API errors
 type StoreApiDeleteOrderDeleteRequest struct {
-	api *StoreApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -47,9 +29,41 @@ type StoreApiDeleteOrderDeleteRequest struct {
 	OrderId *int64
 }
 
+// Validation parameter
+func (it *StoreApiDeleteOrderDeleteRequest) Valid() error {
+
+	if it.OrderId == nil {
+		return xerrors.Errorf("required parameter(OrderId) read failed")
+	}
+
+	return nil
+}
+
 // Set OrderId from non pointer
 func (it *StoreApiDeleteOrderDeleteRequest) SetOrderId(newOrderId int64) {
 	it.OrderId = &newOrderId
+}
+
+// Remove OrderId property.
+func (it *StoreApiDeleteOrderDeleteRequest) RemoveOrderId() {
+	it.OrderId = nil
+}
+
+// Require value of OrderId
+func (it *StoreApiDeleteOrderDeleteRequest) RequireOrderId() int64 {
+	if it.OrderId == nil {
+		panic(xerrors.Errorf("StoreApi.OrderId is nil"))
+	}
+	return *it.OrderId
+}
+
+// Get value of OrderId / or default
+func (it *StoreApiDeleteOrderDeleteRequest) GetOrderId() int64 {
+	if it.OrderId != nil {
+		return *it.OrderId
+	}
+	result := new(int64)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -76,11 +90,13 @@ func (it *StoreApiDeleteOrderDeleteRequest) Execute(ctx context.Context) (succes
 	return body, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *StoreApiDeleteOrderDeleteRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/store/order/{orderId}")
+// Build http request
+func (it *StoreApiDeleteOrderDeleteRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/store/order/{orderId}")
 	method := strings.ToUpper("Delete")
 	var body io.Reader
 
@@ -96,7 +112,17 @@ func (it *StoreApiDeleteOrderDeleteRequest) Fetch(ctx context.Context) (*http.Re
 	query := request.URL.Query()
 
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *StoreApiDeleteOrderDeleteRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -107,29 +133,32 @@ func (it *StoreApiDeleteOrderDeleteRequest) Fetch(ctx context.Context) (*http.Re
 	return response, nil
 }
 
-// New request with Parameters.
-// orderId: ID of the order that needs to be deleted
-func (it *StoreApi) DeleteOrderDelete(builder func(*StoreApiDeleteOrderDeleteRequest)) *StoreApiDeleteOrderDeleteRequest {
-	result := &StoreApiDeleteOrderDeleteRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *StoreApiDeleteOrderDeleteRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // Returns pet inventories by status
 // Returns a map of status codes to quantities
 type StoreApiGetInventoryGetRequest struct {
-	api *StoreApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
 
 	// http.Client prefetch intercept function.
 	Intercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)
+}
+
+// Validation parameter
+func (it *StoreApiGetInventoryGetRequest) Valid() error {
+
+	return nil
 }
 
 // Fetch http request, returns raw response.
@@ -161,11 +190,13 @@ func (it *StoreApiGetInventoryGetRequest) Execute(ctx context.Context) (success 
 	return &model, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *StoreApiGetInventoryGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/store/inventory")
+// Build http request
+func (it *StoreApiGetInventoryGetRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/store/inventory")
 	method := strings.ToUpper("Get")
 	var body io.Reader
 
@@ -177,7 +208,17 @@ func (it *StoreApiGetInventoryGetRequest) Fetch(ctx context.Context) (*http.Resp
 	query := request.URL.Query()
 
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *StoreApiGetInventoryGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -188,22 +229,20 @@ func (it *StoreApiGetInventoryGetRequest) Fetch(ctx context.Context) (*http.Resp
 	return response, nil
 }
 
-// New request with Parameters.
-func (it *StoreApi) GetInventoryGet(builder func(*StoreApiGetInventoryGetRequest)) *StoreApiGetInventoryGetRequest {
-	result := &StoreApiGetInventoryGetRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *StoreApiGetInventoryGetRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // Find purchase order by ID
 // For valid response try integer IDs with value &gt;&#x3D; 1 and &lt;&#x3D; 10.         Other values will generated exceptions
 type StoreApiGetOrderByIdGetRequest struct {
-	api *StoreApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -215,9 +254,41 @@ type StoreApiGetOrderByIdGetRequest struct {
 	OrderId *int64
 }
 
+// Validation parameter
+func (it *StoreApiGetOrderByIdGetRequest) Valid() error {
+
+	if it.OrderId == nil {
+		return xerrors.Errorf("required parameter(OrderId) read failed")
+	}
+
+	return nil
+}
+
 // Set OrderId from non pointer
 func (it *StoreApiGetOrderByIdGetRequest) SetOrderId(newOrderId int64) {
 	it.OrderId = &newOrderId
+}
+
+// Remove OrderId property.
+func (it *StoreApiGetOrderByIdGetRequest) RemoveOrderId() {
+	it.OrderId = nil
+}
+
+// Require value of OrderId
+func (it *StoreApiGetOrderByIdGetRequest) RequireOrderId() int64 {
+	if it.OrderId == nil {
+		panic(xerrors.Errorf("StoreApi.OrderId is nil"))
+	}
+	return *it.OrderId
+}
+
+// Get value of OrderId / or default
+func (it *StoreApiGetOrderByIdGetRequest) GetOrderId() int64 {
+	if it.OrderId != nil {
+		return *it.OrderId
+	}
+	result := new(int64)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -249,11 +320,13 @@ func (it *StoreApiGetOrderByIdGetRequest) Execute(ctx context.Context) (success 
 	return &model, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *StoreApiGetOrderByIdGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/store/order/{orderId}")
+// Build http request
+func (it *StoreApiGetOrderByIdGetRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/store/order/{orderId}")
 	method := strings.ToUpper("Get")
 	var body io.Reader
 
@@ -269,7 +342,17 @@ func (it *StoreApiGetOrderByIdGetRequest) Fetch(ctx context.Context) (*http.Resp
 	query := request.URL.Query()
 
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *StoreApiGetOrderByIdGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -280,23 +363,20 @@ func (it *StoreApiGetOrderByIdGetRequest) Fetch(ctx context.Context) (*http.Resp
 	return response, nil
 }
 
-// New request with Parameters.
-// orderId: ID of pet that needs to be fetched
-func (it *StoreApi) GetOrderByIdGet(builder func(*StoreApiGetOrderByIdGetRequest)) *StoreApiGetOrderByIdGetRequest {
-	result := &StoreApiGetOrderByIdGetRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *StoreApiGetOrderByIdGetRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // Place an order for a pet
 //
 type StoreApiPlaceOrderPostRequest struct {
-	api *StoreApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -308,9 +388,41 @@ type StoreApiPlaceOrderPostRequest struct {
 	Body *Order
 }
 
+// Validation parameter
+func (it *StoreApiPlaceOrderPostRequest) Valid() error {
+
+	if it.Body == nil {
+		return xerrors.Errorf("required parameter(Body) read failed")
+	}
+
+	return nil
+}
+
 // Set Body from non pointer
 func (it *StoreApiPlaceOrderPostRequest) SetBody(newBody Order) {
 	it.Body = &newBody
+}
+
+// Remove Body property.
+func (it *StoreApiPlaceOrderPostRequest) RemoveBody() {
+	it.Body = nil
+}
+
+// Require value of Body
+func (it *StoreApiPlaceOrderPostRequest) RequireBody() Order {
+	if it.Body == nil {
+		panic(xerrors.Errorf("StoreApi.Body is nil"))
+	}
+	return *it.Body
+}
+
+// Get value of Body / or default
+func (it *StoreApiPlaceOrderPostRequest) GetBody() Order {
+	if it.Body != nil {
+		return *it.Body
+	}
+	result := new(Order)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -342,11 +454,13 @@ func (it *StoreApiPlaceOrderPostRequest) Execute(ctx context.Context) (success *
 	return &model, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *StoreApiPlaceOrderPostRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/store/order")
+// Build http request
+func (it *StoreApiPlaceOrderPostRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/store/order")
 	method := strings.ToUpper("Post")
 	var body io.Reader
 
@@ -362,7 +476,17 @@ func (it *StoreApiPlaceOrderPostRequest) Fetch(ctx context.Context) (*http.Respo
 	query := request.URL.Query()
 
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *StoreApiPlaceOrderPostRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -373,23 +497,13 @@ func (it *StoreApiPlaceOrderPostRequest) Fetch(ctx context.Context) (*http.Respo
 	return response, nil
 }
 
-// New request with Parameters.
-// body: order placed for purchasing the pet
-func (it *StoreApi) PlaceOrderPost(builder func(*StoreApiPlaceOrderPostRequest)) *StoreApiPlaceOrderPostRequest {
-	result := &StoreApiPlaceOrderPostRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
-}
-
-func (it *StoreApi) this_is_call_dummy() {
-	url.Parse("")
-	xerrors.Errorf("")
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *StoreApiPlaceOrderPostRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
 	strings.ToUpper("")
-	fmt.Sprintf("%v", "")
-	io.ReadAtLeast(nil, nil, 0)
-	json.Unmarshal(nil, nil)
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }

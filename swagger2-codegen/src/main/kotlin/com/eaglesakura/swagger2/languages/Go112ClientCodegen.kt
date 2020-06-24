@@ -4,6 +4,7 @@ import io.swagger.codegen.CodegenType
 import io.swagger.codegen.SupportingFile
 import java.io.File
 
+@Deprecated("Replace to Go112ClientCodegen2")
 class Go112ClientCodegen : AbstractGo112ClientCodegen() {
     init {
         outputFolder = "generated-code" + File.separator + "go112-client"

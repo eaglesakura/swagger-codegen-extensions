@@ -12,49 +12,138 @@ import (
 type OrderSTATUS string
 type OrderSTATUSArray []OrderSTATUS
 
-const OrderSTATUS_placed OrderSTATUS = OrderSTATUS("placed")
-const OrderSTATUS_approved OrderSTATUS = OrderSTATUS("approved")
-const OrderSTATUS_delivered OrderSTATUS = OrderSTATUS("delivered")
+const OrderSTATUS_placed = OrderSTATUS("placed")
+const OrderSTATUS_approved = OrderSTATUS("approved")
+const OrderSTATUS_delivered = OrderSTATUS("delivered")
 
-var OrderSTATUSPattern []string = []string{
-
-	"placed",
-	"approved",
-	"delivered",
+func (it OrderSTATUS) String() string {
+	return string(it)
 }
 
-func (it OrderSTATUS) Ptr() *OrderSTATUS {
-	return &it
+// Pattern for OrderSTATUS
+var OrderSTATUSValues = []OrderSTATUS{
+
+	OrderSTATUS_placed,
+
+	OrderSTATUS_approved,
+
+	OrderSTATUS_delivered,
 }
-func (it *OrderSTATUS) Value() OrderSTATUS {
-	return *it
-}
-func (it *OrderSTATUS) Valid() bool {
+
+func (it *OrderSTATUS) Valid() error {
 	if it == nil {
-		return false
+		return xerrors.Errorf("OrderSTATUS(nil)")
 	}
-	value := string(*it)
-	for _, v := range OrderSTATUSPattern {
-		if v == value {
-			return true
-		}
+	switch *it {
+
+	case OrderSTATUS_placed:
+		return nil
+
+	case OrderSTATUS_approved:
+		return nil
+
+	case OrderSTATUS_delivered:
+		return nil
+
 	}
-	return false
+	return xerrors.Errorf("invalid OrderSTATUS(%v)", string(*it))
+}
+
+//
+// Order Interface for alternative definitions.
+type IOrder interface {
+	// JsonCopy to result ptr.
+	MarshalCopy(result interface{}) error
+
+	// Marshal json string.
+	Json() []byte
+
+	// Remove Id property
+	RemoveId()
+
+	// Get Id property or default value.
+	GetId() int64
+
+	// Get Id property or panic().
+	RequireId() int64
+
+	// Set Id property.
+	SetId(newId int64)
+
+	// Remove PetId property
+	RemovePetId()
+
+	// Get PetId property or default value.
+	GetPetId() int64
+
+	// Get PetId property or panic().
+	RequirePetId() int64
+
+	// Set PetId property.
+	SetPetId(newPetId int64)
+
+	// Remove Quantity property
+	RemoveQuantity()
+
+	// Get Quantity property or default value.
+	GetQuantity() int32
+
+	// Get Quantity property or panic().
+	RequireQuantity() int32
+
+	// Set Quantity property.
+	SetQuantity(newQuantity int32)
+
+	// Remove ShipDate property
+	RemoveShipDate()
+
+	// Get ShipDate property or default value.
+	GetShipDate() time.Time
+
+	// Get ShipDate property or panic().
+	RequireShipDate() time.Time
+
+	// Set ShipDate property.
+	SetShipDate(newShipDate time.Time)
+
+	// Remove Status property
+	RemoveStatus()
+
+	// Get Status property or default value.
+	GetStatus() OrderSTATUS
+
+	// Get Status property or panic().
+	RequireStatus() OrderSTATUS
+
+	// Set Status property.
+	SetStatus(newStatus OrderSTATUS)
+
+	// Remove Complete property
+	RemoveComplete()
+
+	// Get Complete property or default value.
+	GetComplete() bool
+
+	// Get Complete property or panic().
+	RequireComplete() bool
+
+	// Set Complete property.
+	SetComplete(newComplete bool)
 }
 
 //
 type Order struct {
+	//
 	Id *int64 `json:"id,omitempty"`
-
+	//
 	PetId *int64 `json:"petId,omitempty"`
-
+	//
 	Quantity *int32 `json:"quantity,omitempty"`
-
+	//
 	ShipDate *time.Time `json:"shipDate,omitempty"`
-
 	// Order Status
 	Status *OrderSTATUS `json:"status,omitempty"`
-
+	//
 	Complete *bool `json:"complete,omitempty"`
 }
 type OrderArray []Order
@@ -82,6 +171,11 @@ func (it *Order) MarshalCopy(result interface{}) error {
 	return nil
 }
 
+// Remove Id
+func (it *Order) RemoveId() {
+	it.Id = nil
+}
+
 // Set Id
 func (it *Order) SetId(newId int64) {
 	it.Id = &newId
@@ -102,6 +196,11 @@ func (it *Order) GetId() int64 {
 	}
 	result := new(int64)
 	return *result
+}
+
+// Remove PetId
+func (it *Order) RemovePetId() {
+	it.PetId = nil
 }
 
 // Set PetId
@@ -126,6 +225,11 @@ func (it *Order) GetPetId() int64 {
 	return *result
 }
 
+// Remove Quantity
+func (it *Order) RemoveQuantity() {
+	it.Quantity = nil
+}
+
 // Set Quantity
 func (it *Order) SetQuantity(newQuantity int32) {
 	it.Quantity = &newQuantity
@@ -146,6 +250,11 @@ func (it *Order) GetQuantity() int32 {
 	}
 	result := new(int32)
 	return *result
+}
+
+// Remove ShipDate
+func (it *Order) RemoveShipDate() {
+	it.ShipDate = nil
 }
 
 // Set ShipDate
@@ -170,6 +279,11 @@ func (it *Order) GetShipDate() time.Time {
 	return *result
 }
 
+// Remove Status
+func (it *Order) RemoveStatus() {
+	it.Status = nil
+}
+
 // Set Status
 func (it *Order) SetStatus(newStatus OrderSTATUS) {
 	it.Status = &newStatus
@@ -190,6 +304,11 @@ func (it *Order) GetStatus() OrderSTATUS {
 	}
 	result := new(OrderSTATUS)
 	return *result
+}
+
+// Remove Complete
+func (it *Order) RemoveComplete() {
+	it.Complete = nil
 }
 
 // Set Complete
@@ -219,9 +338,9 @@ func (it Order) String() string {
 	buf, _ := json.Marshal(it)
 	return string(buf)
 }
-func (it *Order) Json() string {
+func (it *Order) Json() []byte {
 	buf, _ := json.Marshal(it)
-	return string(buf)
+	return buf
 }
 
 func (it *Order) Write(writer http.ResponseWriter, request *http.Request) {
@@ -230,20 +349,65 @@ func (it *Order) Write(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (it *Order) Valid() error {
-	if it.Status != nil && !it.Status.Valid() {
-		return xerrors.Errorf("'Order.Status' is invalid")
+	if it.Id != nil {
+		if err := validationValue(it.Id); err != nil {
+			return xerrors.Errorf("'Order.Id' validation error, %w", err)
+		}
+	}
+	if it.PetId != nil {
+		if err := validationValue(it.PetId); err != nil {
+			return xerrors.Errorf("'Order.PetId' validation error, %w", err)
+		}
+	}
+	if it.Quantity != nil {
+		if err := validationValue(it.Quantity); err != nil {
+			return xerrors.Errorf("'Order.Quantity' validation error, %w", err)
+		}
+	}
+	if it.ShipDate != nil {
+		if err := validationValue(it.ShipDate); err != nil {
+			return xerrors.Errorf("'Order.ShipDate' validation error, %w", err)
+		}
+	}
+	if it.Status != nil {
+		if err := validationValue(it.Status); err != nil {
+			return xerrors.Errorf("'Order.Status' validation error, %w", err)
+		}
+	}
+	if it.Complete != nil {
+		if err := validationValue(it.Complete); err != nil {
+			return xerrors.Errorf("'Order.Complete' validation error, %w", err)
+		}
 	}
 
 	return nil
 }
 
-func (it *Order) this_is_call_dummy() {
+func (it OrderArray) Write(writer http.ResponseWriter, request *http.Request) {
+	buf, _ := json.Marshal(it)
+	_, _ = writer.Write(buf)
+}
+
+func (it OrderArray) Json() []byte {
+	buf, _ := json.Marshal(it)
+	return buf
+}
+
+func (it *Order) compilerDummy() {
 	time.Now()
-	xerrors.Errorf("")
+	_ = xerrors.Errorf("")
 
 	var model Order
+	var iModel IOrder = &model
 	var swaggerModelRef swaggerModel = &model
 	var swaggerResponseRef SwaggerResponse = &model
+	var swaggerValidatableRef swaggerValidatable = &model
+
+	var modelArray OrderArray
+	swaggerResponseRef = modelArray
+
+	iModel = iModel
 	swaggerModelRef = swaggerModelRef
 	swaggerResponseRef = swaggerResponseRef
+	swaggerValidatableRef = swaggerValidatableRef
 }

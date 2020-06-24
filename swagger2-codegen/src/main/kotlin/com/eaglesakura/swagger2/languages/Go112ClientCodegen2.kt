@@ -9,7 +9,8 @@ class Go112ClientCodegen2 : AbstractGo112ClientCodegen() {
         outputFolder = "generated-code" + File.separator + "go112-client2"
         embeddedTemplateDir = "go112-v2".also { templateDir = it }
         modelTemplateFiles["model.mustache"] = ".go"
-        apiTemplateFiles["api-client.mustache"] = ".go"
+        apiTemplateFiles["api-model.mustache"] = "_model.go"
+        apiTemplateFiles["api-client.mustache"] = "_client.go"
         supportingFiles.add(SupportingFile("go-client.mod.mustache", "go.mod"))
         supportingFiles.add(SupportingFile("utils.mustache", "utils.go"))
     }

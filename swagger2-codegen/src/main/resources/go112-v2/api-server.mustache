@@ -14,93 +14,6 @@ import (
     "path"
 	"strings"
 )
-
-
-{{#operations}}{{#operation}}
-type {{{nickname}}}{{httpMethod}}Params struct {
-    Request     *http.Request
-{{#allParams}}
-	// {{description}}
-	{{paramName}}   *{{{dataType}}}
-{{/allParams}}
-}
-
-{{#allParams}}
-// Require value of {{paramName}}
-func (it *{{{nickname}}}{{httpMethod}}Params)Require{{paramName}}() {{{dataType}}} {
-    if it.{{paramName}} == nil {
-        panic(xerrors.Errorf(".{{paramName}} is nil"))
-    }
-    return *it.{{paramName}}
-}
-
-// Get value of {{paramName}} / or default
-func (it *{{{nickname}}}{{httpMethod}}Params)Get{{paramName}}() {{{dataType}}} {
-    if it.{{paramName}} != nil {
-        return *it.{{paramName}}
-    }
-    result := new({{{dataType}}})
-    return *result
-}
-{{/allParams}}
-
-// Validation parameter
-func (it *{{{nickname}}}{{httpMethod}}Params)Valid() error {
-{{#allParams}}{{#required}}
-    if it.{{paramName}} == nil {
-        return xerrors.Errorf("required parameter({{paramName}}) read failed")
-    }
-{{/required}}{{/allParams}}
-    return nil
-}
-
-func Parse{{{nickname}}}{{httpMethod}}Params(request *http.Request) (*{{{nickname}}}{{httpMethod}}Params, error) {
-    result := &{{{nickname}}}{{httpMethod}}Params{
-        Request: request,
-    }
-
-	pathValues := mux.Vars(request)
-	queryValues := request.URL.Query()
-	headerValues := request.Header
-
-    {{#pathParams}}
-        _ = parsePath(pathValues, "{{baseName}}", &result.{{paramName}})
-    {{/pathParams}}
-
-    {{#queryParams}}
-        _ = parseValues(queryValues, "{{baseName}}", &result.{{paramName}})
-    {{/queryParams}}
-
-    {{#headerParams}}
-        _ = parseValues(headerValues, "{{baseName}}", &result.{{paramName}})
-    {{/headerParams}}
-
-    {{#bodyParam}}
-        if body, err := ioutil.ReadAll(request.Body); err != nil {
-            return nil, xerrors.Errorf("Request body read failed, %w", err)
-        } else {
-            var model {{{dataType}}}
-            err = json.Unmarshal(body, &model)
-            if err != nil {
-                return nil, xerrors.Errorf("Request body parse failed, %w", err)
-            }
-            result.{{paramName}} = &model
-        }
-    {{/bodyParam}}
-
-	// dummy access for Compiler
-    //noinspection GoSelfAssignment
-	pathValues = pathValues
-    //noinspection GoSelfAssignment
-	queryValues = queryValues
-    //noinspection GoSelfAssignment
-	headerValues = headerValues
-
-    return result, nil
-}
-
-{{/operation}}{{/operations}}
-
 type {{classname}}Controller struct {
     router *mux.Router
 
@@ -109,11 +22,56 @@ type {{classname}}Controller struct {
 }
 
 {{#operations}}{{#operation}}
+    // parse {{classname}}{{operationIdCamelCase}}Request object from http.Request
+    func Parse{{classname}}{{operationIdCamelCase}}Request(request *http.Request) (*{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request, error) {
+        result := &{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request{
+        }
+
+        pathValues := mux.Vars(request)
+        queryValues := request.URL.Query()
+        headerValues := request.Header
+
+        {{#pathParams}}
+            _ = parsePath(pathValues, "{{baseName}}", &result.{{paramName}})
+        {{/pathParams}}
+
+        {{#queryParams}}
+            _ = parseValues(queryValues, "{{baseName}}", &result.{{paramName}})
+        {{/queryParams}}
+
+        {{#headerParams}}
+            _ = parseValues(headerValues, "{{baseName}}", &result.{{paramName}})
+        {{/headerParams}}
+
+        {{#bodyParam}}
+            if body, err := ioutil.ReadAll(request.Body); err != nil {
+                return nil, xerrors.Errorf("Request body read failed, %w", err)
+            } else {
+                var model {{{dataType}}}
+                err = json.Unmarshal(body, &model)
+                if err != nil {
+                    return nil, xerrors.Errorf("Request body parse failed, %w", err)
+                }
+                result.{{paramName}} = &model
+            }
+        {{/bodyParam}}
+
+        // dummy access for Compiler
+        //noinspection GoSelfAssignment
+        pathValues = pathValues
+        //noinspection GoSelfAssignment
+        queryValues = queryValues
+        //noinspection GoSelfAssignment
+        headerValues = headerValues
+
+        return result, nil
+    }
+
     // Register handler to Router.
     // {{{summary}}}
     // {{{descripotion}}}
     // {{{notes}}}
-    func (it *{{classname}}Controller)Handle{{{nickname}}}{{{httpMethod}}}(handler func(request *http.Request, params *{{{nickname}}}{{{httpMethod}}}Params) (response SwaggerResponse, err error)) {
+    func (it *{{classname}}Controller)Handle{{{nickname}}}{{{httpMethod}}}(handler func(httpRequest *http.Request, swaggerRequest *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request) (response SwaggerResponse, err error)) {
         r := it.router
         r.Methods(strings.ToUpper("{{httpMethod}}")).Path(path.Join("{{basePathWithoutHost}}", "{{path}}")).HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
             var response SwaggerResponse
@@ -127,7 +85,7 @@ type {{classname}}Controller struct {
                 it.Responder(writer, request, response, responseError)
             }()
 
-            params, err := Parse{{{nickname}}}{{{httpMethod}}}Params(request)
+            params, err := Parse{{classname}}{{operationIdCamelCase}}Request(request)
             if err != nil {
                 responseError = err
             } else {

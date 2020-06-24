@@ -10,7 +10,7 @@ import (
 )
 
 //noinspection GoUnusedGlobalVariable
-var GeneratedDate, _ = time.Parse(time.RFC3339, "2020-06-24T22:25:01.063+09:00")
+var GeneratedDate, _ = time.Parse(time.RFC3339, "2020-06-25T19:43:02.284+09:00")
 
 // link: https://github.com/eaglesakura/swagger-codegen-extensions
 
@@ -18,8 +18,12 @@ type SwaggerResponse interface {
 	Write(writer http.ResponseWriter, request *http.Request)
 }
 
+type swaggerValidatable interface {
+	Valid() error
+}
+
 type swaggerModel interface {
-	Json() string
+	Json() []byte
 }
 
 func bodyToReader(body interface{}) io.Reader {
@@ -124,4 +128,17 @@ func parseValues(values map[string][]string, key string, result interface{}) err
 		return xerrors.Errorf("invalid values[%v] parameter", key)
 	}
 	return convertValue(value[0], result)
+}
+
+func validationValue(ref interface{}) error {
+	validatable, ok := ref.(swaggerValidatable)
+	if !ok || validatable == nil {
+		return nil
+	}
+
+	err := validatable.Valid()
+	if err != nil {
+		return xerrors.Errorf("%w")
+	}
+	return nil
 }

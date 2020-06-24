@@ -15,27 +15,9 @@ import (
 	"strings"
 )
 
-// petstore
-type PetApi struct {
-	// API Endpoint
-	// e.g.) "https://example.com/"
-	Endpoint string
-
-	// http.Client prefetch intercept function.
-	Intercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)
-}
-
-func NewPetApi() *PetApi {
-	return &PetApi{
-		Endpoint: "",
-	}
-}
-
 // Add a new pet to the store
 //
 type PetApiAddPetPostRequest struct {
-	api *PetApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -47,9 +29,41 @@ type PetApiAddPetPostRequest struct {
 	Body *Pet
 }
 
+// Validation parameter
+func (it *PetApiAddPetPostRequest) Valid() error {
+
+	if it.Body == nil {
+		return xerrors.Errorf("required parameter(Body) read failed")
+	}
+
+	return nil
+}
+
 // Set Body from non pointer
 func (it *PetApiAddPetPostRequest) SetBody(newBody Pet) {
 	it.Body = &newBody
+}
+
+// Remove Body property.
+func (it *PetApiAddPetPostRequest) RemoveBody() {
+	it.Body = nil
+}
+
+// Require value of Body
+func (it *PetApiAddPetPostRequest) RequireBody() Pet {
+	if it.Body == nil {
+		panic(xerrors.Errorf("PetApi.Body is nil"))
+	}
+	return *it.Body
+}
+
+// Get value of Body / or default
+func (it *PetApiAddPetPostRequest) GetBody() Pet {
+	if it.Body != nil {
+		return *it.Body
+	}
+	result := new(Pet)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -76,11 +90,13 @@ func (it *PetApiAddPetPostRequest) Execute(ctx context.Context) (success []byte,
 	return body, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *PetApiAddPetPostRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/pet")
+// Build http request
+func (it *PetApiAddPetPostRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/pet")
 	method := strings.ToUpper("Post")
 	var body io.Reader
 
@@ -96,7 +112,17 @@ func (it *PetApiAddPetPostRequest) Fetch(ctx context.Context) (*http.Response, e
 	query := request.URL.Query()
 
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *PetApiAddPetPostRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -107,23 +133,20 @@ func (it *PetApiAddPetPostRequest) Fetch(ctx context.Context) (*http.Response, e
 	return response, nil
 }
 
-// New request with Parameters.
-// body: Pet object that needs to be added to the store
-func (it *PetApi) AddPetPost(builder func(*PetApiAddPetPostRequest)) *PetApiAddPetPostRequest {
-	result := &PetApiAddPetPostRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *PetApiAddPetPostRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // Deletes a pet
 //
 type PetApiDeletePetDeleteRequest struct {
-	api *PetApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -137,14 +160,68 @@ type PetApiDeletePetDeleteRequest struct {
 	ApiKey *string
 }
 
+// Validation parameter
+func (it *PetApiDeletePetDeleteRequest) Valid() error {
+
+	if it.PetId == nil {
+		return xerrors.Errorf("required parameter(PetId) read failed")
+	}
+
+	return nil
+}
+
 // Set PetId from non pointer
 func (it *PetApiDeletePetDeleteRequest) SetPetId(newPetId int64) {
 	it.PetId = &newPetId
 }
 
+// Remove PetId property.
+func (it *PetApiDeletePetDeleteRequest) RemovePetId() {
+	it.PetId = nil
+}
+
+// Require value of PetId
+func (it *PetApiDeletePetDeleteRequest) RequirePetId() int64 {
+	if it.PetId == nil {
+		panic(xerrors.Errorf("PetApi.PetId is nil"))
+	}
+	return *it.PetId
+}
+
+// Get value of PetId / or default
+func (it *PetApiDeletePetDeleteRequest) GetPetId() int64 {
+	if it.PetId != nil {
+		return *it.PetId
+	}
+	result := new(int64)
+	return *result
+}
+
 // Set ApiKey from non pointer
 func (it *PetApiDeletePetDeleteRequest) SetApiKey(newApiKey string) {
 	it.ApiKey = &newApiKey
+}
+
+// Remove ApiKey property.
+func (it *PetApiDeletePetDeleteRequest) RemoveApiKey() {
+	it.ApiKey = nil
+}
+
+// Require value of ApiKey
+func (it *PetApiDeletePetDeleteRequest) RequireApiKey() string {
+	if it.ApiKey == nil {
+		panic(xerrors.Errorf("PetApi.ApiKey is nil"))
+	}
+	return *it.ApiKey
+}
+
+// Get value of ApiKey / or default
+func (it *PetApiDeletePetDeleteRequest) GetApiKey() string {
+	if it.ApiKey != nil {
+		return *it.ApiKey
+	}
+	result := new(string)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -171,11 +248,13 @@ func (it *PetApiDeletePetDeleteRequest) Execute(ctx context.Context) (success []
 	return body, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *PetApiDeletePetDeleteRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/pet/{petId}")
+// Build http request
+func (it *PetApiDeletePetDeleteRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/pet/{petId}")
 	method := strings.ToUpper("Delete")
 	var body io.Reader
 
@@ -193,9 +272,18 @@ func (it *PetApiDeletePetDeleteRequest) Fetch(ctx context.Context) (*http.Respon
 	if it.ApiKey != nil {
 		request.Header.Set("api_key", fmt.Sprintf("%v", *it.ApiKey))
 	}
-
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *PetApiDeletePetDeleteRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -206,24 +294,20 @@ func (it *PetApiDeletePetDeleteRequest) Fetch(ctx context.Context) (*http.Respon
 	return response, nil
 }
 
-// New request with Parameters.
-// petId: Pet id to delete
-// api_key:
-func (it *PetApi) DeletePetDelete(builder func(*PetApiDeletePetDeleteRequest)) *PetApiDeletePetDeleteRequest {
-	result := &PetApiDeletePetDeleteRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *PetApiDeletePetDeleteRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // Finds Pets by status
 // Multiple status values can be provided with comma separated strings
 type PetApiFindPetsByStatusGetRequest struct {
-	api *PetApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -235,9 +319,41 @@ type PetApiFindPetsByStatusGetRequest struct {
 	Status *[]string
 }
 
+// Validation parameter
+func (it *PetApiFindPetsByStatusGetRequest) Valid() error {
+
+	if it.Status == nil {
+		return xerrors.Errorf("required parameter(Status) read failed")
+	}
+
+	return nil
+}
+
 // Set Status from non pointer
 func (it *PetApiFindPetsByStatusGetRequest) SetStatus(newStatus []string) {
 	it.Status = &newStatus
+}
+
+// Remove Status property.
+func (it *PetApiFindPetsByStatusGetRequest) RemoveStatus() {
+	it.Status = nil
+}
+
+// Require value of Status
+func (it *PetApiFindPetsByStatusGetRequest) RequireStatus() []string {
+	if it.Status == nil {
+		panic(xerrors.Errorf("PetApi.Status is nil"))
+	}
+	return *it.Status
+}
+
+// Get value of Status / or default
+func (it *PetApiFindPetsByStatusGetRequest) GetStatus() []string {
+	if it.Status != nil {
+		return *it.Status
+	}
+	result := new([]string)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -269,11 +385,13 @@ func (it *PetApiFindPetsByStatusGetRequest) Execute(ctx context.Context) (succes
 	return &model, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *PetApiFindPetsByStatusGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/pet/findByStatus")
+// Build http request
+func (it *PetApiFindPetsByStatusGetRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/pet/findByStatus")
 	method := strings.ToUpper("Get")
 	var body io.Reader
 
@@ -287,9 +405,18 @@ func (it *PetApiFindPetsByStatusGetRequest) Fetch(ctx context.Context) (*http.Re
 	if it.Status != nil {
 		query.Set("status", url.QueryEscape(fmt.Sprintf("%v", *it.Status)))
 	}
-
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *PetApiFindPetsByStatusGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -300,23 +427,20 @@ func (it *PetApiFindPetsByStatusGetRequest) Fetch(ctx context.Context) (*http.Re
 	return response, nil
 }
 
-// New request with Parameters.
-// status: Status values that need to be considered for filter
-func (it *PetApi) FindPetsByStatusGet(builder func(*PetApiFindPetsByStatusGetRequest)) *PetApiFindPetsByStatusGetRequest {
-	result := &PetApiFindPetsByStatusGetRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *PetApiFindPetsByStatusGetRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // Finds Pets by tags
 // Muliple tags can be provided with comma separated strings. Use         tag1, tag2, tag3 for testing.
 type PetApiFindPetsByTagsGetRequest struct {
-	api *PetApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -328,9 +452,41 @@ type PetApiFindPetsByTagsGetRequest struct {
 	Tags *[]string
 }
 
+// Validation parameter
+func (it *PetApiFindPetsByTagsGetRequest) Valid() error {
+
+	if it.Tags == nil {
+		return xerrors.Errorf("required parameter(Tags) read failed")
+	}
+
+	return nil
+}
+
 // Set Tags from non pointer
 func (it *PetApiFindPetsByTagsGetRequest) SetTags(newTags []string) {
 	it.Tags = &newTags
+}
+
+// Remove Tags property.
+func (it *PetApiFindPetsByTagsGetRequest) RemoveTags() {
+	it.Tags = nil
+}
+
+// Require value of Tags
+func (it *PetApiFindPetsByTagsGetRequest) RequireTags() []string {
+	if it.Tags == nil {
+		panic(xerrors.Errorf("PetApi.Tags is nil"))
+	}
+	return *it.Tags
+}
+
+// Get value of Tags / or default
+func (it *PetApiFindPetsByTagsGetRequest) GetTags() []string {
+	if it.Tags != nil {
+		return *it.Tags
+	}
+	result := new([]string)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -362,11 +518,13 @@ func (it *PetApiFindPetsByTagsGetRequest) Execute(ctx context.Context) (success 
 	return &model, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *PetApiFindPetsByTagsGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/pet/findByTags")
+// Build http request
+func (it *PetApiFindPetsByTagsGetRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/pet/findByTags")
 	method := strings.ToUpper("Get")
 	var body io.Reader
 
@@ -380,9 +538,18 @@ func (it *PetApiFindPetsByTagsGetRequest) Fetch(ctx context.Context) (*http.Resp
 	if it.Tags != nil {
 		query.Set("tags", url.QueryEscape(fmt.Sprintf("%v", *it.Tags)))
 	}
-
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *PetApiFindPetsByTagsGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -393,23 +560,20 @@ func (it *PetApiFindPetsByTagsGetRequest) Fetch(ctx context.Context) (*http.Resp
 	return response, nil
 }
 
-// New request with Parameters.
-// tags: Tags to filter by
-func (it *PetApi) FindPetsByTagsGet(builder func(*PetApiFindPetsByTagsGetRequest)) *PetApiFindPetsByTagsGetRequest {
-	result := &PetApiFindPetsByTagsGetRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *PetApiFindPetsByTagsGetRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // Find pet by ID
 // Returns a single pet
 type PetApiGetPetByIdGetRequest struct {
-	api *PetApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -421,9 +585,41 @@ type PetApiGetPetByIdGetRequest struct {
 	PetId *int64
 }
 
+// Validation parameter
+func (it *PetApiGetPetByIdGetRequest) Valid() error {
+
+	if it.PetId == nil {
+		return xerrors.Errorf("required parameter(PetId) read failed")
+	}
+
+	return nil
+}
+
 // Set PetId from non pointer
 func (it *PetApiGetPetByIdGetRequest) SetPetId(newPetId int64) {
 	it.PetId = &newPetId
+}
+
+// Remove PetId property.
+func (it *PetApiGetPetByIdGetRequest) RemovePetId() {
+	it.PetId = nil
+}
+
+// Require value of PetId
+func (it *PetApiGetPetByIdGetRequest) RequirePetId() int64 {
+	if it.PetId == nil {
+		panic(xerrors.Errorf("PetApi.PetId is nil"))
+	}
+	return *it.PetId
+}
+
+// Get value of PetId / or default
+func (it *PetApiGetPetByIdGetRequest) GetPetId() int64 {
+	if it.PetId != nil {
+		return *it.PetId
+	}
+	result := new(int64)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -455,11 +651,13 @@ func (it *PetApiGetPetByIdGetRequest) Execute(ctx context.Context) (success *Pet
 	return &model, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *PetApiGetPetByIdGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/pet/{petId}")
+// Build http request
+func (it *PetApiGetPetByIdGetRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/pet/{petId}")
 	method := strings.ToUpper("Get")
 	var body io.Reader
 
@@ -475,7 +673,17 @@ func (it *PetApiGetPetByIdGetRequest) Fetch(ctx context.Context) (*http.Response
 	query := request.URL.Query()
 
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *PetApiGetPetByIdGetRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -486,23 +694,20 @@ func (it *PetApiGetPetByIdGetRequest) Fetch(ctx context.Context) (*http.Response
 	return response, nil
 }
 
-// New request with Parameters.
-// petId: ID of pet to return
-func (it *PetApi) GetPetByIdGet(builder func(*PetApiGetPetByIdGetRequest)) *PetApiGetPetByIdGetRequest {
-	result := &PetApiGetPetByIdGetRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *PetApiGetPetByIdGetRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // Update an existing pet
 //
 type PetApiUpdatePetPutRequest struct {
-	api *PetApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -514,9 +719,41 @@ type PetApiUpdatePetPutRequest struct {
 	Body *Pet
 }
 
+// Validation parameter
+func (it *PetApiUpdatePetPutRequest) Valid() error {
+
+	if it.Body == nil {
+		return xerrors.Errorf("required parameter(Body) read failed")
+	}
+
+	return nil
+}
+
 // Set Body from non pointer
 func (it *PetApiUpdatePetPutRequest) SetBody(newBody Pet) {
 	it.Body = &newBody
+}
+
+// Remove Body property.
+func (it *PetApiUpdatePetPutRequest) RemoveBody() {
+	it.Body = nil
+}
+
+// Require value of Body
+func (it *PetApiUpdatePetPutRequest) RequireBody() Pet {
+	if it.Body == nil {
+		panic(xerrors.Errorf("PetApi.Body is nil"))
+	}
+	return *it.Body
+}
+
+// Get value of Body / or default
+func (it *PetApiUpdatePetPutRequest) GetBody() Pet {
+	if it.Body != nil {
+		return *it.Body
+	}
+	result := new(Pet)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -543,11 +780,13 @@ func (it *PetApiUpdatePetPutRequest) Execute(ctx context.Context) (success []byt
 	return body, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *PetApiUpdatePetPutRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/pet")
+// Build http request
+func (it *PetApiUpdatePetPutRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/pet")
 	method := strings.ToUpper("Put")
 	var body io.Reader
 
@@ -563,7 +802,17 @@ func (it *PetApiUpdatePetPutRequest) Fetch(ctx context.Context) (*http.Response,
 	query := request.URL.Query()
 
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *PetApiUpdatePetPutRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -574,23 +823,20 @@ func (it *PetApiUpdatePetPutRequest) Fetch(ctx context.Context) (*http.Response,
 	return response, nil
 }
 
-// New request with Parameters.
-// body: Pet object that needs to be added to the store
-func (it *PetApi) UpdatePetPut(builder func(*PetApiUpdatePetPutRequest)) *PetApiUpdatePetPutRequest {
-	result := &PetApiUpdatePetPutRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *PetApiUpdatePetPutRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // Updates a pet in the store with form data
 //
 type PetApiUpdatePetWithFormPostRequest struct {
-	api *PetApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -606,9 +852,41 @@ type PetApiUpdatePetWithFormPostRequest struct {
 	Status *string
 }
 
+// Validation parameter
+func (it *PetApiUpdatePetWithFormPostRequest) Valid() error {
+
+	if it.PetId == nil {
+		return xerrors.Errorf("required parameter(PetId) read failed")
+	}
+
+	return nil
+}
+
 // Set PetId from non pointer
 func (it *PetApiUpdatePetWithFormPostRequest) SetPetId(newPetId int64) {
 	it.PetId = &newPetId
+}
+
+// Remove PetId property.
+func (it *PetApiUpdatePetWithFormPostRequest) RemovePetId() {
+	it.PetId = nil
+}
+
+// Require value of PetId
+func (it *PetApiUpdatePetWithFormPostRequest) RequirePetId() int64 {
+	if it.PetId == nil {
+		panic(xerrors.Errorf("PetApi.PetId is nil"))
+	}
+	return *it.PetId
+}
+
+// Get value of PetId / or default
+func (it *PetApiUpdatePetWithFormPostRequest) GetPetId() int64 {
+	if it.PetId != nil {
+		return *it.PetId
+	}
+	result := new(int64)
+	return *result
 }
 
 // Set Name from non pointer
@@ -616,9 +894,53 @@ func (it *PetApiUpdatePetWithFormPostRequest) SetName(newName string) {
 	it.Name = &newName
 }
 
+// Remove Name property.
+func (it *PetApiUpdatePetWithFormPostRequest) RemoveName() {
+	it.Name = nil
+}
+
+// Require value of Name
+func (it *PetApiUpdatePetWithFormPostRequest) RequireName() string {
+	if it.Name == nil {
+		panic(xerrors.Errorf("PetApi.Name is nil"))
+	}
+	return *it.Name
+}
+
+// Get value of Name / or default
+func (it *PetApiUpdatePetWithFormPostRequest) GetName() string {
+	if it.Name != nil {
+		return *it.Name
+	}
+	result := new(string)
+	return *result
+}
+
 // Set Status from non pointer
 func (it *PetApiUpdatePetWithFormPostRequest) SetStatus(newStatus string) {
 	it.Status = &newStatus
+}
+
+// Remove Status property.
+func (it *PetApiUpdatePetWithFormPostRequest) RemoveStatus() {
+	it.Status = nil
+}
+
+// Require value of Status
+func (it *PetApiUpdatePetWithFormPostRequest) RequireStatus() string {
+	if it.Status == nil {
+		panic(xerrors.Errorf("PetApi.Status is nil"))
+	}
+	return *it.Status
+}
+
+// Get value of Status / or default
+func (it *PetApiUpdatePetWithFormPostRequest) GetStatus() string {
+	if it.Status != nil {
+		return *it.Status
+	}
+	result := new(string)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -645,11 +967,13 @@ func (it *PetApiUpdatePetWithFormPostRequest) Execute(ctx context.Context) (succ
 	return body, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *PetApiUpdatePetWithFormPostRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/pet/{petId}")
+// Build http request
+func (it *PetApiUpdatePetWithFormPostRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/pet/{petId}")
 	method := strings.ToUpper("Post")
 	var body io.Reader
 
@@ -665,7 +989,17 @@ func (it *PetApiUpdatePetWithFormPostRequest) Fetch(ctx context.Context) (*http.
 	query := request.URL.Query()
 
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *PetApiUpdatePetWithFormPostRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -676,25 +1010,20 @@ func (it *PetApiUpdatePetWithFormPostRequest) Fetch(ctx context.Context) (*http.
 	return response, nil
 }
 
-// New request with Parameters.
-// petId: ID of pet that needs to be updated
-// name: Updated name of the pet
-// status: Updated status of the pet
-func (it *PetApi) UpdatePetWithFormPost(builder func(*PetApiUpdatePetWithFormPostRequest)) *PetApiUpdatePetWithFormPostRequest {
-	result := &PetApiUpdatePetWithFormPostRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *PetApiUpdatePetWithFormPostRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
+	strings.ToUpper("")
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }
 
 // uploads an image
 //
 type PetApiUploadFilePostRequest struct {
-	api *PetApi
-
 	// API Endpoint
 	// e.g.) "https://example.com/"
 	Endpoint string
@@ -710,9 +1039,41 @@ type PetApiUploadFilePostRequest struct {
 	File *io.Reader
 }
 
+// Validation parameter
+func (it *PetApiUploadFilePostRequest) Valid() error {
+
+	if it.PetId == nil {
+		return xerrors.Errorf("required parameter(PetId) read failed")
+	}
+
+	return nil
+}
+
 // Set PetId from non pointer
 func (it *PetApiUploadFilePostRequest) SetPetId(newPetId int64) {
 	it.PetId = &newPetId
+}
+
+// Remove PetId property.
+func (it *PetApiUploadFilePostRequest) RemovePetId() {
+	it.PetId = nil
+}
+
+// Require value of PetId
+func (it *PetApiUploadFilePostRequest) RequirePetId() int64 {
+	if it.PetId == nil {
+		panic(xerrors.Errorf("PetApi.PetId is nil"))
+	}
+	return *it.PetId
+}
+
+// Get value of PetId / or default
+func (it *PetApiUploadFilePostRequest) GetPetId() int64 {
+	if it.PetId != nil {
+		return *it.PetId
+	}
+	result := new(int64)
+	return *result
 }
 
 // Set AdditionalMetadata from non pointer
@@ -720,9 +1081,53 @@ func (it *PetApiUploadFilePostRequest) SetAdditionalMetadata(newAdditionalMetada
 	it.AdditionalMetadata = &newAdditionalMetadata
 }
 
+// Remove AdditionalMetadata property.
+func (it *PetApiUploadFilePostRequest) RemoveAdditionalMetadata() {
+	it.AdditionalMetadata = nil
+}
+
+// Require value of AdditionalMetadata
+func (it *PetApiUploadFilePostRequest) RequireAdditionalMetadata() string {
+	if it.AdditionalMetadata == nil {
+		panic(xerrors.Errorf("PetApi.AdditionalMetadata is nil"))
+	}
+	return *it.AdditionalMetadata
+}
+
+// Get value of AdditionalMetadata / or default
+func (it *PetApiUploadFilePostRequest) GetAdditionalMetadata() string {
+	if it.AdditionalMetadata != nil {
+		return *it.AdditionalMetadata
+	}
+	result := new(string)
+	return *result
+}
+
 // Set File from non pointer
 func (it *PetApiUploadFilePostRequest) SetFile(newFile io.Reader) {
 	it.File = &newFile
+}
+
+// Remove File property.
+func (it *PetApiUploadFilePostRequest) RemoveFile() {
+	it.File = nil
+}
+
+// Require value of File
+func (it *PetApiUploadFilePostRequest) RequireFile() io.Reader {
+	if it.File == nil {
+		panic(xerrors.Errorf("PetApi.File is nil"))
+	}
+	return *it.File
+}
+
+// Get value of File / or default
+func (it *PetApiUploadFilePostRequest) GetFile() io.Reader {
+	if it.File != nil {
+		return *it.File
+	}
+	result := new(io.Reader)
+	return *result
 }
 
 // Fetch http request, returns raw response.
@@ -754,11 +1159,13 @@ func (it *PetApiUploadFilePostRequest) Execute(ctx context.Context) (success *Ap
 	return &model, body, resp, nil
 }
 
-// Fetch http request, returns raw response.
-//
-func (it *PetApiUploadFilePostRequest) Fetch(ctx context.Context) (*http.Response, error) {
-	client := http.DefaultClient
-	apiUrl := path.Join(it.Endpoint, "/v2", "/pet/{petId}/uploadImage")
+// Build http request
+func (it *PetApiUploadFilePostRequest) BuildHttpRequest() (*http.Request, error) {
+	endpoint := it.Endpoint
+	if len(endpoint) == 0 {
+		endpoint = "http://127.0.0.1/"
+	}
+	apiUrl := path.Join(endpoint, "/v2", "/pet/{petId}/uploadImage")
 	method := strings.ToUpper("Post")
 	var body io.Reader
 
@@ -774,7 +1181,17 @@ func (it *PetApiUploadFilePostRequest) Fetch(ctx context.Context) (*http.Respons
 	query := request.URL.Query()
 
 	request.URL.RawQuery = query.Encode()
+	return request, nil
+}
 
+// Fetch http request, returns raw response.
+//
+func (it *PetApiUploadFilePostRequest) Fetch(ctx context.Context) (*http.Response, error) {
+	client := http.DefaultClient
+	request, err := it.BuildHttpRequest()
+	if err != nil {
+		return nil, xerrors.Errorf("http request builed failed, %w", err)
+	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
@@ -785,25 +1202,13 @@ func (it *PetApiUploadFilePostRequest) Fetch(ctx context.Context) (*http.Respons
 	return response, nil
 }
 
-// New request with Parameters.
-// petId: ID of pet to update
-// additionalMetadata: Additional data to pass to server
-// file: file to upload
-func (it *PetApi) UploadFilePost(builder func(*PetApiUploadFilePostRequest)) *PetApiUploadFilePostRequest {
-	result := &PetApiUploadFilePostRequest{
-		api:       it,
-		Endpoint:  it.Endpoint,
-		Intercept: it.Intercept,
-	}
-	builder(result)
-	return result
-}
-
-func (it *PetApi) this_is_call_dummy() {
-	url.Parse("")
-	xerrors.Errorf("")
+//noinspection GoUnusedFunction,GoSnakeCaseUsage
+func (it *PetApiUploadFilePostRequest) dummyForCompiler() {
+	_, _ = ioutil.ReadAll(nil)
+	_, _ = url.Parse("")
+	_ = xerrors.Errorf("")
 	strings.ToUpper("")
-	fmt.Sprintf("%v", "")
-	io.ReadAtLeast(nil, nil, 0)
-	json.Unmarshal(nil, nil)
+	_ = fmt.Sprintf("%v", "")
+	_, _ = io.ReadAtLeast(nil, nil, 0)
+	_ = json.Unmarshal(nil, nil)
 }

@@ -12,48 +12,137 @@ import (
 type PetSTATUS string
 type PetSTATUSArray []PetSTATUS
 
-const PetSTATUS_available PetSTATUS = PetSTATUS("available")
-const PetSTATUS_pending PetSTATUS = PetSTATUS("pending")
-const PetSTATUS_sold PetSTATUS = PetSTATUS("sold")
+const PetSTATUS_available = PetSTATUS("available")
+const PetSTATUS_pending = PetSTATUS("pending")
+const PetSTATUS_sold = PetSTATUS("sold")
 
-var PetSTATUSPattern []string = []string{
-
-	"available",
-	"pending",
-	"sold",
+func (it PetSTATUS) String() string {
+	return string(it)
 }
 
-func (it PetSTATUS) Ptr() *PetSTATUS {
-	return &it
+// Pattern for PetSTATUS
+var PetSTATUSValues = []PetSTATUS{
+
+	PetSTATUS_available,
+
+	PetSTATUS_pending,
+
+	PetSTATUS_sold,
 }
-func (it *PetSTATUS) Value() PetSTATUS {
-	return *it
-}
-func (it *PetSTATUS) Valid() bool {
+
+func (it *PetSTATUS) Valid() error {
 	if it == nil {
-		return false
+		return xerrors.Errorf("PetSTATUS(nil)")
 	}
-	value := string(*it)
-	for _, v := range PetSTATUSPattern {
-		if v == value {
-			return true
-		}
+	switch *it {
+
+	case PetSTATUS_available:
+		return nil
+
+	case PetSTATUS_pending:
+		return nil
+
+	case PetSTATUS_sold:
+		return nil
+
 	}
-	return false
+	return xerrors.Errorf("invalid PetSTATUS(%v)", string(*it))
+}
+
+//
+// Pet Interface for alternative definitions.
+type IPet interface {
+	// JsonCopy to result ptr.
+	MarshalCopy(result interface{}) error
+
+	// Marshal json string.
+	Json() []byte
+
+	// Remove Id property
+	RemoveId()
+
+	// Get Id property or default value.
+	GetId() int64
+
+	// Get Id property or panic().
+	RequireId() int64
+
+	// Set Id property.
+	SetId(newId int64)
+
+	// Remove Category property
+	RemoveCategory()
+
+	// Get Category property or default value.
+	GetCategory() Category
+
+	// Get Category property or panic().
+	RequireCategory() Category
+
+	// Set Category property.
+	SetCategory(newCategory Category)
+
+	// Remove Name property
+	RemoveName()
+
+	// Get Name property or default value.
+	GetName() string
+
+	// Get Name property or panic().
+	RequireName() string
+
+	// Set Name property.
+	SetName(newName string)
+
+	// Remove PhotoUrls property
+	RemovePhotoUrls()
+
+	// Get PhotoUrls property or default value.
+	GetPhotoUrls() []string
+
+	// Get PhotoUrls property or panic().
+	RequirePhotoUrls() []string
+
+	// Set PhotoUrls property.
+	SetPhotoUrls(newPhotoUrls []string)
+
+	// Remove Tags property
+	RemoveTags()
+
+	// Get Tags property or default value.
+	GetTags() []Tag
+
+	// Get Tags property or panic().
+	RequireTags() []Tag
+
+	// Set Tags property.
+	SetTags(newTags []Tag)
+
+	// Remove Status property
+	RemoveStatus()
+
+	// Get Status property or default value.
+	GetStatus() PetSTATUS
+
+	// Get Status property or panic().
+	RequireStatus() PetSTATUS
+
+	// Set Status property.
+	SetStatus(newStatus PetSTATUS)
 }
 
 //
 type Pet struct {
+	//
 	Id *int64 `json:"id,omitempty"`
-
+	//
 	Category *Category `json:"category,omitempty"`
-
+	//
 	Name *string `json:"name"`
-
+	//
 	PhotoUrls *[]string `json:"photoUrls"`
-
+	//
 	Tags *[]Tag `json:"tags,omitempty"`
-
 	// pet status in the store
 	Status *PetSTATUS `json:"status,omitempty"`
 }
@@ -82,6 +171,11 @@ func (it *Pet) MarshalCopy(result interface{}) error {
 	return nil
 }
 
+// Remove Id
+func (it *Pet) RemoveId() {
+	it.Id = nil
+}
+
 // Set Id
 func (it *Pet) SetId(newId int64) {
 	it.Id = &newId
@@ -102,6 +196,11 @@ func (it *Pet) GetId() int64 {
 	}
 	result := new(int64)
 	return *result
+}
+
+// Remove Category
+func (it *Pet) RemoveCategory() {
+	it.Category = nil
 }
 
 // Set Category
@@ -126,6 +225,11 @@ func (it *Pet) GetCategory() Category {
 	return *result
 }
 
+// Remove Name
+func (it *Pet) RemoveName() {
+	it.Name = nil
+}
+
 // Set Name
 func (it *Pet) SetName(newName string) {
 	it.Name = &newName
@@ -146,6 +250,11 @@ func (it *Pet) GetName() string {
 	}
 	result := new(string)
 	return *result
+}
+
+// Remove PhotoUrls
+func (it *Pet) RemovePhotoUrls() {
+	it.PhotoUrls = nil
 }
 
 // Set PhotoUrls
@@ -170,6 +279,11 @@ func (it *Pet) GetPhotoUrls() []string {
 	return *result
 }
 
+// Remove Tags
+func (it *Pet) RemoveTags() {
+	it.Tags = nil
+}
+
 // Set Tags
 func (it *Pet) SetTags(newTags []Tag) {
 	it.Tags = &newTags
@@ -190,6 +304,11 @@ func (it *Pet) GetTags() []Tag {
 	}
 	result := new([]Tag)
 	return *result
+}
+
+// Remove Status
+func (it *Pet) RemoveStatus() {
+	it.Status = nil
 }
 
 // Set Status
@@ -219,9 +338,9 @@ func (it Pet) String() string {
 	buf, _ := json.Marshal(it)
 	return string(buf)
 }
-func (it *Pet) Json() string {
+func (it *Pet) Json() []byte {
 	buf, _ := json.Marshal(it)
-	return string(buf)
+	return buf
 }
 
 func (it *Pet) Write(writer http.ResponseWriter, request *http.Request) {
@@ -230,26 +349,71 @@ func (it *Pet) Write(writer http.ResponseWriter, request *http.Request) {
 }
 
 func (it *Pet) Valid() error {
+	if it.Id != nil {
+		if err := validationValue(it.Id); err != nil {
+			return xerrors.Errorf("'Pet.Id' validation error, %w", err)
+		}
+	}
+	if it.Category != nil {
+		if err := validationValue(it.Category); err != nil {
+			return xerrors.Errorf("'Pet.Category' validation error, %w", err)
+		}
+	}
 	if it.Name == nil {
 		return xerrors.Errorf("'Pet.Name' is required")
+	}
+	if it.Name != nil {
+		if err := validationValue(it.Name); err != nil {
+			return xerrors.Errorf("'Pet.Name' validation error, %w", err)
+		}
 	}
 	if it.PhotoUrls == nil {
 		return xerrors.Errorf("'Pet.PhotoUrls' is required")
 	}
-	if it.Status != nil && !it.Status.Valid() {
-		return xerrors.Errorf("'Pet.Status' is invalid")
+	if it.PhotoUrls != nil {
+		if err := validationValue(it.PhotoUrls); err != nil {
+			return xerrors.Errorf("'Pet.PhotoUrls' validation error, %w", err)
+		}
+	}
+	if it.Tags != nil {
+		if err := validationValue(it.Tags); err != nil {
+			return xerrors.Errorf("'Pet.Tags' validation error, %w", err)
+		}
+	}
+	if it.Status != nil {
+		if err := validationValue(it.Status); err != nil {
+			return xerrors.Errorf("'Pet.Status' validation error, %w", err)
+		}
 	}
 
 	return nil
 }
 
-func (it *Pet) this_is_call_dummy() {
+func (it PetArray) Write(writer http.ResponseWriter, request *http.Request) {
+	buf, _ := json.Marshal(it)
+	_, _ = writer.Write(buf)
+}
+
+func (it PetArray) Json() []byte {
+	buf, _ := json.Marshal(it)
+	return buf
+}
+
+func (it *Pet) compilerDummy() {
 	time.Now()
-	xerrors.Errorf("")
+	_ = xerrors.Errorf("")
 
 	var model Pet
+	var iModel IPet = &model
 	var swaggerModelRef swaggerModel = &model
 	var swaggerResponseRef SwaggerResponse = &model
+	var swaggerValidatableRef swaggerValidatable = &model
+
+	var modelArray PetArray
+	swaggerResponseRef = modelArray
+
+	iModel = iModel
 	swaggerModelRef = swaggerModelRef
 	swaggerResponseRef = swaggerResponseRef
+	swaggerValidatableRef = swaggerValidatableRef
 }
