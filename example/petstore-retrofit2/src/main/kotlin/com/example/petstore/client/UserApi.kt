@@ -39,7 +39,6 @@ interface UserApi {
      *
      * @param body Created user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @POST("/v2/user")
     suspend fun createUser(
@@ -54,7 +53,6 @@ interface UserApi {
      *
      * @param body Created user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @POST("/v2/user")
     suspend fun createUserBody(
@@ -69,7 +67,6 @@ interface UserApi {
      *
      * @param body Created user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @POST("/v2/user")
@@ -84,7 +81,6 @@ interface UserApi {
      *
      * @param body List of user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @POST("/v2/user/createWithArray")
     suspend fun createUsersWithArrayInput(
@@ -99,7 +95,6 @@ interface UserApi {
      *
      * @param body List of user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @POST("/v2/user/createWithArray")
     suspend fun createUsersWithArrayInputBody(
@@ -114,7 +109,6 @@ interface UserApi {
      *
      * @param body List of user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @POST("/v2/user/createWithArray")
@@ -129,7 +123,6 @@ interface UserApi {
      *
      * @param body List of user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @POST("/v2/user/createWithList")
     suspend fun createUsersWithListInput(
@@ -144,7 +137,6 @@ interface UserApi {
      *
      * @param body List of user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @POST("/v2/user/createWithList")
     suspend fun createUsersWithListInputBody(
@@ -159,7 +151,6 @@ interface UserApi {
      *
      * @param body List of user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @POST("/v2/user/createWithList")
@@ -174,12 +165,11 @@ interface UserApi {
      *
      * @param username The name that needs to be deleted/ example :: username_example
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @DELETE("/v2/user/{username}")
     suspend fun deleteUser(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("username")
+            @Path("username")
             username: kotlin.String
     ): Response<ResponseBody>
 
@@ -189,12 +179,11 @@ interface UserApi {
      *
      * @param username The name that needs to be deleted/ example :: username_example
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @DELETE("/v2/user/{username}")
     suspend fun deleteUserBody(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("username")
+            @Path("username")
             username: kotlin.String
     ): Response<ResponseBody>
 
@@ -204,13 +193,12 @@ interface UserApi {
      *
      * @param username The name that needs to be deleted/ example :: username_example
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @DELETE("/v2/user/{username}")
     suspend fun deleteUserStreaming(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("username")
+            @Path("username")
             username: kotlin.String
     ): Response<ResponseBody>
     /**
@@ -219,12 +207,11 @@ interface UserApi {
      *
      * @param username The name that needs to be fetched. Use user1 for testing. / example :: username_example
      * @return User
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/user/{username}")
     suspend fun getUserByName(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("username")
+            @Path("username")
             username: kotlin.String
     ): Response<User>
 
@@ -234,12 +221,11 @@ interface UserApi {
      *
      * @param username The name that needs to be fetched. Use user1 for testing. / example :: username_example
      * @return User
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/user/{username}")
     suspend fun getUserByNameBody(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("username")
+            @Path("username")
             username: kotlin.String
     ): Response<ResponseBody>
 
@@ -249,13 +235,12 @@ interface UserApi {
      *
      * @param username The name that needs to be fetched. Use user1 for testing. / example :: username_example
      * @return User
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @GET("/v2/user/{username}")
     suspend fun getUserByNameStreaming(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("username")
+            @Path("username")
             username: kotlin.String
     ): Response<ResponseBody>
     /**
@@ -265,7 +250,6 @@ interface UserApi {
      * @param username The user name for login/ example :: username_example
      * @param password The password for login in clear text/ example :: password_example
      * @return kotlin.String
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/user/login")
     suspend fun loginUser(
@@ -284,7 +268,6 @@ interface UserApi {
      * @param username The user name for login/ example :: username_example
      * @param password The password for login in clear text/ example :: password_example
      * @return kotlin.String
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/user/login")
     suspend fun loginUserBody(
@@ -303,7 +286,6 @@ interface UserApi {
      * @param username The user name for login/ example :: username_example
      * @param password The password for login in clear text/ example :: password_example
      * @return kotlin.String
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @GET("/v2/user/login")
@@ -319,7 +301,6 @@ interface UserApi {
      * 
      *
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/user/logout")
     suspend fun logoutUser(
@@ -331,7 +312,6 @@ interface UserApi {
      * 
      *
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @GET("/v2/user/logout")
     suspend fun logoutUserBody(
@@ -343,7 +323,6 @@ interface UserApi {
      * 
      *
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @GET("/v2/user/logout")
@@ -357,12 +336,11 @@ interface UserApi {
      * @param username name that need to be updated/ example :: username_example
      * @param body Updated user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @PUT("/v2/user/{username}")
     suspend fun updateUser(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("username")
+            @Path("username")
             username: kotlin.String, 
             
             @Body 
@@ -376,12 +354,11 @@ interface UserApi {
      * @param username name that need to be updated/ example :: username_example
      * @param body Updated user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @PUT("/v2/user/{username}")
     suspend fun updateUserBody(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("username")
+            @Path("username")
             username: kotlin.String, 
             
             @Body 
@@ -395,13 +372,12 @@ interface UserApi {
      * @param username name that need to be updated/ example :: username_example
      * @param body Updated user object
      * @return void
-     * @link https://github.com/eaglesakura/swagger-codegen-extensions
      */
     @Streaming
     @PUT("/v2/user/{username}")
     suspend fun updateUserStreaming(
             @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Header("username")
+            @Path("username")
             username: kotlin.String, 
                         @Body 
             body: User
@@ -409,8 +385,6 @@ interface UserApi {
     companion object {
         /**
          * Default UserApi Factory.
-         *
-         * @link https://github.com/eaglesakura/swagger-codegen-extensions
          */
         fun create(baseUrl: String, okHttpClient: OkHttpClient? = null, moshi: Moshi = InternalUtils.moshi, block: (builder: Retrofit.Builder)->Retrofit.Builder = { it }): UserApi {
             val url = if(baseUrl.endsWith("/")) {
