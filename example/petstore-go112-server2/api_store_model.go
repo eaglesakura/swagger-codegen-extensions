@@ -29,6 +29,26 @@ type StoreApiDeleteOrderDeleteRequest struct {
 	OrderId *int64
 }
 
+// Getter for Endpoint
+func (it *StoreApiDeleteOrderDeleteRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *StoreApiDeleteOrderDeleteRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *StoreApiDeleteOrderDeleteRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *StoreApiDeleteOrderDeleteRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
+}
+
 // Validation parameter
 func (it *StoreApiDeleteOrderDeleteRequest) Valid() error {
 
@@ -76,15 +96,15 @@ func (it *StoreApiDeleteOrderDeleteRequest) Execute(ctx context.Context) (succes
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -106,7 +126,7 @@ func (it *StoreApiDeleteOrderDeleteRequest) BuildHttpRequest() (*http.Request, e
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -121,14 +141,14 @@ func (it *StoreApiDeleteOrderDeleteRequest) Fetch(ctx context.Context) (*http.Re
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -155,6 +175,26 @@ type StoreApiGetInventoryGetRequest struct {
 	Intercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)
 }
 
+// Getter for Endpoint
+func (it *StoreApiGetInventoryGetRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *StoreApiGetInventoryGetRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *StoreApiGetInventoryGetRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *StoreApiGetInventoryGetRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
+}
+
 // Validation parameter
 func (it *StoreApiGetInventoryGetRequest) Valid() error {
 
@@ -171,21 +211,21 @@ func (it *StoreApiGetInventoryGetRequest) Execute(ctx context.Context) (success 
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	var model map[string]int32
 	err = json.Unmarshal(body, &model)
 	if err != nil {
-		return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+		return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
 	}
 	return &model, body, resp, nil
 }
@@ -202,7 +242,7 @@ func (it *StoreApiGetInventoryGetRequest) BuildHttpRequest() (*http.Request, err
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -217,14 +257,14 @@ func (it *StoreApiGetInventoryGetRequest) Fetch(ctx context.Context) (*http.Resp
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -252,6 +292,26 @@ type StoreApiGetOrderByIdGetRequest struct {
 
 	// ID of pet that needs to be fetched
 	OrderId *int64
+}
+
+// Getter for Endpoint
+func (it *StoreApiGetOrderByIdGetRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *StoreApiGetOrderByIdGetRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *StoreApiGetOrderByIdGetRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *StoreApiGetOrderByIdGetRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -301,21 +361,21 @@ func (it *StoreApiGetOrderByIdGetRequest) Execute(ctx context.Context) (success 
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	var model Order
 	err = json.Unmarshal(body, &model)
 	if err != nil {
-		return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+		return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
 	}
 	return &model, body, resp, nil
 }
@@ -336,7 +396,7 @@ func (it *StoreApiGetOrderByIdGetRequest) BuildHttpRequest() (*http.Request, err
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -351,14 +411,14 @@ func (it *StoreApiGetOrderByIdGetRequest) Fetch(ctx context.Context) (*http.Resp
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -386,6 +446,26 @@ type StoreApiPlaceOrderPostRequest struct {
 
 	// order placed for purchasing the pet
 	Body *Order
+}
+
+// Getter for Endpoint
+func (it *StoreApiPlaceOrderPostRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *StoreApiPlaceOrderPostRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *StoreApiPlaceOrderPostRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *StoreApiPlaceOrderPostRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -435,21 +515,21 @@ func (it *StoreApiPlaceOrderPostRequest) Execute(ctx context.Context) (success *
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	var model Order
 	err = json.Unmarshal(body, &model)
 	if err != nil {
-		return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+		return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
 	}
 	return &model, body, resp, nil
 }
@@ -470,7 +550,7 @@ func (it *StoreApiPlaceOrderPostRequest) BuildHttpRequest() (*http.Request, erro
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -485,14 +565,14 @@ func (it *StoreApiPlaceOrderPostRequest) Fetch(ctx context.Context) (*http.Respo
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }

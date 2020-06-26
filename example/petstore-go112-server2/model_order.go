@@ -9,44 +9,44 @@ import (
 	"time"
 )
 
-type OrderSTATUS string
-type OrderSTATUSArray []OrderSTATUS
+type OrderStatus string
+type OrderStatusArray []OrderStatus
 
-const OrderSTATUS_placed = OrderSTATUS("placed")
-const OrderSTATUS_approved = OrderSTATUS("approved")
-const OrderSTATUS_delivered = OrderSTATUS("delivered")
+const OrderStatus_placed = OrderStatus("placed")
+const OrderStatus_approved = OrderStatus("approved")
+const OrderStatus_delivered = OrderStatus("delivered")
 
-func (it OrderSTATUS) String() string {
+func (it OrderStatus) String() string {
 	return string(it)
 }
 
-// Pattern for OrderSTATUS
-var OrderSTATUSValues = []OrderSTATUS{
+// Pattern for OrderStatus
+var OrderStatusValues = []OrderStatus{
 
-	OrderSTATUS_placed,
+	OrderStatus_placed,
 
-	OrderSTATUS_approved,
+	OrderStatus_approved,
 
-	OrderSTATUS_delivered,
+	OrderStatus_delivered,
 }
 
-func (it *OrderSTATUS) Valid() error {
+func (it *OrderStatus) Valid() error {
 	if it == nil {
-		return xerrors.Errorf("OrderSTATUS(nil)")
+		return xerrors.Errorf("OrderStatus(nil)")
 	}
 	switch *it {
 
-	case OrderSTATUS_placed:
+	case OrderStatus_placed:
 		return nil
 
-	case OrderSTATUS_approved:
+	case OrderStatus_approved:
 		return nil
 
-	case OrderSTATUS_delivered:
+	case OrderStatus_delivered:
 		return nil
 
 	}
-	return xerrors.Errorf("invalid OrderSTATUS(%v)", string(*it))
+	return xerrors.Errorf("invalid OrderStatus(%v)", string(*it))
 }
 
 //
@@ -110,13 +110,13 @@ type IOrder interface {
 	RemoveStatus()
 
 	// Get Status property or default value.
-	GetStatus() OrderSTATUS
+	GetStatus() OrderStatus
 
 	// Get Status property or panic().
-	RequireStatus() OrderSTATUS
+	RequireStatus() OrderStatus
 
 	// Set Status property.
-	SetStatus(newStatus OrderSTATUS)
+	SetStatus(newStatus OrderStatus)
 
 	// Remove Complete property
 	RemoveComplete()
@@ -142,7 +142,7 @@ type Order struct {
 	//
 	ShipDate *time.Time `json:"shipDate,omitempty"`
 	// Order Status
-	Status *OrderSTATUS `json:"status,omitempty"`
+	Status *OrderStatus `json:"status,omitempty"`
 	//
 	Complete *bool `json:"complete,omitempty"`
 }
@@ -166,7 +166,7 @@ func (it *Order) MarshalCopy(result interface{}) error {
 	body, _ := json.Marshal(it)
 	err := json.Unmarshal(body, result)
 	if err != nil {
-		return xerrors.Errorf("Order.MarshalCopy failed, to='%v', %w", result, err)
+		return xerrors.Errorf("Order.MarshalCopy failed, to='%v': %w", result, err)
 	}
 	return nil
 }
@@ -285,12 +285,12 @@ func (it *Order) RemoveStatus() {
 }
 
 // Set Status
-func (it *Order) SetStatus(newStatus OrderSTATUS) {
+func (it *Order) SetStatus(newStatus OrderStatus) {
 	it.Status = &newStatus
 }
 
 // Require value of Status
-func (it *Order) RequireStatus() OrderSTATUS {
+func (it *Order) RequireStatus() OrderStatus {
 	if it.Status == nil {
 		panic(xerrors.Errorf("Order.Status is nil"))
 	}
@@ -298,11 +298,11 @@ func (it *Order) RequireStatus() OrderSTATUS {
 }
 
 // Get value of Status / or default
-func (it *Order) GetStatus() OrderSTATUS {
+func (it *Order) GetStatus() OrderStatus {
 	if it.Status != nil {
 		return *it.Status
 	}
-	result := new(OrderSTATUS)
+	result := new(OrderStatus)
 	return *result
 }
 
@@ -351,32 +351,32 @@ func (it *Order) Write(writer http.ResponseWriter, request *http.Request) {
 func (it *Order) Valid() error {
 	if it.Id != nil {
 		if err := validationValue(it.Id); err != nil {
-			return xerrors.Errorf("'Order.Id' validation error, %w", err)
+			return xerrors.Errorf("'Order.Id' validation error: %w", err)
 		}
 	}
 	if it.PetId != nil {
 		if err := validationValue(it.PetId); err != nil {
-			return xerrors.Errorf("'Order.PetId' validation error, %w", err)
+			return xerrors.Errorf("'Order.PetId' validation error: %w", err)
 		}
 	}
 	if it.Quantity != nil {
 		if err := validationValue(it.Quantity); err != nil {
-			return xerrors.Errorf("'Order.Quantity' validation error, %w", err)
+			return xerrors.Errorf("'Order.Quantity' validation error: %w", err)
 		}
 	}
 	if it.ShipDate != nil {
 		if err := validationValue(it.ShipDate); err != nil {
-			return xerrors.Errorf("'Order.ShipDate' validation error, %w", err)
+			return xerrors.Errorf("'Order.ShipDate' validation error: %w", err)
 		}
 	}
 	if it.Status != nil {
 		if err := validationValue(it.Status); err != nil {
-			return xerrors.Errorf("'Order.Status' validation error, %w", err)
+			return xerrors.Errorf("'Order.Status' validation error: %w", err)
 		}
 	}
 	if it.Complete != nil {
 		if err := validationValue(it.Complete); err != nil {
-			return xerrors.Errorf("'Order.Complete' validation error, %w", err)
+			return xerrors.Errorf("'Order.Complete' validation error: %w", err)
 		}
 	}
 

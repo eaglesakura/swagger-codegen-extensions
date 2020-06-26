@@ -10,16 +10,16 @@ import (
 )
 
 //noinspection GoUnusedGlobalVariable
-var GeneratedDate, _ = time.Parse(time.RFC3339, "2020-06-25T19:43:02.284+09:00")
+var GeneratedDate, _ = time.Parse(time.RFC3339, "2020-06-26T14:39:29.935+09:00")
 
 // link: https://github.com/eaglesakura/swagger-codegen-extensions
 
 type SwaggerResponse interface {
-	Write(writer http.ResponseWriter, request *http.Request)
+    Write(writer http.ResponseWriter, request *http.Request)
 }
 
 type swaggerValidatable interface {
-	Valid() error
+    Valid() error
 }
 
 type swaggerModel interface {
@@ -41,7 +41,7 @@ func bodyToReader(body interface{}) io.Reader {
 func convertFloatValue(value string, result interface{}) error {
 	f, err := strconv.ParseFloat(value, 64)
 	if err != nil {
-		return xerrors.Errorf("ParseFloat(%v) failed, %w", value, err)
+		return xerrors.Errorf("ParseFloat(%v) failed: %w", value, err)
 	}
 
 	switch ptr := result.(type) {
@@ -57,7 +57,7 @@ func convertFloatValue(value string, result interface{}) error {
 func convertIntValue(value string, result interface{}) error {
 	i, err := strconv.ParseInt(value, 10, 64)
 	if err != nil {
-		return xerrors.Errorf("ParseInt(%v) failed, %w", value, err)
+		return xerrors.Errorf("ParseInt(%v) failed: %w", value, err)
 	}
 
 	switch ptr := result.(type) {
@@ -105,7 +105,7 @@ func convertValue(value string, result interface{}) error {
 	case **bool:
 		b, err := strconv.ParseBool(value)
 		if err != nil {
-			return xerrors.Errorf("ParseBool(%v) failed, %w", value, err)
+			return xerrors.Errorf("ParseBool(%v) failed: %w", value, err)
 		}
 		*ptr = &b
 	default:
@@ -131,14 +131,14 @@ func parseValues(values map[string][]string, key string, result interface{}) err
 }
 
 func validationValue(ref interface{}) error {
-	validatable, ok := ref.(swaggerValidatable)
-	if !ok || validatable == nil {
-		return nil
-	}
+    validatable, ok := ref.(swaggerValidatable)
+    if !ok || validatable == nil {
+        return nil
+    }
 
-	err := validatable.Valid()
-	if err != nil {
-		return xerrors.Errorf("%w")
-	}
-	return nil
+    err := validatable.Valid()
+    if err != nil {
+        return xerrors.Errorf(": %w", err)
+    }
+    return nil
 }

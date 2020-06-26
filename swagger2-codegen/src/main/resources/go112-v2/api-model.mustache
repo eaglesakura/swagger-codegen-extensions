@@ -18,7 +18,7 @@ import (
 {{#operations}}{{#operation}}
 // {{summary}}
 // {{notes}}
-type {{classname}}{{operationIdCamelCase}}{{httpMethod}}Request struct {
+type {{classname}}{{operationIdCamelCase}}Request struct {
     // API Endpoint
     // e.g.) "https://example.com/"
     Endpoint string
@@ -32,9 +32,35 @@ type {{classname}}{{operationIdCamelCase}}{{httpMethod}}Request struct {
     {{/allParams}}
 }
 
+// Getter for Endpoint
+func (it *{{classname}}{{operationIdCamelCase}}Request)GetEndpoint() string {
+    return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *{{classname}}{{operationIdCamelCase}}Request)SetEndpoint(newEndpoint string) {
+    it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *{{classname}}{{operationIdCamelCase}}Request)GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+    return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *{{classname}}{{operationIdCamelCase}}Request)SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+    it.Intercept = newIntercept
+}
+
+// Update request
+func (it *{{classname}}{{operationIdCamelCase}}Request)Update(builder func(ref *{{classname}}{{operationIdCamelCase}}Request)) *{{classname}}{{operationIdCamelCase}}Request {
+    builder(it)
+    return it
+}
+
 
 // Validation parameter
-func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Valid() error {
+func (it *{{classname}}{{operationIdCamelCase}}Request)Valid() error {
 {{#allParams}}{{#required}}
     if it.{{paramName}} == nil {
         return xerrors.Errorf("required parameter({{paramName}}) read failed")
@@ -45,17 +71,17 @@ func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Valid() err
 
 {{#allParams}}
     // Set {{paramName}} from non pointer
-    func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Set{{paramName}}(new{{paramName}} {{{dataType}}}) {
+    func (it *{{classname}}{{operationIdCamelCase}}Request)Set{{paramName}}(new{{paramName}} {{{dataType}}}) {
         it.{{paramName}} = &new{{paramName}}
     }
 
     // Remove {{paramName}} property.
-    func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Remove{{paramName}}() {
+    func (it *{{classname}}{{operationIdCamelCase}}Request)Remove{{paramName}}() {
         it.{{paramName}} = nil
     }
 
     // Require value of {{paramName}}
-    func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Require{{paramName}}() {{{dataType}}} {
+    func (it *{{classname}}{{operationIdCamelCase}}Request)Require{{paramName}}() {{{dataType}}} {
         if it.{{paramName}} == nil {
             panic(xerrors.Errorf("{{classname}}.{{paramName}} is nil"))
         }
@@ -63,7 +89,7 @@ func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Valid() err
     }
 
     // Get value of {{paramName}} / or default
-    func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Get{{paramName}}() {{{dataType}}} {
+    func (it *{{classname}}{{operationIdCamelCase}}Request)Get{{paramName}}() {{{dataType}}} {
         if it.{{paramName}} != nil {
             return *it.{{paramName}}
         }
@@ -74,7 +100,7 @@ func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Valid() err
 
 // Fetch http request, returns raw response.
 // {{description}}
-func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Execute(ctx context.Context) (success {{#returnType}}*{{{returnType}}}{{/returnType}}{{^returnType}}[]byte{{/returnType}}, responseBody []byte, resp *http.Response, err error) {
+func (it *{{classname}}{{operationIdCamelCase}}Request)Execute(ctx context.Context) (success {{#returnType}}*{{{returnType}}}{{/returnType}}{{^returnType}}[]byte{{/returnType}}, responseBody []byte, resp *http.Response, err error) {
     resp, err = it.Fetch(ctx)
     if resp != nil && resp.Body != nil {
         defer func() {
@@ -82,22 +108,22 @@ func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Execute(ctx
         }()
     }
     if err != nil {
-        return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+        return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
     }
 
     body, err := ioutil.ReadAll(resp.Body)
     if err != nil {
-        return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+        return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
     }
-    if resp.StatusCode / 100 != 2 {
-        return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+    if resp.StatusCode / 100 >= 4 {
+        return nil, body, resp, xerrors.Errorf("http bad response: StatusCode[%v]", resp.StatusCode)
     }
 
     {{#returnType}}
         var model {{{returnType}}}
         err = json.Unmarshal(body, &model)
         if err != nil {
-            return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+            return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
         }
         return &model, body, resp, nil
     {{/returnType}}
@@ -107,13 +133,19 @@ func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Execute(ctx
 }
 
 // Build http request
-func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)BuildHttpRequest() (*http.Request, error) {
+func (it *{{classname}}{{operationIdCamelCase}}Request)BuildHttpRequest() (*http.Request, error) {
     endpoint := it.Endpoint
     if len(endpoint) == 0 {
         endpoint = "http://127.0.0.1/"
     }
-    apiUrl := path.Join(endpoint, "{{basePathWithoutHost}}", "{{path}}")
+	if endpoint[len(endpoint)-1] == '/' {
+		endpoint = endpoint[:len(endpoint)-1]
+	}
+
+    apiUrl := endpoint + path.Join("/", "{{basePathWithoutHost}}", "{{path}}")
     method := strings.ToUpper("{{httpMethod}}")
+    var contentType string
+    var formValues = url.Values{}
     var body io.Reader
 
     {{#allParams}}
@@ -124,18 +156,31 @@ func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)BuildHttpRe
         {{/isPathParam}}
         {{#isBodyParam}}
             if it.{{paramName}} != nil {
+                contentType = "application/json"
                 body = bodyToReader(it.{{paramName}})
             }
         {{/isBodyParam}}
+        {{#isFormParam}}
+            if it.{{paramName}} != nil {
+                formValues.Set("{{baseName}}", fmt.Sprintf("%v", *it.{{paramName}}))
+            }
+        {{/isFormParam}}
     {{/allParams}}
+
+	if len(formValues) != 0 {
+        contentType = "application/x-www-form-urlencoded"
+		body = strings.NewReader(formValues.Encode())
+	}
 
     request, err := http.NewRequest(method, apiUrl, body)
     if err != nil {
-        return nil, xerrors.Errorf("create request failed, %w", err)
+        return nil, xerrors.Errorf("create request failed: %w", err)
     }
 
+    if len(contentType) > 0 {
+        request.Header.Set("Content-Type", contentType)
+    }
     query := request.URL.Query()
-
     {{#allParams}}
         {{#isQueryParam}}
             if it.{{paramName}} != nil {
@@ -154,24 +199,24 @@ func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)BuildHttpRe
 
 // Fetch http request, returns raw response.
 // {{description}}
-func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)Fetch(ctx context.Context) (*http.Response, error) {
+func (it *{{classname}}{{operationIdCamelCase}}Request)Fetch(ctx context.Context) (*http.Response, error) {
     client := http.DefaultClient
     request, err := it.BuildHttpRequest()
     if err != nil {
-        return nil, xerrors.Errorf("http request builed failed, %w", err)
+        return nil, xerrors.Errorf("http request builed failed: %w", err)
     }
     if it.Intercept != nil {
         client, request = it.Intercept(client, request)
     }
     response, err := client.Do(request)
     if err != nil {
-        return nil, xerrors.Errorf("http fetch failed, %w", err)
+        return nil, xerrors.Errorf("http fetch failed: %w", err)
     }
     return response, nil
 }
 
 //noinspection GoUnusedFunction,GoSnakeCaseUsage
-func (it *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)dummyForCompiler() {
+func (it *{{classname}}{{operationIdCamelCase}}Request)dummyForCompiler() {
 	_, _ = ioutil.ReadAll(nil)
 	_, _ = url.Parse("")
 	_ = xerrors.Errorf("")

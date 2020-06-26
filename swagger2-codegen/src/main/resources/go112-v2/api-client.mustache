@@ -38,8 +38,8 @@ func New{{classname}}() *{{classname}} {
 }
 
 {{#operation}}
-func (it *{{classname}}){{operationIdCamelCase}}{{httpMethod}}(builder func(*{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request)) *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request {
-    result := &{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request {
+func (it *{{classname}}){{operationIdCamelCase}}(builder func(*{{classname}}{{operationIdCamelCase}}Request)) *{{classname}}{{operationIdCamelCase}}Request {
+    result := &{{classname}}{{operationIdCamelCase}}Request {
         Endpoint:   it.Endpoint,
         Intercept:  it.Intercept,
     }

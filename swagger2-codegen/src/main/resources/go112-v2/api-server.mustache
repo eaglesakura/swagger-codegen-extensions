@@ -23,8 +23,8 @@ type {{classname}}Controller struct {
 
 {{#operations}}{{#operation}}
     // parse {{classname}}{{operationIdCamelCase}}Request object from http.Request
-    func Parse{{classname}}{{operationIdCamelCase}}Request(request *http.Request) (*{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request, error) {
-        result := &{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request{
+    func Parse{{classname}}{{operationIdCamelCase}}Request(request *http.Request) (*{{classname}}{{operationIdCamelCase}}Request, error) {
+        result := &{{classname}}{{operationIdCamelCase}}Request{
         }
 
         pathValues := mux.Vars(request)
@@ -71,7 +71,7 @@ type {{classname}}Controller struct {
     // {{{summary}}}
     // {{{descripotion}}}
     // {{{notes}}}
-    func (it *{{classname}}Controller)Handle{{{nickname}}}{{{httpMethod}}}(handler func(httpRequest *http.Request, swaggerRequest *{{classname}}{{operationIdCamelCase}}{{httpMethod}}Request) (response SwaggerResponse, err error)) {
+    func (it *{{classname}}Controller)Handle{{{nickname}}}(handler func(httpRequest *http.Request, swaggerRequest *{{classname}}{{operationIdCamelCase}}Request) (response SwaggerResponse, err error)) {
         r := it.router
         r.Methods(strings.ToUpper("{{httpMethod}}")).Path(path.Join("{{basePathWithoutHost}}", "{{path}}")).HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
             var response SwaggerResponse

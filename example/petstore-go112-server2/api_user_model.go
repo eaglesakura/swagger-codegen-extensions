@@ -29,6 +29,26 @@ type UserApiCreateUserPostRequest struct {
 	Body *User
 }
 
+// Getter for Endpoint
+func (it *UserApiCreateUserPostRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *UserApiCreateUserPostRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *UserApiCreateUserPostRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *UserApiCreateUserPostRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
+}
+
 // Validation parameter
 func (it *UserApiCreateUserPostRequest) Valid() error {
 
@@ -76,15 +96,15 @@ func (it *UserApiCreateUserPostRequest) Execute(ctx context.Context) (success []
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -106,7 +126,7 @@ func (it *UserApiCreateUserPostRequest) BuildHttpRequest() (*http.Request, error
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -121,14 +141,14 @@ func (it *UserApiCreateUserPostRequest) Fetch(ctx context.Context) (*http.Respon
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -156,6 +176,26 @@ type UserApiCreateUsersWithArrayInputPostRequest struct {
 
 	// List of user object
 	Body *[]User
+}
+
+// Getter for Endpoint
+func (it *UserApiCreateUsersWithArrayInputPostRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *UserApiCreateUsersWithArrayInputPostRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *UserApiCreateUsersWithArrayInputPostRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *UserApiCreateUsersWithArrayInputPostRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -205,15 +245,15 @@ func (it *UserApiCreateUsersWithArrayInputPostRequest) Execute(ctx context.Conte
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -235,7 +275,7 @@ func (it *UserApiCreateUsersWithArrayInputPostRequest) BuildHttpRequest() (*http
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -250,14 +290,14 @@ func (it *UserApiCreateUsersWithArrayInputPostRequest) Fetch(ctx context.Context
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -285,6 +325,26 @@ type UserApiCreateUsersWithListInputPostRequest struct {
 
 	// List of user object
 	Body *[]User
+}
+
+// Getter for Endpoint
+func (it *UserApiCreateUsersWithListInputPostRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *UserApiCreateUsersWithListInputPostRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *UserApiCreateUsersWithListInputPostRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *UserApiCreateUsersWithListInputPostRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -334,15 +394,15 @@ func (it *UserApiCreateUsersWithListInputPostRequest) Execute(ctx context.Contex
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -364,7 +424,7 @@ func (it *UserApiCreateUsersWithListInputPostRequest) BuildHttpRequest() (*http.
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -379,14 +439,14 @@ func (it *UserApiCreateUsersWithListInputPostRequest) Fetch(ctx context.Context)
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -414,6 +474,26 @@ type UserApiDeleteUserDeleteRequest struct {
 
 	// The name that needs to be deleted
 	Username *string
+}
+
+// Getter for Endpoint
+func (it *UserApiDeleteUserDeleteRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *UserApiDeleteUserDeleteRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *UserApiDeleteUserDeleteRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *UserApiDeleteUserDeleteRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -463,15 +543,15 @@ func (it *UserApiDeleteUserDeleteRequest) Execute(ctx context.Context) (success 
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -493,7 +573,7 @@ func (it *UserApiDeleteUserDeleteRequest) BuildHttpRequest() (*http.Request, err
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -508,14 +588,14 @@ func (it *UserApiDeleteUserDeleteRequest) Fetch(ctx context.Context) (*http.Resp
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -543,6 +623,26 @@ type UserApiGetUserByNameGetRequest struct {
 
 	// The name that needs to be fetched. Use user1 for testing.
 	Username *string
+}
+
+// Getter for Endpoint
+func (it *UserApiGetUserByNameGetRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *UserApiGetUserByNameGetRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *UserApiGetUserByNameGetRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *UserApiGetUserByNameGetRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -592,21 +692,21 @@ func (it *UserApiGetUserByNameGetRequest) Execute(ctx context.Context) (success 
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	var model User
 	err = json.Unmarshal(body, &model)
 	if err != nil {
-		return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+		return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
 	}
 	return &model, body, resp, nil
 }
@@ -627,7 +727,7 @@ func (it *UserApiGetUserByNameGetRequest) BuildHttpRequest() (*http.Request, err
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -642,14 +742,14 @@ func (it *UserApiGetUserByNameGetRequest) Fetch(ctx context.Context) (*http.Resp
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -679,6 +779,26 @@ type UserApiLoginUserGetRequest struct {
 	Username *string
 	// The password for login in clear text
 	Password *string
+}
+
+// Getter for Endpoint
+func (it *UserApiLoginUserGetRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *UserApiLoginUserGetRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *UserApiLoginUserGetRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *UserApiLoginUserGetRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -759,21 +879,21 @@ func (it *UserApiLoginUserGetRequest) Execute(ctx context.Context) (success *str
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	var model string
 	err = json.Unmarshal(body, &model)
 	if err != nil {
-		return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+		return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
 	}
 	return &model, body, resp, nil
 }
@@ -790,7 +910,7 @@ func (it *UserApiLoginUserGetRequest) BuildHttpRequest() (*http.Request, error) 
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -811,14 +931,14 @@ func (it *UserApiLoginUserGetRequest) Fetch(ctx context.Context) (*http.Response
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -845,6 +965,26 @@ type UserApiLogoutUserGetRequest struct {
 	Intercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)
 }
 
+// Getter for Endpoint
+func (it *UserApiLogoutUserGetRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *UserApiLogoutUserGetRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *UserApiLogoutUserGetRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *UserApiLogoutUserGetRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
+}
+
 // Validation parameter
 func (it *UserApiLogoutUserGetRequest) Valid() error {
 
@@ -861,15 +1001,15 @@ func (it *UserApiLogoutUserGetRequest) Execute(ctx context.Context) (success []b
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -887,7 +1027,7 @@ func (it *UserApiLogoutUserGetRequest) BuildHttpRequest() (*http.Request, error)
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -902,14 +1042,14 @@ func (it *UserApiLogoutUserGetRequest) Fetch(ctx context.Context) (*http.Respons
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -939,6 +1079,26 @@ type UserApiUpdateUserPutRequest struct {
 	Username *string
 	// Updated user object
 	Body *User
+}
+
+// Getter for Endpoint
+func (it *UserApiUpdateUserPutRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *UserApiUpdateUserPutRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *UserApiUpdateUserPutRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *UserApiUpdateUserPutRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -1019,15 +1179,15 @@ func (it *UserApiUpdateUserPutRequest) Execute(ctx context.Context) (success []b
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -1052,7 +1212,7 @@ func (it *UserApiUpdateUserPutRequest) BuildHttpRequest() (*http.Request, error)
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -1067,14 +1227,14 @@ func (it *UserApiUpdateUserPutRequest) Fetch(ctx context.Context) (*http.Respons
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }

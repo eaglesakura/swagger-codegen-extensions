@@ -29,6 +29,26 @@ type PetApiAddPetPostRequest struct {
 	Body *Pet
 }
 
+// Getter for Endpoint
+func (it *PetApiAddPetPostRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *PetApiAddPetPostRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *PetApiAddPetPostRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *PetApiAddPetPostRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
+}
+
 // Validation parameter
 func (it *PetApiAddPetPostRequest) Valid() error {
 
@@ -76,15 +96,15 @@ func (it *PetApiAddPetPostRequest) Execute(ctx context.Context) (success []byte,
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -106,7 +126,7 @@ func (it *PetApiAddPetPostRequest) BuildHttpRequest() (*http.Request, error) {
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -121,14 +141,14 @@ func (it *PetApiAddPetPostRequest) Fetch(ctx context.Context) (*http.Response, e
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -158,6 +178,26 @@ type PetApiDeletePetDeleteRequest struct {
 	PetId *int64
 	//
 	ApiKey *string
+}
+
+// Getter for Endpoint
+func (it *PetApiDeletePetDeleteRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *PetApiDeletePetDeleteRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *PetApiDeletePetDeleteRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *PetApiDeletePetDeleteRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -234,15 +274,15 @@ func (it *PetApiDeletePetDeleteRequest) Execute(ctx context.Context) (success []
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -264,7 +304,7 @@ func (it *PetApiDeletePetDeleteRequest) BuildHttpRequest() (*http.Request, error
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -282,14 +322,14 @@ func (it *PetApiDeletePetDeleteRequest) Fetch(ctx context.Context) (*http.Respon
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -317,6 +357,26 @@ type PetApiFindPetsByStatusGetRequest struct {
 
 	// Status values that need to be considered for filter
 	Status *[]string
+}
+
+// Getter for Endpoint
+func (it *PetApiFindPetsByStatusGetRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *PetApiFindPetsByStatusGetRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *PetApiFindPetsByStatusGetRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *PetApiFindPetsByStatusGetRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -366,21 +426,21 @@ func (it *PetApiFindPetsByStatusGetRequest) Execute(ctx context.Context) (succes
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	var model []Pet
 	err = json.Unmarshal(body, &model)
 	if err != nil {
-		return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+		return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
 	}
 	return &model, body, resp, nil
 }
@@ -397,7 +457,7 @@ func (it *PetApiFindPetsByStatusGetRequest) BuildHttpRequest() (*http.Request, e
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -415,14 +475,14 @@ func (it *PetApiFindPetsByStatusGetRequest) Fetch(ctx context.Context) (*http.Re
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -450,6 +510,26 @@ type PetApiFindPetsByTagsGetRequest struct {
 
 	// Tags to filter by
 	Tags *[]string
+}
+
+// Getter for Endpoint
+func (it *PetApiFindPetsByTagsGetRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *PetApiFindPetsByTagsGetRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *PetApiFindPetsByTagsGetRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *PetApiFindPetsByTagsGetRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -499,21 +579,21 @@ func (it *PetApiFindPetsByTagsGetRequest) Execute(ctx context.Context) (success 
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	var model []Pet
 	err = json.Unmarshal(body, &model)
 	if err != nil {
-		return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+		return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
 	}
 	return &model, body, resp, nil
 }
@@ -530,7 +610,7 @@ func (it *PetApiFindPetsByTagsGetRequest) BuildHttpRequest() (*http.Request, err
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -548,14 +628,14 @@ func (it *PetApiFindPetsByTagsGetRequest) Fetch(ctx context.Context) (*http.Resp
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -583,6 +663,26 @@ type PetApiGetPetByIdGetRequest struct {
 
 	// ID of pet to return
 	PetId *int64
+}
+
+// Getter for Endpoint
+func (it *PetApiGetPetByIdGetRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *PetApiGetPetByIdGetRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *PetApiGetPetByIdGetRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *PetApiGetPetByIdGetRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -632,21 +732,21 @@ func (it *PetApiGetPetByIdGetRequest) Execute(ctx context.Context) (success *Pet
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	var model Pet
 	err = json.Unmarshal(body, &model)
 	if err != nil {
-		return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+		return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
 	}
 	return &model, body, resp, nil
 }
@@ -667,7 +767,7 @@ func (it *PetApiGetPetByIdGetRequest) BuildHttpRequest() (*http.Request, error) 
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -682,14 +782,14 @@ func (it *PetApiGetPetByIdGetRequest) Fetch(ctx context.Context) (*http.Response
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -717,6 +817,26 @@ type PetApiUpdatePetPutRequest struct {
 
 	// Pet object that needs to be added to the store
 	Body *Pet
+}
+
+// Getter for Endpoint
+func (it *PetApiUpdatePetPutRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *PetApiUpdatePetPutRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *PetApiUpdatePetPutRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *PetApiUpdatePetPutRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -766,15 +886,15 @@ func (it *PetApiUpdatePetPutRequest) Execute(ctx context.Context) (success []byt
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -796,7 +916,7 @@ func (it *PetApiUpdatePetPutRequest) BuildHttpRequest() (*http.Request, error) {
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -811,14 +931,14 @@ func (it *PetApiUpdatePetPutRequest) Fetch(ctx context.Context) (*http.Response,
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -850,6 +970,26 @@ type PetApiUpdatePetWithFormPostRequest struct {
 	Name *string
 	// Updated status of the pet
 	Status *string
+}
+
+// Getter for Endpoint
+func (it *PetApiUpdatePetWithFormPostRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *PetApiUpdatePetWithFormPostRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *PetApiUpdatePetWithFormPostRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *PetApiUpdatePetWithFormPostRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -953,15 +1093,15 @@ func (it *PetApiUpdatePetWithFormPostRequest) Execute(ctx context.Context) (succ
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	return body, body, resp, nil
@@ -983,7 +1123,7 @@ func (it *PetApiUpdatePetWithFormPostRequest) BuildHttpRequest() (*http.Request,
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -998,14 +1138,14 @@ func (it *PetApiUpdatePetWithFormPostRequest) Fetch(ctx context.Context) (*http.
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }
@@ -1037,6 +1177,26 @@ type PetApiUploadFilePostRequest struct {
 	AdditionalMetadata *string
 	// file to upload
 	File *io.Reader
+}
+
+// Getter for Endpoint
+func (it *PetApiUploadFilePostRequest) GetEndpoint() string {
+	return it.Endpoint
+}
+
+// Setter for Endpoint
+func (it *PetApiUploadFilePostRequest) SetEndpoint(newEndpoint string) {
+	it.Endpoint = newEndpoint
+}
+
+// Getter for Intercept function
+func (it *PetApiUploadFilePostRequest) GetIntercept() func(client *http.Client, request *http.Request) (*http.Client, *http.Request) {
+	return it.Intercept
+}
+
+// Setter for Intercept function
+func (it *PetApiUploadFilePostRequest) SetIntercept(newIntercept func(client *http.Client, request *http.Request) (*http.Client, *http.Request)) {
+	it.Intercept = newIntercept
 }
 
 // Validation parameter
@@ -1140,21 +1300,21 @@ func (it *PetApiUploadFilePostRequest) Execute(ctx context.Context) (success *Ap
 		}()
 	}
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http fetch failed, : %w", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		return nil, nil, nil, xerrors.Errorf("http read failed, %w", err)
+		return nil, nil, nil, xerrors.Errorf("http read failed: %w", err)
 	}
 	if resp.StatusCode/100 != 2 {
-		return nil, body, resp, xerrors.Errorf("http bad response, %w", err)
+		return nil, body, resp, xerrors.Errorf("http bad response: %w", err)
 	}
 
 	var model ApiResponse
 	err = json.Unmarshal(body, &model)
 	if err != nil {
-		return nil, body, resp, xerrors.Errorf("json parse failed, %w", err)
+		return nil, body, resp, xerrors.Errorf("json parse failed: %w", err)
 	}
 	return &model, body, resp, nil
 }
@@ -1175,7 +1335,7 @@ func (it *PetApiUploadFilePostRequest) BuildHttpRequest() (*http.Request, error)
 
 	request, err := http.NewRequest(method, apiUrl, body)
 	if err != nil {
-		return nil, xerrors.Errorf("create request failed, %w", err)
+		return nil, xerrors.Errorf("create request failed: %w", err)
 	}
 
 	query := request.URL.Query()
@@ -1190,14 +1350,14 @@ func (it *PetApiUploadFilePostRequest) Fetch(ctx context.Context) (*http.Respons
 	client := http.DefaultClient
 	request, err := it.BuildHttpRequest()
 	if err != nil {
-		return nil, xerrors.Errorf("http request builed failed, %w", err)
+		return nil, xerrors.Errorf("http request builed failed: %w", err)
 	}
 	if it.Intercept != nil {
 		client, request = it.Intercept(client, request)
 	}
 	response, err := client.Do(request)
 	if err != nil {
-		return nil, xerrors.Errorf("http fetch failed, %w", err)
+		return nil, xerrors.Errorf("http fetch failed: %w", err)
 	}
 	return response, nil
 }

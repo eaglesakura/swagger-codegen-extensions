@@ -9,44 +9,44 @@ import (
 	"time"
 )
 
-type PetSTATUS string
-type PetSTATUSArray []PetSTATUS
+type PetStatus string
+type PetStatusArray []PetStatus
 
-const PetSTATUS_available = PetSTATUS("available")
-const PetSTATUS_pending = PetSTATUS("pending")
-const PetSTATUS_sold = PetSTATUS("sold")
+const PetStatus_available = PetStatus("available")
+const PetStatus_pending = PetStatus("pending")
+const PetStatus_sold = PetStatus("sold")
 
-func (it PetSTATUS) String() string {
+func (it PetStatus) String() string {
 	return string(it)
 }
 
-// Pattern for PetSTATUS
-var PetSTATUSValues = []PetSTATUS{
+// Pattern for PetStatus
+var PetStatusValues = []PetStatus{
 
-	PetSTATUS_available,
+	PetStatus_available,
 
-	PetSTATUS_pending,
+	PetStatus_pending,
 
-	PetSTATUS_sold,
+	PetStatus_sold,
 }
 
-func (it *PetSTATUS) Valid() error {
+func (it *PetStatus) Valid() error {
 	if it == nil {
-		return xerrors.Errorf("PetSTATUS(nil)")
+		return xerrors.Errorf("PetStatus(nil)")
 	}
 	switch *it {
 
-	case PetSTATUS_available:
+	case PetStatus_available:
 		return nil
 
-	case PetSTATUS_pending:
+	case PetStatus_pending:
 		return nil
 
-	case PetSTATUS_sold:
+	case PetStatus_sold:
 		return nil
 
 	}
-	return xerrors.Errorf("invalid PetSTATUS(%v)", string(*it))
+	return xerrors.Errorf("invalid PetStatus(%v)", string(*it))
 }
 
 //
@@ -122,13 +122,13 @@ type IPet interface {
 	RemoveStatus()
 
 	// Get Status property or default value.
-	GetStatus() PetSTATUS
+	GetStatus() PetStatus
 
 	// Get Status property or panic().
-	RequireStatus() PetSTATUS
+	RequireStatus() PetStatus
 
 	// Set Status property.
-	SetStatus(newStatus PetSTATUS)
+	SetStatus(newStatus PetStatus)
 }
 
 //
@@ -144,7 +144,7 @@ type Pet struct {
 	//
 	Tags *[]Tag `json:"tags,omitempty"`
 	// pet status in the store
-	Status *PetSTATUS `json:"status,omitempty"`
+	Status *PetStatus `json:"status,omitempty"`
 }
 type PetArray []Pet
 
@@ -166,7 +166,7 @@ func (it *Pet) MarshalCopy(result interface{}) error {
 	body, _ := json.Marshal(it)
 	err := json.Unmarshal(body, result)
 	if err != nil {
-		return xerrors.Errorf("Pet.MarshalCopy failed, to='%v', %w", result, err)
+		return xerrors.Errorf("Pet.MarshalCopy failed, to='%v': %w", result, err)
 	}
 	return nil
 }
@@ -312,12 +312,12 @@ func (it *Pet) RemoveStatus() {
 }
 
 // Set Status
-func (it *Pet) SetStatus(newStatus PetSTATUS) {
+func (it *Pet) SetStatus(newStatus PetStatus) {
 	it.Status = &newStatus
 }
 
 // Require value of Status
-func (it *Pet) RequireStatus() PetSTATUS {
+func (it *Pet) RequireStatus() PetStatus {
 	if it.Status == nil {
 		panic(xerrors.Errorf("Pet.Status is nil"))
 	}
@@ -325,11 +325,11 @@ func (it *Pet) RequireStatus() PetSTATUS {
 }
 
 // Get value of Status / or default
-func (it *Pet) GetStatus() PetSTATUS {
+func (it *Pet) GetStatus() PetStatus {
 	if it.Status != nil {
 		return *it.Status
 	}
-	result := new(PetSTATUS)
+	result := new(PetStatus)
 	return *result
 }
 
@@ -351,12 +351,12 @@ func (it *Pet) Write(writer http.ResponseWriter, request *http.Request) {
 func (it *Pet) Valid() error {
 	if it.Id != nil {
 		if err := validationValue(it.Id); err != nil {
-			return xerrors.Errorf("'Pet.Id' validation error, %w", err)
+			return xerrors.Errorf("'Pet.Id' validation error: %w", err)
 		}
 	}
 	if it.Category != nil {
 		if err := validationValue(it.Category); err != nil {
-			return xerrors.Errorf("'Pet.Category' validation error, %w", err)
+			return xerrors.Errorf("'Pet.Category' validation error: %w", err)
 		}
 	}
 	if it.Name == nil {
@@ -364,7 +364,7 @@ func (it *Pet) Valid() error {
 	}
 	if it.Name != nil {
 		if err := validationValue(it.Name); err != nil {
-			return xerrors.Errorf("'Pet.Name' validation error, %w", err)
+			return xerrors.Errorf("'Pet.Name' validation error: %w", err)
 		}
 	}
 	if it.PhotoUrls == nil {
@@ -372,17 +372,17 @@ func (it *Pet) Valid() error {
 	}
 	if it.PhotoUrls != nil {
 		if err := validationValue(it.PhotoUrls); err != nil {
-			return xerrors.Errorf("'Pet.PhotoUrls' validation error, %w", err)
+			return xerrors.Errorf("'Pet.PhotoUrls' validation error: %w", err)
 		}
 	}
 	if it.Tags != nil {
 		if err := validationValue(it.Tags); err != nil {
-			return xerrors.Errorf("'Pet.Tags' validation error, %w", err)
+			return xerrors.Errorf("'Pet.Tags' validation error: %w", err)
 		}
 	}
 	if it.Status != nil {
 		if err := validationValue(it.Status); err != nil {
-			return xerrors.Errorf("'Pet.Status' validation error, %w", err)
+			return xerrors.Errorf("'Pet.Status' validation error: %w", err)
 		}
 	}
 

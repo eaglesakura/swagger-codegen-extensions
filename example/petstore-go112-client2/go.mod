@@ -1,4 +1,4 @@
-module petstore
+module example.com/petstore
 
 go 1.12
 

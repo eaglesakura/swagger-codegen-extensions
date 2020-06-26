@@ -154,7 +154,7 @@ func (it *User) MarshalCopy(result interface{}) error {
 	body, _ := json.Marshal(it)
 	err := json.Unmarshal(body, result)
 	if err != nil {
-		return xerrors.Errorf("User.MarshalCopy failed, to='%v', %w", result, err)
+		return xerrors.Errorf("User.MarshalCopy failed, to='%v': %w", result, err)
 	}
 	return nil
 }
@@ -393,42 +393,42 @@ func (it *User) Write(writer http.ResponseWriter, request *http.Request) {
 func (it *User) Valid() error {
 	if it.Id != nil {
 		if err := validationValue(it.Id); err != nil {
-			return xerrors.Errorf("'User.Id' validation error, %w", err)
+			return xerrors.Errorf("'User.Id' validation error: %w", err)
 		}
 	}
 	if it.Username != nil {
 		if err := validationValue(it.Username); err != nil {
-			return xerrors.Errorf("'User.Username' validation error, %w", err)
+			return xerrors.Errorf("'User.Username' validation error: %w", err)
 		}
 	}
 	if it.FirstName != nil {
 		if err := validationValue(it.FirstName); err != nil {
-			return xerrors.Errorf("'User.FirstName' validation error, %w", err)
+			return xerrors.Errorf("'User.FirstName' validation error: %w", err)
 		}
 	}
 	if it.LastName != nil {
 		if err := validationValue(it.LastName); err != nil {
-			return xerrors.Errorf("'User.LastName' validation error, %w", err)
+			return xerrors.Errorf("'User.LastName' validation error: %w", err)
 		}
 	}
 	if it.Email != nil {
 		if err := validationValue(it.Email); err != nil {
-			return xerrors.Errorf("'User.Email' validation error, %w", err)
+			return xerrors.Errorf("'User.Email' validation error: %w", err)
 		}
 	}
 	if it.Password != nil {
 		if err := validationValue(it.Password); err != nil {
-			return xerrors.Errorf("'User.Password' validation error, %w", err)
+			return xerrors.Errorf("'User.Password' validation error: %w", err)
 		}
 	}
 	if it.Phone != nil {
 		if err := validationValue(it.Phone); err != nil {
-			return xerrors.Errorf("'User.Phone' validation error, %w", err)
+			return xerrors.Errorf("'User.Phone' validation error: %w", err)
 		}
 	}
 	if it.UserStatus != nil {
 		if err := validationValue(it.UserStatus); err != nil {
-			return xerrors.Errorf("'User.UserStatus' validation error, %w", err)
+			return xerrors.Errorf("'User.UserStatus' validation error: %w", err)
 		}
 	}
 

@@ -2,16 +2,12 @@ package {{packageName}}
 
 // link: https://github.com/eaglesakura/swagger-codegen-extensions
 
-import (
-	"encoding/json"
-	"golang.org/x/xerrors"
-    "net/http"
-    "time"
-)
-
 
 {{#models}}{{#model}}
 {{#isEnum}}
+import (
+    "golang.org/x/xerrors"
+)
     {{#allowableValues}}
         type {{classname}} string
         type {{classname}}Array []{{classname}}
@@ -46,6 +42,13 @@ import (
 
 {{/isEnum}}
 {{^isEnum}}
+
+import (
+    "encoding/json"
+    "golang.org/x/xerrors"
+    "net/http"
+    "time"
+)
 
 {{#vars}}{{#isEnum}}
     {{#allowableValues}}
@@ -133,7 +136,7 @@ func (it *{{classname}})MarshalCopy(result interface{}) error {
     body, _ := json.Marshal(it)
     err := json.Unmarshal(body, result)
     if err != nil {
-        return xerrors.Errorf("{{classname}}.MarshalCopy failed, to='%v', %w", result, err)
+        return xerrors.Errorf("{{classname}}.MarshalCopy failed, to='%v': %w", result, err)
     }
     return nil
 }
@@ -178,7 +181,11 @@ func (it *{{classname}})Json() []byte {
 }
 
 func (it *{{classname}}) Write(writer http.ResponseWriter, request *http.Request) {
+    header := writer.Header()
     buf, _ := json.Marshal(it)
+
+    header.Set("Content-Type", "application/json")
+    writer.WriteHeader(http.StatusOK)
     _, _ = writer.Write(buf)
 }
 
@@ -204,7 +211,7 @@ func (it *{{classname}}) Valid() error {
         {{/maxLength}}
         if it.{{name}} != nil {
             if err := validationValue(it.{{name}}); err != nil {
-                return xerrors.Errorf("'{{classname}}.{{name}}' validation error, %w", err)
+                return xerrors.Errorf("'{{classname}}.{{name}}' validation error: %w", err)
             }
         }
     {{/vars}}

@@ -84,7 +84,7 @@ func (it *ApiResponse) MarshalCopy(result interface{}) error {
 	body, _ := json.Marshal(it)
 	err := json.Unmarshal(body, result)
 	if err != nil {
-		return xerrors.Errorf("ApiResponse.MarshalCopy failed, to='%v', %w", result, err)
+		return xerrors.Errorf("ApiResponse.MarshalCopy failed, to='%v': %w", result, err)
 	}
 	return nil
 }
@@ -188,17 +188,17 @@ func (it *ApiResponse) Write(writer http.ResponseWriter, request *http.Request) 
 func (it *ApiResponse) Valid() error {
 	if it.Code != nil {
 		if err := validationValue(it.Code); err != nil {
-			return xerrors.Errorf("'ApiResponse.Code' validation error, %w", err)
+			return xerrors.Errorf("'ApiResponse.Code' validation error: %w", err)
 		}
 	}
 	if it.Type != nil {
 		if err := validationValue(it.Type); err != nil {
-			return xerrors.Errorf("'ApiResponse.Type' validation error, %w", err)
+			return xerrors.Errorf("'ApiResponse.Type' validation error: %w", err)
 		}
 	}
 	if it.Message != nil {
 		if err := validationValue(it.Message); err != nil {
-			return xerrors.Errorf("'ApiResponse.Message' validation error, %w", err)
+			return xerrors.Errorf("'ApiResponse.Message' validation error: %w", err)
 		}
 	}
 

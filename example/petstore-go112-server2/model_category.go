@@ -70,7 +70,7 @@ func (it *Category) MarshalCopy(result interface{}) error {
 	body, _ := json.Marshal(it)
 	err := json.Unmarshal(body, result)
 	if err != nil {
-		return xerrors.Errorf("Category.MarshalCopy failed, to='%v', %w", result, err)
+		return xerrors.Errorf("Category.MarshalCopy failed, to='%v': %w", result, err)
 	}
 	return nil
 }
@@ -147,12 +147,12 @@ func (it *Category) Write(writer http.ResponseWriter, request *http.Request) {
 func (it *Category) Valid() error {
 	if it.Id != nil {
 		if err := validationValue(it.Id); err != nil {
-			return xerrors.Errorf("'Category.Id' validation error, %w", err)
+			return xerrors.Errorf("'Category.Id' validation error: %w", err)
 		}
 	}
 	if it.Name != nil {
 		if err := validationValue(it.Name); err != nil {
-			return xerrors.Errorf("'Category.Name' validation error, %w", err)
+			return xerrors.Errorf("'Category.Name' validation error: %w", err)
 		}
 	}
 
