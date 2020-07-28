@@ -46,9 +46,9 @@ interface {{classname}} {
     @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
     suspend fun {{nickname}}(
         {{#allParams}}
-            {{#-first}}@HeaderMap customHeaders: Map<String, String> = emptyMap(),{{/-first}}
             {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Path("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
-            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},
+            {{#-last}}@HeaderMap customHeaders: Map<String, String> = emptyMap(){{/-last}}
         {{/allParams}}
         {{^allParams}}
             @HeaderMap customHeaders: Map<String, String> = emptyMap()
@@ -63,34 +63,13 @@ interface {{classname}} {
 {{/allParams}}
      * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}
      */
-    @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
-    suspend fun {{nickname}}Body(
-        {{#allParams}}
-            {{#-first}}@HeaderMap customHeaders: Map<String, String> = emptyMap(),{{/-first}}
-            {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Path("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
-            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
-        {{/allParams}}
-        {{^allParams}}
-            @HeaderMap customHeaders: Map<String, String> = emptyMap()
-        {{/allParams}}
-    ): Response<ResponseBody>
-
-    /**
-     * {{summary}}
-     * {{notes}}
-     *
-{{#allParams}}     * @param {{{paramName}}} {{{description}}}{{#example}}/ example :: {{{example}}}{{/example}}
-{{/allParams}}
-     * @return {{#returnType}}{{{returnType}}}{{/returnType}}{{^returnType}}void{{/returnType}}
-     */
     @Streaming
     @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
     suspend fun {{nickname}}Streaming(
         {{#allParams}}
-            {{#-first}}@HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            {{/-first}}
             {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Path("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
-            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},
+            {{#-last}}@HeaderMap customHeaders: Map<String, String> = emptyMap(){{/-last}}
         {{/allParams}}
         {{^allParams}}
             @HeaderMap customHeaders: Map<String, String> = emptyMap()

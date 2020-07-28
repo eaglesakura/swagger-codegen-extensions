@@ -12,6 +12,7 @@ import com.squareup.moshi.* // ktlint-disable
  *
  * @link https://github.com/eaglesakura/swagger-codegen-extensions
  **/
+@Suppress("unused")
 {{#isEnum}}
 data class {{classname}}(private val value: String) {
     override fun toString(): String {
@@ -68,7 +69,21 @@ data class {{classname}}(
     {{/isEnum}}
 {{/vars}}
 ) {
-    companion object
+
+    /**
+     * Convert to Json.
+     */
+    fun toJson(): String =
+        InternalUtils.moshi.adapter({{classname}}::class.java).toJson(this)
+
+    companion object {
+        /**
+         * Try parse json.
+         */
+        fun parse(json: String): {{classname}}? {
+            return InternalUtils.moshi.adapter({{classname}}::class.java).fromJson(json)
+        }
+    }
 }
 
 {{#vars}}{{#isEnum}}
