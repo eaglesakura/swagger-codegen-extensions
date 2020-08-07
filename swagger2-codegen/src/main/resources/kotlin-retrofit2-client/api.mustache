@@ -45,14 +45,12 @@ interface {{classname}} {
      */
     @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
     suspend fun {{nickname}}(
-        {{#allParams}}
-            {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Path("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
-            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},
-            {{#-last}}@HeaderMap customHeaders: Map<String, String> = emptyMap(){{/-last}}
-        {{/allParams}}
-        {{^allParams}}
-            @HeaderMap customHeaders: Map<String, String> = emptyMap()
-        {{/allParams}}
+        {{#allParams}}{{#isHeaderParam}}@Header("{{{baseName}}}") {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},{{/isHeaderParam}}{{/allParams}}
+        {{#allParams}}{{#isPathParam}}@Path("{{{baseName}}}") {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},{{/isPathParam}}{{/allParams}}
+        {{#allParams}}{{#isQueryParam}}@Query("{{{baseName}}}") {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},{{/isQueryParam}}{{/allParams}}
+        {{#allParams}}{{#isBodyParam}}@Body {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},{{/isBodyParam}}{{/allParams}}
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): {{#returnType}}Response<{{{returnType}}}>{{/returnType}}{{^returnType}}Response<ResponseBody>{{/returnType}}
 
     /**
@@ -66,14 +64,12 @@ interface {{classname}} {
     @Streaming
     @{{httpMethod}}("{{basePathWithoutHost}}{{path}}")
     suspend fun {{nickname}}Streaming(
-        {{#allParams}}
-            {{#isHeaderParam}}@Header("{{{baseName}}}"){{/isHeaderParam}}{{#isPathParam}}@Path("{{{baseName}}}"){{/isPathParam}}{{#isQueryParam}}@Query("{{{baseName}}}"){{/isQueryParam}}{{#isBodyParam}}@Body {{/isBodyParam}}
-            {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},
-            {{#-last}}@HeaderMap customHeaders: Map<String, String> = emptyMap(){{/-last}}
-        {{/allParams}}
-        {{^allParams}}
-            @HeaderMap customHeaders: Map<String, String> = emptyMap()
-        {{/allParams}}
+        {{#allParams}}{{#isHeaderParam}}@Header("{{{baseName}}}") {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},{{/isHeaderParam}}{{/allParams}}
+        {{#allParams}}{{#isPathParam}}@Path("{{{baseName}}}") {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},{{/isPathParam}}{{/allParams}}
+        {{#allParams}}{{#isQueryParam}}@Query("{{{baseName}}}") {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},{{/isQueryParam}}{{/allParams}}
+        {{#allParams}}{{#isBodyParam}}@Body {{{paramName}}}: {{{dataType}}}{{^required}}? = null{{/required}},{{/isBodyParam}}{{/allParams}}
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
 {{/operation}}
     companion object {
