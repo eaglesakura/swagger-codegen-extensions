@@ -113,7 +113,7 @@ class StoreApi {
       throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
-          new Map<String, int>.from(apiClient.deserialize(response.body, 'Map<String, int>')) ;
+          new Map<String, int>.from(apiClient.deserialize(utf8.decode(response.bodyBytes), 'Map<String, int>')) ;
     } else {
       return null;
     }
@@ -170,7 +170,7 @@ class StoreApi {
       throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
-          apiClient.deserialize(response.body, 'Order') as Order ;
+          apiClient.deserialize(utf8.decode(response.bodyBytes), 'Order') as Order ;
     } else {
       return null;
     }
@@ -227,7 +227,7 @@ class StoreApi {
       throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
-          apiClient.deserialize(response.body, 'Order') as Order ;
+          apiClient.deserialize(utf8.decode(response.bodyBytes), 'Order') as Order ;
     } else {
       return null;
     }

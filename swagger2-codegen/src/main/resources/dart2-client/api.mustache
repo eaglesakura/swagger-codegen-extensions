@@ -91,14 +91,14 @@ class {{classname}} {
     } else if(response.body != null) {
       return 
       {{#isListContainer}}
-        {{#returnType}}(apiClient.deserialize(response.body, '{{{returnType}}}') as List).map((item) => item as {{returnBaseType}}).toList();{{/returnType}}
+        {{#returnType}}(apiClient.deserialize(utf8.decode(response.bodyBytes), '{{{returnType}}}') as List).map((item) => item as {{returnBaseType}}).toList();{{/returnType}}
       {{/isListContainer}}
       {{^isListContainer}}
         {{#isMapContainer}}
-          {{#returnType}}new {{{returnType}}}.from(apiClient.deserialize(response.body, '{{{returnType}}}')) {{/returnType}};
+          {{#returnType}}new {{{returnType}}}.from(apiClient.deserialize(utf8.decode(response.bodyBytes), '{{{returnType}}}')) {{/returnType}};
         {{/isMapContainer}}
         {{^isMapContainer}}
-          {{#returnType}}apiClient.deserialize(response.body, '{{{returnType}}}') as {{{returnType}}} {{/returnType}};
+          {{#returnType}}apiClient.deserialize(utf8.decode(response.bodyBytes), '{{{returnType}}}') as {{{returnType}}} {{/returnType}};
         {{/isMapContainer}}
       {{/isListContainer}}
     } else {

@@ -175,7 +175,7 @@ class PetApi {
       throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
-        (apiClient.deserialize(response.body, 'List<Pet>') as List).map((item) => item as Pet).toList();
+        (apiClient.deserialize(utf8.decode(response.bodyBytes), 'List<Pet>') as List).map((item) => item as Pet).toList();
     } else {
       return null;
     }
@@ -233,7 +233,7 @@ class PetApi {
       throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
-        (apiClient.deserialize(response.body, 'List<Pet>') as List).map((item) => item as Pet).toList();
+        (apiClient.deserialize(utf8.decode(response.bodyBytes), 'List<Pet>') as List).map((item) => item as Pet).toList();
     } else {
       return null;
     }
@@ -290,7 +290,7 @@ class PetApi {
       throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
-          apiClient.deserialize(response.body, 'Pet') as Pet ;
+          apiClient.deserialize(utf8.decode(response.bodyBytes), 'Pet') as Pet ;
     } else {
       return null;
     }
@@ -489,7 +489,7 @@ if (status != null)
       throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
-          apiClient.deserialize(response.body, 'ApiResponse') as ApiResponse ;
+          apiClient.deserialize(utf8.decode(response.bodyBytes), 'ApiResponse') as ApiResponse ;
     } else {
       return null;
     }

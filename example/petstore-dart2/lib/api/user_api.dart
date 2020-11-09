@@ -287,7 +287,7 @@ class UserApi {
       throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
-          apiClient.deserialize(response.body, 'User') as User ;
+          apiClient.deserialize(utf8.decode(response.bodyBytes), 'User') as User ;
     } else {
       return null;
     }
@@ -349,7 +349,7 @@ class UserApi {
       throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
-          apiClient.deserialize(response.body, 'String') as String ;
+          apiClient.deserialize(utf8.decode(response.bodyBytes), 'String') as String ;
     } else {
       return null;
     }
