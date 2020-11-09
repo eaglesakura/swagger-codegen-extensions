@@ -20,7 +20,7 @@ version: 1.0.0
 description: Swagger API client
 dependencies:
   client_petstore:
-    git: https://github.com/GIT_USER_ID/GIT_REPO_ID.git
+    git: https://github.com//.git
       version: 'any'
 ```
 

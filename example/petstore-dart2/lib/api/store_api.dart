@@ -26,6 +26,11 @@ class StoreApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -51,7 +56,7 @@ class StoreApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -75,6 +80,11 @@ class StoreApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -100,7 +110,7 @@ class StoreApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           new Map<String, int>.from(apiClient.deserialize(response.body, 'Map<String, int>')) ;
@@ -127,6 +137,11 @@ class StoreApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -152,7 +167,7 @@ class StoreApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           apiClient.deserialize(response.body, 'Order') as Order ;
@@ -179,6 +194,11 @@ class StoreApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -204,7 +224,7 @@ class StoreApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           apiClient.deserialize(response.body, 'Order') as Order ;

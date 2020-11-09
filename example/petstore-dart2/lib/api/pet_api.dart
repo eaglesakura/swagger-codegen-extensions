@@ -26,6 +26,11 @@ class PetApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = ["application/json","application/xml"];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -51,7 +56,7 @@ class PetApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -79,6 +84,11 @@ class PetApi {
     Map<String, String> formParams = {};
     headerParams["api_key"] = apiKey;
 
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -104,7 +114,7 @@ class PetApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -132,6 +142,11 @@ class PetApi {
     Map<String, String> formParams = {};
       queryParams.addAll(_convertParametersForCollectionFormat("multi", "status", status));
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -157,7 +172,7 @@ class PetApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
         (apiClient.deserialize(response.body, 'List<Pet>') as List).map((item) => item as Pet).toList();
@@ -185,6 +200,11 @@ class PetApi {
     Map<String, String> formParams = {};
       queryParams.addAll(_convertParametersForCollectionFormat("multi", "tags", tags));
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -210,7 +230,7 @@ class PetApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
         (apiClient.deserialize(response.body, 'List<Pet>') as List).map((item) => item as Pet).toList();
@@ -237,6 +257,11 @@ class PetApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -262,7 +287,7 @@ class PetApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           apiClient.deserialize(response.body, 'Pet') as Pet ;
@@ -289,6 +314,11 @@ class PetApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = ["application/json","application/xml"];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -314,7 +344,7 @@ class PetApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -341,6 +371,11 @@ class PetApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = ["application/x-www-form-urlencoded"];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -380,7 +415,7 @@ if (status != null)
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -407,6 +442,11 @@ if (status != null)
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = ["multipart/form-data"];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -446,7 +486,7 @@ if (status != null)
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           apiClient.deserialize(response.body, 'ApiResponse') as ApiResponse ;

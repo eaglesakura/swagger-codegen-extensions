@@ -82,12 +82,27 @@ class ApiClient {
     return _deserialize(decodedJson, targetType);
   }
 
+  dynamic _shrink(dynamic obj) {
+    if (obj is Map) {
+      final result = {};
+      obj.forEach((key, value) {
+        if (value != null) {
+          result[key] = _shrink(value);
+        }
+      });
+      return result;
+    } else {
+      return obj;
+    }
+  }
+
   String serialize(Object obj) {
     String serialized = '';
     if (obj == null) {
       serialized = '';
     } else {
-      serialized = json.encode(obj);
+      final shrink = _shrink(json.decode(json.encode(obj)));
+      serialized = json.encode(shrink);
     }
     return serialized;
   }

@@ -16,13 +16,18 @@ class Category {
 
   Category.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    id =
-        json['id']
-    ;
-    name =
-        json['name']
-    ;
+      if(json.containsKey("id")) {
+              id =
+                      json['id']
+              ;
+      }
+      if(json.containsKey("name")) {
+              name =
+                      json['name']
+              ;
+      }
   }
+
 
   Map<String, dynamic> toJson() {
     return {

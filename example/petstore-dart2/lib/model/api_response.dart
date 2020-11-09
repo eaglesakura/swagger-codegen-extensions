@@ -19,16 +19,23 @@ class ApiResponse {
 
   ApiResponse.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    code =
-        json['code']
-    ;
-    type =
-        json['type']
-    ;
-    message =
-        json['message']
-    ;
+      if(json.containsKey("code")) {
+              code =
+                      json['code']
+              ;
+      }
+      if(json.containsKey("type")) {
+              type =
+                      json['type']
+              ;
+      }
+      if(json.containsKey("message")) {
+              message =
+                      json['message']
+              ;
+      }
   }
+
 
   Map<String, dynamic> toJson() {
     return {

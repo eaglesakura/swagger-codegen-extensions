@@ -7,6 +7,10 @@ import io.swagger.models.Swagger
 
 class Dart2ClientCodegen : DartClientCodegen() {
 
+    init {
+        embeddedTemplateDir = "dart2-client"
+    }
+
     override fun preprocessSwagger(swagger: Swagger) {
         super.preprocessSwagger(swagger)
         swagger.normalize()

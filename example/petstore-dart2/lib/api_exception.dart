@@ -5,8 +5,11 @@ class ApiException implements Exception {
   String message = null;
   Exception innerException = null;
   StackTrace stackTrace = null;
+  Response response = null;
 
   ApiException(this.code, this.message);
+
+  ApiException.fromResponse(this.response);
 
   ApiException.withInner(this.code, this.message, this.innerException, this.stackTrace);
 

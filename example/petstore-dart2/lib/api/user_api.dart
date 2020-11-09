@@ -26,6 +26,11 @@ class UserApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -51,7 +56,7 @@ class UserApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -78,6 +83,11 @@ class UserApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -103,7 +113,7 @@ class UserApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -130,6 +140,11 @@ class UserApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -155,7 +170,7 @@ class UserApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -182,6 +197,11 @@ class UserApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -207,7 +227,7 @@ class UserApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -234,6 +254,11 @@ class UserApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -259,7 +284,7 @@ class UserApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           apiClient.deserialize(response.body, 'User') as User ;
@@ -291,6 +316,11 @@ class UserApi {
       queryParams.addAll(_convertParametersForCollectionFormat("", "username", username));
       queryParams.addAll(_convertParametersForCollectionFormat("", "password", password));
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -316,7 +346,7 @@ class UserApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           apiClient.deserialize(response.body, 'String') as String ;
@@ -340,6 +370,11 @@ class UserApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -365,7 +400,7 @@ class UserApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;
@@ -395,6 +430,11 @@ class UserApi {
     Map<String, String> headerParams = {};
     Map<String, String> formParams = {};
     
+
+    queryParams.removeWhere((element) => element.value == null);
+    formParams.removeWhere((key, value) => value == null);
+    headerParams.removeWhere((key, value) => value == null);
+
     List<String> contentTypes = [];
 
     String contentType = contentTypes.length > 0 ? contentTypes[0] : "application/json";
@@ -420,7 +460,7 @@ class UserApi {
                                              authNames);
 
     if(response.statusCode >= 400) {
-      throw new ApiException(response.statusCode, response.body);
+      throw new ApiException.fromResponse(response);
     } else if(response.body != null) {
       return 
           ;

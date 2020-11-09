@@ -28,27 +28,40 @@ class Pet {
 
   Pet.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    id =
-        json['id']
-    ;
-    category =
-      
-      
-      new Category.fromJson(json['category'])
+      if(json.containsKey("id")) {
+              id =
+                      json['id']
+              ;
+      }
+      if(json.containsKey("category")) {
+              category =
+                  
+                      
+                      new Category.fromJson(json['category'])
 ;
-    name =
-        json['name']
-    ;
-    photoUrls =
-        (json['photoUrls'] as List).map((item) => item as String).toList()
-    ;
-    tags =
-      Tag.listFromJson(json['tags'])
+      }
+      if(json.containsKey("name")) {
+              name =
+                      json['name']
+              ;
+      }
+      if(json.containsKey("photoUrls")) {
+              photoUrls =
+                      (json['photoUrls'] as List).map((item) => item as String).toList()
+              ;
+      }
+      if(json.containsKey("tags")) {
+              tags =
+                  Tag.listFromJson(json['tags'])
 ;
-    status =
-        json['status']
-    ;
+      }
+      if(json.containsKey("status")) {
+              status =
+                      json['status']
+              ;
+      }
   }
+
 
   Map<String, dynamic> toJson() {
     return {

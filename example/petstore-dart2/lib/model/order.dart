@@ -28,23 +28,36 @@ class Order {
 
   Order.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    id =
-        json['id']
-    ;
-    petId =
-        json['petId']
-    ;
-    quantity =
-        json['quantity']
-    ;
-    shipDate = json['shipDate'] == null ? null : DateTime.parse(json['shipDate']);
-    status =
-        json['status']
-    ;
-    complete =
-        json['complete']
-    ;
+      if(json.containsKey("id")) {
+              id =
+                      json['id']
+              ;
+      }
+      if(json.containsKey("petId")) {
+              petId =
+                      json['petId']
+              ;
+      }
+      if(json.containsKey("quantity")) {
+              quantity =
+                      json['quantity']
+              ;
+      }
+      if(json.containsKey("shipDate")) {
+              shipDate = json['shipDate'] == null ? null : DateTime.parse(json['shipDate']);
+      }
+      if(json.containsKey("status")) {
+              status =
+                      json['status']
+              ;
+      }
+      if(json.containsKey("complete")) {
+              complete =
+                      json['complete']
+              ;
+      }
   }
+
 
   Map<String, dynamic> toJson() {
     return {

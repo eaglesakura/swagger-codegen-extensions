@@ -34,31 +34,48 @@ class User {
 
   User.fromJson(Map<String, dynamic> json) {
     if (json == null) return;
-    id =
-        json['id']
-    ;
-    username =
-        json['username']
-    ;
-    firstName =
-        json['firstName']
-    ;
-    lastName =
-        json['lastName']
-    ;
-    email =
-        json['email']
-    ;
-    password =
-        json['password']
-    ;
-    phone =
-        json['phone']
-    ;
-    userStatus =
-        json['userStatus']
-    ;
+      if(json.containsKey("id")) {
+              id =
+                      json['id']
+              ;
+      }
+      if(json.containsKey("username")) {
+              username =
+                      json['username']
+              ;
+      }
+      if(json.containsKey("firstName")) {
+              firstName =
+                      json['firstName']
+              ;
+      }
+      if(json.containsKey("lastName")) {
+              lastName =
+                      json['lastName']
+              ;
+      }
+      if(json.containsKey("email")) {
+              email =
+                      json['email']
+              ;
+      }
+      if(json.containsKey("password")) {
+              password =
+                      json['password']
+              ;
+      }
+      if(json.containsKey("phone")) {
+              phone =
+                      json['phone']
+              ;
+      }
+      if(json.containsKey("userStatus")) {
+              userStatus =
+                      json['userStatus']
+              ;
+      }
   }
+
 
   Map<String, dynamic> toJson() {
     return {

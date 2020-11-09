@@ -19,7 +19,7 @@ repositories {
 }
 
 dependencies {
-    swaggerCodegen 'com.eaglesakura.swagger.swagger2-codegen:swagger2-codegen:1.0.build-24'
+    swaggerCodegen 'com.eaglesakura.swagger.swagger2-codegen:swagger2-codegen:+'
 }
 
 swaggerSources {
