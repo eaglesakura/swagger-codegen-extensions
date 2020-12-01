@@ -1,9 +1,12 @@
 package com.eaglesakura.swagger2.languages
 
 import com.eaglesakura.swagger2.extensions.normalize
-import io.swagger.codegen.*
+import io.swagger.codegen.CliOption
+import io.swagger.codegen.CodegenConstants
+import io.swagger.codegen.CodegenProperty
+import io.swagger.codegen.CodegenType
+import io.swagger.codegen.SupportingFile
 import io.swagger.codegen.languages.AbstractKotlinCodegen
-import io.swagger.codegen.languages.DartClientCodegen
 import io.swagger.models.Swagger
 import io.swagger.models.properties.Property
 import java.io.File
@@ -21,6 +24,7 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
         apiPackage = packageName
         modelPackage = packageName
         cliOptions.add(CliOption(OPTION_ANDROID_MODE, "Generate for android model"))
+        cliOptions.add(CliOption(OPTION_ANDROID_APPLICATION_ID, "Generate for android dsl ApplicationId"))
         cliOptions.add(CliOption(CodegenConstants.MODEL_PACKAGE, CodegenConstants.MODEL_PACKAGE_DESC))
         cliOptions.add(CliOption(CodegenConstants.API_PACKAGE, CodegenConstants.API_PACKAGE_DESC))
         cliOptions.add(CliOption(CodegenConstants.SOURCE_FOLDER, CodegenConstants.SOURCE_FOLDER_DESC))
@@ -28,6 +32,11 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
 
     override fun processOpts() {
         super.processOpts()
+
+        if (additionalProperties.containsKey(OPTION_ANDROID_APPLICATION_ID)) {
+            supportingFiles.add(SupportingFile("AndroidManifest.xml.mustache", "src/main/AndroidManifest.xml"))
+        }
+
         supportingFiles.add(SupportingFile("internal_utils.mustache",
                 ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "InternalUtils.kt"))
         supportingFiles.add(SupportingFile("api_enum_factory.mustache",
@@ -62,5 +71,6 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
 
     companion object {
         const val OPTION_ANDROID_MODE = "android"
+        const val OPTION_ANDROID_APPLICATION_ID = "androidApplicationId"
     }
 }

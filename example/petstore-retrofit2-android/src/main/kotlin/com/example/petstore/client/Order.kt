@@ -8,7 +8,7 @@ import com.squareup.moshi.* // ktlint-disable
 /**
  * 
  *
- * 
+ * for Android model.
  * @link https://github.com/eaglesakura/swagger-codegen-extensions
  **/
 @Suppress("unused")
@@ -43,7 +43,7 @@ data class Order(
      */
     @Json(name = "complete")
     val complete: kotlin.Boolean? = null,
-)  {
+) : android.os.Parcelable {
 
     constructor(origin: Order): this(
             id = origin.id,
@@ -60,6 +60,17 @@ data class Order(
             }
     )
 
+    constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parcel.readString()) {
+                "invalid Parcel json<Order>"
+            }
+    )
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: android.os.Parcel, flags: Int) {
+        dest.writeString(toJson())
+    }
 
     /**
      * Convert to Json.
@@ -76,6 +87,12 @@ data class Order(
             return InternalUtils.moshi.adapter(Order::class.java).fromJson(json)
         }
 
+        @JvmStatic
+        val CREATOR: android.os.Parcelable.Creator<Order> =
+            object : android.os.Parcelable.Creator<Order> {
+                override fun createFromParcel(source: android.os.Parcel): Order = Order(source)
+                override fun newArray(size: Int): Array<Order> = arrayOf()
+            }
 
     }
 }

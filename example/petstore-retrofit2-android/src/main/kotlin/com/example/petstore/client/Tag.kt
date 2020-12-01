@@ -8,7 +8,7 @@ import com.squareup.moshi.* // ktlint-disable
 /**
  * 
  *
- * 
+ * for Android model.
  * @link https://github.com/eaglesakura/swagger-codegen-extensions
  **/
 @Suppress("unused")
@@ -23,7 +23,7 @@ data class Tag(
      */
     @Json(name = "name")
     val name: kotlin.String? = null,
-)  {
+) : android.os.Parcelable {
 
     constructor(origin: Tag): this(
             id = origin.id,
@@ -36,6 +36,17 @@ data class Tag(
             }
     )
 
+    constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parcel.readString()) {
+                "invalid Parcel json<Tag>"
+            }
+    )
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: android.os.Parcel, flags: Int) {
+        dest.writeString(toJson())
+    }
 
     /**
      * Convert to Json.
@@ -52,6 +63,12 @@ data class Tag(
             return InternalUtils.moshi.adapter(Tag::class.java).fromJson(json)
         }
 
+        @JvmStatic
+        val CREATOR: android.os.Parcelable.Creator<Tag> =
+            object : android.os.Parcelable.Creator<Tag> {
+                override fun createFromParcel(source: android.os.Parcel): Tag = Tag(source)
+                override fun newArray(size: Int): Array<Tag> = arrayOf()
+            }
 
     }
 }

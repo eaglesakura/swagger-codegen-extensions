@@ -8,7 +8,7 @@ import com.squareup.moshi.* // ktlint-disable
 /**
  * 
  *
- * 
+ * for Android model.
  * @link https://github.com/eaglesakura/swagger-codegen-extensions
  **/
 @Suppress("unused")
@@ -43,7 +43,7 @@ data class Pet(
      */
     @Json(name = "status")
     val status: PetStatusEnum? = null,
-)  {
+) : android.os.Parcelable {
 
     constructor(origin: Pet): this(
             id = origin.id,
@@ -60,6 +60,17 @@ data class Pet(
             }
     )
 
+    constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parcel.readString()) {
+                "invalid Parcel json<Pet>"
+            }
+    )
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: android.os.Parcel, flags: Int) {
+        dest.writeString(toJson())
+    }
 
     /**
      * Convert to Json.
@@ -76,6 +87,12 @@ data class Pet(
             return InternalUtils.moshi.adapter(Pet::class.java).fromJson(json)
         }
 
+        @JvmStatic
+        val CREATOR: android.os.Parcelable.Creator<Pet> =
+            object : android.os.Parcelable.Creator<Pet> {
+                override fun createFromParcel(source: android.os.Parcel): Pet = Pet(source)
+                override fun newArray(size: Int): Array<Pet> = arrayOf()
+            }
 
     }
 }

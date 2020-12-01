@@ -57,19 +57,44 @@ data class {{classname}}(private val value: String) {
 {{^isEnum}}
 data class {{classname}}(
 {{#vars}}
-
     /**
      * {{{description}}}
      */
     @Json(name = "{{baseName}}")
     {{#isEnum}}
-    val {{nameInCamelCase}}: {{classname}}{{datatypeWithEnum}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+    val {{nameInCamelCase}}: {{classname}}{{datatypeWithEnum}}{{^required}}? = null{{/required}},
     {{/isEnum}}
     {{^isEnum}}
-    val {{nameInCamelCase}}: {{{datatype}}}{{^required}}? = null{{/required}}{{#hasMore}}, {{/hasMore}}
+    val {{nameInCamelCase}}: {{{datatype}}}{{^required}}? = null{{/required}},
     {{/isEnum}}
 {{/vars}}
-) {
+) {{#android}}: android.os.Parcelable{{/android}} {
+
+    constructor(origin: {{classname}}): this(
+        {{#vars}}
+            {{nameInCamelCase}} = origin.{{nameInCamelCase}},
+        {{/vars}}
+    )
+
+    constructor(json: String) : this(
+            origin = requireNotNull(parse(json)) {
+                "json parse failed<{{classname}}>"
+            }
+    )
+
+{{#android}}
+    constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parcel.readString()) {
+                "invalid Parcel json<{{classname}}>"
+            }
+    )
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: android.os.Parcel, flags: Int) {
+        dest.writeString(toJson())
+    }
+{{/android}}
 
     /**
      * Convert to Json.
@@ -81,9 +106,20 @@ data class {{classname}}(
         /**
          * Try parse json.
          */
+        @JvmStatic
         fun parse(json: String): {{classname}}? {
             return InternalUtils.moshi.adapter({{classname}}::class.java).fromJson(json)
         }
+
+{{#android}}
+        @JvmStatic
+        val CREATOR: android.os.Parcelable.Creator<{{classname}}> =
+            object : android.os.Parcelable.Creator<{{classname}}> {
+                override fun createFromParcel(source: android.os.Parcel): {{classname}} = {{classname}}(source)
+                override fun newArray(size: Int): Array<{{classname}}> = arrayOf()
+            }
+{{/android}}
+
     }
 }
 

@@ -1,0 +1,6 @@
+{
+  "modelPackage": "com.example.petstore.client",
+  "apiPackage": "com.example.petstore.client",
+  "android": true,
+  "androidApplicationId": "com.example.petstore.client.android"
+}

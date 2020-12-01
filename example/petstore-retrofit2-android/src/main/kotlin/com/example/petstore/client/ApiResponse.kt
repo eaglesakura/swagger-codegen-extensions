@@ -8,7 +8,7 @@ import com.squareup.moshi.* // ktlint-disable
 /**
  * 
  *
- * 
+ * for Android model.
  * @link https://github.com/eaglesakura/swagger-codegen-extensions
  **/
 @Suppress("unused")
@@ -28,7 +28,7 @@ data class ApiResponse(
      */
     @Json(name = "message")
     val message: kotlin.String? = null,
-)  {
+) : android.os.Parcelable {
 
     constructor(origin: ApiResponse): this(
             code = origin.code,
@@ -42,6 +42,17 @@ data class ApiResponse(
             }
     )
 
+    constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parcel.readString()) {
+                "invalid Parcel json<ApiResponse>"
+            }
+    )
+
+    override fun describeContents(): Int = 0
+
+    override fun writeToParcel(dest: android.os.Parcel, flags: Int) {
+        dest.writeString(toJson())
+    }
 
     /**
      * Convert to Json.
@@ -58,6 +69,12 @@ data class ApiResponse(
             return InternalUtils.moshi.adapter(ApiResponse::class.java).fromJson(json)
         }
 
+        @JvmStatic
+        val CREATOR: android.os.Parcelable.Creator<ApiResponse> =
+            object : android.os.Parcelable.Creator<ApiResponse> {
+                override fun createFromParcel(source: android.os.Parcel): ApiResponse = ApiResponse(source)
+                override fun newArray(size: Int): Array<ApiResponse> = arrayOf()
+            }
 
     }
 }

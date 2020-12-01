@@ -12,7 +12,6 @@ abstract class AbstractGo112ClientCodegen : AbstractGoCodegen() {
     val GO_MODULE_NAME = "goModuleName"
     val GO_MODULE_NAME_DESC = "module name for generated go module code"
 
-
     @JvmField
     protected var goModuleName: String = "swagger"
 
