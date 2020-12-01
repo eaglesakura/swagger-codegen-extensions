@@ -106,7 +106,7 @@ data class {{classname}}(
         }
 
 {{#android}}
-        @JvmStatic
+        @JvmField
         internal val CREATOR: android.os.Parcelable.Creator<{{classname}}> =
             object : android.os.Parcelable.Creator<{{classname}}> {
                 override fun createFromParcel(source: android.os.Parcel): {{classname}} = {{classname}}(source)
