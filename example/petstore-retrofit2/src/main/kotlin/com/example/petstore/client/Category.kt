@@ -8,8 +8,10 @@ import com.squareup.moshi.* // ktlint-disable
 /**
  * 
  *
+ * 
  * @link https://github.com/eaglesakura/swagger-codegen-extensions
  **/
+@Suppress("unused")
 data class Category(
 
     /**
@@ -24,7 +26,21 @@ data class Category(
     @Json(name = "name")
     val name: kotlin.String? = null
 ) {
-    companion object
+
+    /**
+     * Convert to Json.
+     */
+    fun toJson(): String =
+        InternalUtils.moshi.adapter(Category::class.java).toJson(this)
+
+    companion object {
+        /**
+         * Try parse json.
+         */
+        fun parse(json: String): Category? {
+            return InternalUtils.moshi.adapter(Category::class.java).fromJson(json)
+        }
+    }
 }
 
 

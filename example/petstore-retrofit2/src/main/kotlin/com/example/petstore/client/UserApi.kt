@@ -42,23 +42,12 @@ interface UserApi {
      */
     @POST("/v2/user")
     suspend fun createUser(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Body 
-            body: User
-    ): Response<ResponseBody>
-
-    /**
-     * Create user
-     * This can only be done by the logged in user.
-     *
-     * @param body Created user object
-     * @return void
-     */
-    @POST("/v2/user")
-    suspend fun createUserBody(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Body 
-            body: User
+        
+        
+        
+        @Body body: User,
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
 
     /**
@@ -71,9 +60,12 @@ interface UserApi {
     @Streaming
     @POST("/v2/user")
     suspend fun createUserStreaming(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Body 
-            body: User
+        
+        
+        
+        @Body body: User,
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
     /**
      * Creates list of users with given input array
@@ -84,23 +76,12 @@ interface UserApi {
      */
     @POST("/v2/user/createWithArray")
     suspend fun createUsersWithArrayInput(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Body 
-            body: kotlin.Array<User>
-    ): Response<ResponseBody>
-
-    /**
-     * Creates list of users with given input array
-     * 
-     *
-     * @param body List of user object
-     * @return void
-     */
-    @POST("/v2/user/createWithArray")
-    suspend fun createUsersWithArrayInputBody(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Body 
-            body: kotlin.Array<User>
+        
+        
+        
+        @Body body: kotlin.Array<User>,
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
 
     /**
@@ -113,9 +94,12 @@ interface UserApi {
     @Streaming
     @POST("/v2/user/createWithArray")
     suspend fun createUsersWithArrayInputStreaming(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Body 
-            body: kotlin.Array<User>
+        
+        
+        
+        @Body body: kotlin.Array<User>,
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
     /**
      * Creates list of users with given input array
@@ -126,23 +110,12 @@ interface UserApi {
      */
     @POST("/v2/user/createWithList")
     suspend fun createUsersWithListInput(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Body 
-            body: kotlin.Array<User>
-    ): Response<ResponseBody>
-
-    /**
-     * Creates list of users with given input array
-     * 
-     *
-     * @param body List of user object
-     * @return void
-     */
-    @POST("/v2/user/createWithList")
-    suspend fun createUsersWithListInputBody(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Body 
-            body: kotlin.Array<User>
+        
+        
+        
+        @Body body: kotlin.Array<User>,
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
 
     /**
@@ -155,9 +128,12 @@ interface UserApi {
     @Streaming
     @POST("/v2/user/createWithList")
     suspend fun createUsersWithListInputStreaming(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Body 
-            body: kotlin.Array<User>
+        
+        
+        
+        @Body body: kotlin.Array<User>,
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
     /**
      * Delete user
@@ -168,23 +144,12 @@ interface UserApi {
      */
     @DELETE("/v2/user/{username}")
     suspend fun deleteUser(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Path("username")
-            username: kotlin.String
-    ): Response<ResponseBody>
-
-    /**
-     * Delete user
-     * This can only be done by the logged in user.
-     *
-     * @param username The name that needs to be deleted/ example :: username_example
-     * @return void
-     */
-    @DELETE("/v2/user/{username}")
-    suspend fun deleteUserBody(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Path("username")
-            username: kotlin.String
+        
+        @Path("username") username: kotlin.String,
+        
+        
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
 
     /**
@@ -197,9 +162,12 @@ interface UserApi {
     @Streaming
     @DELETE("/v2/user/{username}")
     suspend fun deleteUserStreaming(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Path("username")
-            username: kotlin.String
+        
+        @Path("username") username: kotlin.String,
+        
+        
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
     /**
      * Get user by user name
@@ -210,24 +178,13 @@ interface UserApi {
      */
     @GET("/v2/user/{username}")
     suspend fun getUserByName(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Path("username")
-            username: kotlin.String
+        
+        @Path("username") username: kotlin.String,
+        
+        
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<User>
-
-    /**
-     * Get user by user name
-     * 
-     *
-     * @param username The name that needs to be fetched. Use user1 for testing. / example :: username_example
-     * @return User
-     */
-    @GET("/v2/user/{username}")
-    suspend fun getUserByNameBody(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Path("username")
-            username: kotlin.String
-    ): Response<ResponseBody>
 
     /**
      * Get user by user name
@@ -239,9 +196,12 @@ interface UserApi {
     @Streaming
     @GET("/v2/user/{username}")
     suspend fun getUserByNameStreaming(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Path("username")
-            username: kotlin.String
+        
+        @Path("username") username: kotlin.String,
+        
+        
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
     /**
      * Logs user into the system
@@ -253,31 +213,13 @@ interface UserApi {
      */
     @GET("/v2/user/login")
     suspend fun loginUser(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Query("username")
-            username: kotlin.String, 
-            
-            @Query("password")
-            password: kotlin.String
+        
+        
+        @Query("username") username: kotlin.String,@Query("password") password: kotlin.String,
+        
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<kotlin.String>
-
-    /**
-     * Logs user into the system
-     * 
-     *
-     * @param username The user name for login/ example :: username_example
-     * @param password The password for login in clear text/ example :: password_example
-     * @return kotlin.String
-     */
-    @GET("/v2/user/login")
-    suspend fun loginUserBody(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Query("username")
-            username: kotlin.String, 
-            
-            @Query("password")
-            password: kotlin.String
-    ): Response<ResponseBody>
 
     /**
      * Logs user into the system
@@ -290,11 +232,12 @@ interface UserApi {
     @Streaming
     @GET("/v2/user/login")
     suspend fun loginUserStreaming(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Query("username")
-            username: kotlin.String, 
-                        @Query("password")
-            password: kotlin.String
+        
+        
+        @Query("username") username: kotlin.String,@Query("password") password: kotlin.String,
+        
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
     /**
      * Logs out current logged in user session
@@ -304,18 +247,12 @@ interface UserApi {
      */
     @GET("/v2/user/logout")
     suspend fun logoutUser(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap()
-    ): Response<ResponseBody>
-
-    /**
-     * Logs out current logged in user session
-     * 
-     *
-     * @return void
-     */
-    @GET("/v2/user/logout")
-    suspend fun logoutUserBody(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap()
+        
+        
+        
+        
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
 
     /**
@@ -327,7 +264,12 @@ interface UserApi {
     @Streaming
     @GET("/v2/user/logout")
     suspend fun logoutUserStreaming(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap()
+        
+        
+        
+        
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
     /**
      * Updated user
@@ -339,30 +281,12 @@ interface UserApi {
      */
     @PUT("/v2/user/{username}")
     suspend fun updateUser(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Path("username")
-            username: kotlin.String, 
-            
-            @Body 
-            body: User
-    ): Response<ResponseBody>
-
-    /**
-     * Updated user
-     * This can only be done by the logged in user.
-     *
-     * @param username name that need to be updated/ example :: username_example
-     * @param body Updated user object
-     * @return void
-     */
-    @PUT("/v2/user/{username}")
-    suspend fun updateUserBody(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Path("username")
-            username: kotlin.String, 
-            
-            @Body 
-            body: User
+        
+        @Path("username") username: kotlin.String,
+        
+        @Body body: User,
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
 
     /**
@@ -376,11 +300,12 @@ interface UserApi {
     @Streaming
     @PUT("/v2/user/{username}")
     suspend fun updateUserStreaming(
-            @HeaderMap customHeaders: Map<String, String> = emptyMap(),
-            @Path("username")
-            username: kotlin.String, 
-                        @Body 
-            body: User
+        
+        @Path("username") username: kotlin.String,
+        
+        @Body body: User,
+        @HeaderMap  customHeaders: Map<String, String> = emptyMap(),
+        @QueryMap   customQueries: Map<String, String> = emptyMap()
     ): Response<ResponseBody>
     companion object {
         /**

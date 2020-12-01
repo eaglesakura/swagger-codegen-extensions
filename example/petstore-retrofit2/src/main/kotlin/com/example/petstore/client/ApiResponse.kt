@@ -8,8 +8,10 @@ import com.squareup.moshi.* // ktlint-disable
 /**
  * 
  *
+ * 
  * @link https://github.com/eaglesakura/swagger-codegen-extensions
  **/
+@Suppress("unused")
 data class ApiResponse(
 
     /**
@@ -30,7 +32,21 @@ data class ApiResponse(
     @Json(name = "message")
     val message: kotlin.String? = null
 ) {
-    companion object
+
+    /**
+     * Convert to Json.
+     */
+    fun toJson(): String =
+        InternalUtils.moshi.adapter(ApiResponse::class.java).toJson(this)
+
+    companion object {
+        /**
+         * Try parse json.
+         */
+        fun parse(json: String): ApiResponse? {
+            return InternalUtils.moshi.adapter(ApiResponse::class.java).fromJson(json)
+        }
+    }
 }
 
 

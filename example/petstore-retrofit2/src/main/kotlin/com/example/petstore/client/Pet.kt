@@ -8,8 +8,10 @@ import com.squareup.moshi.* // ktlint-disable
 /**
  * 
  *
+ * 
  * @link https://github.com/eaglesakura/swagger-codegen-extensions
  **/
+@Suppress("unused")
 data class Pet(
 
     /**
@@ -48,7 +50,21 @@ data class Pet(
     @Json(name = "status")
     val status: PetStatusEnum? = null
 ) {
-    companion object
+
+    /**
+     * Convert to Json.
+     */
+    fun toJson(): String =
+        InternalUtils.moshi.adapter(Pet::class.java).toJson(this)
+
+    companion object {
+        /**
+         * Try parse json.
+         */
+        fun parse(json: String): Pet? {
+            return InternalUtils.moshi.adapter(Pet::class.java).fromJson(json)
+        }
+    }
 }
 
 

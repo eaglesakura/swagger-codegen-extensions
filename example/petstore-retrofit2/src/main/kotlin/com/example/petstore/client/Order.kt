@@ -8,8 +8,10 @@ import com.squareup.moshi.* // ktlint-disable
 /**
  * 
  *
+ * 
  * @link https://github.com/eaglesakura/swagger-codegen-extensions
  **/
+@Suppress("unused")
 data class Order(
 
     /**
@@ -48,7 +50,21 @@ data class Order(
     @Json(name = "complete")
     val complete: kotlin.Boolean? = null
 ) {
-    companion object
+
+    /**
+     * Convert to Json.
+     */
+    fun toJson(): String =
+        InternalUtils.moshi.adapter(Order::class.java).toJson(this)
+
+    companion object {
+        /**
+         * Try parse json.
+         */
+        fun parse(json: String): Order? {
+            return InternalUtils.moshi.adapter(Order::class.java).fromJson(json)
+        }
+    }
 }
 
 

@@ -10,7 +10,7 @@ import retrofit2.http.* // ktlint-disable
 import java.lang.reflect.Type
 
 object ApiEnumFactory : JsonAdapter.Factory {
-    override fun create(type: Type, annotations: Set<out Annotation>, moshi: Moshi): JsonAdapter<*>? {
+    override fun create(type: Type, annotations: Set<Annotation>, moshi: Moshi): JsonAdapter<*>? {
         return when(type) {
             
             

@@ -1,17 +1,15 @@
 package com.eaglesakura.swagger2.languages
 
 import com.eaglesakura.swagger2.extensions.normalize
-import io.swagger.codegen.CliOption
-import io.swagger.codegen.CodegenConstants
-import io.swagger.codegen.CodegenProperty
-import io.swagger.codegen.CodegenType
-import io.swagger.codegen.SupportingFile
+import io.swagger.codegen.*
 import io.swagger.codegen.languages.AbstractKotlinCodegen
+import io.swagger.codegen.languages.DartClientCodegen
 import io.swagger.models.Swagger
 import io.swagger.models.properties.Property
 import java.io.File
 
 class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
+
     init {
         artifactId = "kotlin-retrofit2-client"
         packageName = "io.swagger.client"
@@ -22,7 +20,7 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
         embeddedTemplateDir = "kotlin-retrofit2-client".also { templateDir = it }
         apiPackage = packageName
         modelPackage = packageName
-
+        cliOptions.add(CliOption(OPTION_ANDROID_MODE, "Generate for android model"))
         cliOptions.add(CliOption(CodegenConstants.MODEL_PACKAGE, CodegenConstants.MODEL_PACKAGE_DESC))
         cliOptions.add(CliOption(CodegenConstants.API_PACKAGE, CodegenConstants.API_PACKAGE_DESC))
         cliOptions.add(CliOption(CodegenConstants.SOURCE_FOLDER, CodegenConstants.SOURCE_FOLDER_DESC))
@@ -61,4 +59,8 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
     override fun getHelp(): String = "Generates a Retrofit2/Kotlin client."
 
     override fun getName(): String = "retrofit2"
+
+    companion object {
+        const val OPTION_ANDROID_MODE = "android"
+    }
 }

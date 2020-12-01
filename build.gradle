@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        kotlin_version = "1.3.72"
+        kotlin_version = "1.4.20"
         base_version = "1.0"
         base_group = "com.eaglesakura.swagger"
         bintray_labels = ["swagger", "retrofit2", "flutter"]
