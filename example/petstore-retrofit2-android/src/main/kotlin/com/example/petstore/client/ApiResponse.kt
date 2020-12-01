@@ -36,14 +36,8 @@ data class ApiResponse(
             message = origin.message,
     )
 
-    constructor(json: String) : this(
-            origin = requireNotNull(parse(json)) {
-                "json parse failed<ApiResponse>"
-            }
-    )
-
-    constructor(parcel: android.os.Parcel) : this(
-            json = requireNotNull(parcel.readString()) {
+    internal constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parse(parcel.readString() ?: "")) {
                 "invalid Parcel json<ApiResponse>"
             }
     )
@@ -70,7 +64,7 @@ data class ApiResponse(
         }
 
         @JvmStatic
-        val CREATOR: android.os.Parcelable.Creator<ApiResponse> =
+        internal val CREATOR: android.os.Parcelable.Creator<ApiResponse> =
             object : android.os.Parcelable.Creator<ApiResponse> {
                 override fun createFromParcel(source: android.os.Parcel): ApiResponse = ApiResponse(source)
                 override fun newArray(size: Int): Array<ApiResponse> = arrayOf()

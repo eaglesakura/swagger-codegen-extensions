@@ -54,14 +54,8 @@ data class Pet(
             status = origin.status,
     )
 
-    constructor(json: String) : this(
-            origin = requireNotNull(parse(json)) {
-                "json parse failed<Pet>"
-            }
-    )
-
-    constructor(parcel: android.os.Parcel) : this(
-            json = requireNotNull(parcel.readString()) {
+    internal constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parse(parcel.readString() ?: "")) {
                 "invalid Parcel json<Pet>"
             }
     )
@@ -88,7 +82,7 @@ data class Pet(
         }
 
         @JvmStatic
-        val CREATOR: android.os.Parcelable.Creator<Pet> =
+        internal val CREATOR: android.os.Parcelable.Creator<Pet> =
             object : android.os.Parcelable.Creator<Pet> {
                 override fun createFromParcel(source: android.os.Parcel): Pet = Pet(source)
                 override fun newArray(size: Int): Array<Pet> = arrayOf()

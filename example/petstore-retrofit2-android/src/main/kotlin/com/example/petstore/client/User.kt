@@ -66,14 +66,8 @@ data class User(
             userStatus = origin.userStatus,
     )
 
-    constructor(json: String) : this(
-            origin = requireNotNull(parse(json)) {
-                "json parse failed<User>"
-            }
-    )
-
-    constructor(parcel: android.os.Parcel) : this(
-            json = requireNotNull(parcel.readString()) {
+    internal constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parse(parcel.readString() ?: "")) {
                 "invalid Parcel json<User>"
             }
     )
@@ -100,7 +94,7 @@ data class User(
         }
 
         @JvmStatic
-        val CREATOR: android.os.Parcelable.Creator<User> =
+        internal val CREATOR: android.os.Parcelable.Creator<User> =
             object : android.os.Parcelable.Creator<User> {
                 override fun createFromParcel(source: android.os.Parcel): User = User(source)
                 override fun newArray(size: Int): Array<User> = arrayOf()

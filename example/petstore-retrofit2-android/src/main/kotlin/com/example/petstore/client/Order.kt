@@ -54,14 +54,8 @@ data class Order(
             complete = origin.complete,
     )
 
-    constructor(json: String) : this(
-            origin = requireNotNull(parse(json)) {
-                "json parse failed<Order>"
-            }
-    )
-
-    constructor(parcel: android.os.Parcel) : this(
-            json = requireNotNull(parcel.readString()) {
+    internal constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parse(parcel.readString() ?: "")) {
                 "invalid Parcel json<Order>"
             }
     )
@@ -88,7 +82,7 @@ data class Order(
         }
 
         @JvmStatic
-        val CREATOR: android.os.Parcelable.Creator<Order> =
+        internal val CREATOR: android.os.Parcelable.Creator<Order> =
             object : android.os.Parcelable.Creator<Order> {
                 override fun createFromParcel(source: android.os.Parcel): Order = Order(source)
                 override fun newArray(size: Int): Array<Order> = arrayOf()

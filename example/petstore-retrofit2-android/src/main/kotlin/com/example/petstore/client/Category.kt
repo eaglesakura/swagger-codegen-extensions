@@ -30,14 +30,8 @@ data class Category(
             name = origin.name,
     )
 
-    constructor(json: String) : this(
-            origin = requireNotNull(parse(json)) {
-                "json parse failed<Category>"
-            }
-    )
-
-    constructor(parcel: android.os.Parcel) : this(
-            json = requireNotNull(parcel.readString()) {
+    internal constructor(parcel: android.os.Parcel) : this(
+            json = requireNotNull(parse(parcel.readString() ?: "")) {
                 "invalid Parcel json<Category>"
             }
     )
@@ -64,7 +58,7 @@ data class Category(
         }
 
         @JvmStatic
-        val CREATOR: android.os.Parcelable.Creator<Category> =
+        internal val CREATOR: android.os.Parcelable.Creator<Category> =
             object : android.os.Parcelable.Creator<Category> {
                 override fun createFromParcel(source: android.os.Parcel): Category = Category(source)
                 override fun newArray(size: Int): Array<Category> = arrayOf()
