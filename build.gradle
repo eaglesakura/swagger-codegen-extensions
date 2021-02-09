@@ -1,28 +1,51 @@
 buildscript {
     ext {
-        kotlin_version = "1.4.20"
-        base_version = "1.0"
-        base_group = "com.eaglesakura.swagger"
-        bintray_labels = ["swagger", "retrofit2", "flutter"]
+        versions = [
+                kotlin           : "1.4.21",
+                kotlin_coroutines: "1.4.1",
+        ]
+        artifact = [
+                deploy_version  : "1.0-SNAPSHOT",
+                base_version    : "1.0",
+                base_group      : "com.example.artifact.group",
+                dynamic_group_id: true,
+        ]
+        mavencentral = [
+                repository_url : "https://oss.sonatype.org/content/repositories/snapshots",
+                license_name   : "",
+                license_url    : "",
+                vcs_url        : "https://example.com/vcs",
+                pom_description: "",
+                package_group  : "",
+        ]
     }
-    repositories {
-        google()
-        jcenter()
-        mavenCentral()
-    }
-    dependencies {
-        classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.18"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.5"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlin_version}"
-        classpath "com.android.tools.build:gradle:4.0.0"
-    }
-}
-
-subprojects {
     repositories {
         mavenLocal()
         google()
-        jcenter()
         mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:${versions.kotlin}"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:1.4.10.2"
+        classpath "com.github.ben-manes:gradle-versions-plugin:0.33.0"
+        classpath "io.codearte.gradle.nexus:gradle-nexus-staging-plugin:0.22.0"
     }
 }
+
+allprojects {
+    repositories {
+        mavenLocal()
+        google()
+        mavenCentral()
+        jcenter()
+    }
+}
+
+apply from: rootProject.file('build.properties.gradle')
+apply from: rootProject.file('scripts/configure.gradle.kts')
+apply from: rootProject.file("scripts/deploy-mavencentral-publish.gradle")
+
+println("${project.name}.versions.$versions")
+println("${project.name}.artifact.$artifact")
+println("${project.name}.mavencentral.$mavencentral")

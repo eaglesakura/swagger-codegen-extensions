@@ -1,22 +1,10 @@
-apply plugin: "kotlin"
-apply from: rootProject.file("configure.gradle.kts")
-apply from: rootProject.file("dsl/bintray.gradle")
-apply from: rootProject.file("dsl/formatter.gradle")
-apply from: rootProject.file("dsl/lineseparator.gradle.kts")
+apply from: rootProject.file("scripts/build-kotlin-library.gradle")
+apply from: rootProject.file("scripts/deploy-mavencentral-jvm.gradle")
 
 dependencies {
-    api("org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version")
-    api("io.swagger:swagger-codegen:2.4.14")
-    api("io.swagger:swagger-codegen-cli:2.4.14")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
-}
-
-compileKotlin {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-
-    kotlinOptions {
-        jvmTarget = "1.8"
-    }
+    api "org.jetbrains.kotlin:kotlin-stdlib-jdk7"
+    api "io.swagger:swagger-codegen:2.4.14"
+    api "io.swagger:swagger-codegen-cli:2.4.14"
+    testImplementation "org.jetbrains.kotlin:kotlin-test"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit"
 }

@@ -4,6 +4,7 @@ build/
 .DS_Store
 Thumbs.db
 *.iml
+ci-release/
 bin
 local.properties
 *.o
@@ -14,9 +15,11 @@ gdbserver
 obj/
 latex/
 dependencies.txt
-private/
-/output
+/private
+.externalNativeBuild/
+google-services.json
+fastlane/report.xml
+*.hprof
+/artifacts
+/*.log
 /out
-test.sh
-docker/*.jar
-go.sum

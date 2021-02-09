@@ -18,14 +18,22 @@ abstract class AbstractGo112ClientCodegen : AbstractGoCodegen() {
     init {
         typeMapping["File"] = "io.Reader"
         typeMapping["file"] = "io.Reader"
-        cliOptions.add(CliOption(CodegenConstants.PACKAGE_NAME, "Go package name (convention: lowercase).")
-                .defaultValue("swagger"))
-        cliOptions.add(CliOption(GO_MODULE_NAME, GO_MODULE_NAME_DESC)
-                .defaultValue("example.com/swagger"))
-        cliOptions.add(CliOption(CodegenConstants.PACKAGE_VERSION, "Go package version.")
-                .defaultValue("1.0.0"))
-        cliOptions.add(CliOption(CodegenConstants.HIDE_GENERATION_TIMESTAMP, "hides the timestamp when files were generated")
-                .defaultValue(true.toString()))
+        cliOptions.add(
+            CliOption(CodegenConstants.PACKAGE_NAME, "Go package name (convention: lowercase).")
+                .defaultValue("swagger")
+        )
+        cliOptions.add(
+            CliOption(GO_MODULE_NAME, GO_MODULE_NAME_DESC)
+                .defaultValue("example.com/swagger")
+        )
+        cliOptions.add(
+            CliOption(CodegenConstants.PACKAGE_VERSION, "Go package version.")
+                .defaultValue("1.0.0")
+        )
+        cliOptions.add(
+            CliOption(CodegenConstants.HIDE_GENERATION_TIMESTAMP, "hides the timestamp when files were generated")
+                .defaultValue(true.toString())
+        )
     }
 
     override fun cliOptions(): MutableList<CliOption> {
