@@ -37,10 +37,18 @@ class Retrofit2ClientCodegen : AbstractKotlinCodegen() {
             supportingFiles.add(SupportingFile("AndroidManifest.xml.mustache", "src/main/AndroidManifest.xml"))
         }
 
-        supportingFiles.add(SupportingFile("internal_utils.mustache",
-                ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "InternalUtils.kt"))
-        supportingFiles.add(SupportingFile("api_enum_factory.mustache",
-                ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "ApiEnumFactory.kt"))
+        supportingFiles.add(
+            SupportingFile(
+                "internal_utils.mustache",
+                ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "InternalUtils.kt"
+            )
+        )
+        supportingFiles.add(
+            SupportingFile(
+                "api_enum_factory.mustache",
+                ("$sourceFolder/$apiPackage").replace(".", "${File.separatorChar}"), "ApiEnumFactory.kt"
+            )
+        )
 
         supportingFiles.add(SupportingFile("build.gradle.mustache", "build.gradle"))
     }

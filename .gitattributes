@@ -4,6 +4,7 @@
 
 # Source Codes
 *.java text eol=lf
+*.kt text eol=lf
 *.aidl text eol=lf
 *.gradle text eol=lf
 
@@ -18,6 +19,10 @@
 *.bat text eol=crlf
 *.sh text eol=lf
 gradlew text=auto
+
+# Docker
+Dockerfile text eol=lf
+*.dockerfile text eol=lf
 
 # Others
 *.md text eol=lf

@@ -2,13 +2,13 @@
 
 This library is [Swagger Codegen] custom language generator.
 
-|Custom support language|Type|Target|Extra Library|Language Class|
+|Custom support language|Type|Target|Runtime Library|Language Class|
 |---|---|---|---|---|
 |Kotlin|Client|Java VM, Android|Retrofit2|com.eaglesakura.swagger2.languages.Retrofit2ClientCodegen|
-|Golang|Server|Go1.12|[swagger-go-core](https://github.com/eaglesakura/swagger-go-core)|com.eaglesakura.swagger2.languages.Go112ServerCodegen|
-|Golang|Client|Go1.12|[swagger-go-core](https://github.com/eaglesakura/swagger-go-core)|com.eaglesakura.swagger2.languages.Go112ClientCodegen|
-|Golang|Server|Go1.12|[gorilla/mux](https://github.com/gorilla/mux)|com.eaglesakura.swagger2.languages.Go112ServerCodegen2|
-|Golang|Client|Go1.12|-|com.eaglesakura.swagger2.languages.Go112ClientCodegen2|
+|Golang|Server|Go1.12+|[swagger-go-core](https://github.com/eaglesakura/swagger-go-core)|com.eaglesakura.swagger2.languages.Go112ServerCodegen|
+|Golang|Client|Go1.12+|[swagger-go-core](https://github.com/eaglesakura/swagger-go-core)|com.eaglesakura.swagger2.languages.Go112ClientCodegen|
+|Golang|Server|Go1.12+|[gorilla/mux](https://github.com/gorilla/mux)|com.eaglesakura.swagger2.languages.Go112ServerCodegen2|
+|Golang|Client|Go1.12+|-|com.eaglesakura.swagger2.languages.Go112ClientCodegen2|
 |Dart|Client|Dart2.0, Flutter|-|com.eaglesakura.swagger2.languages.Dart2ClientCodegen|
 
 ## Auto rename inline model.
@@ -32,18 +32,9 @@ plugins {
     id("org.hidetake.swagger.generator") version "2.18.2"
 }
 
-repositories {
-    mavenLocal()
-    jcenter()
-    mavenCentral()
-    maven { url "https://dl.bintray.com/eaglesakura/maven/" }
-}
-
 dependencies {
     // Replace swagger-codegen-extensions version!!
-    // https://github.com/eaglesakura/swagger-codegen-extensions/tags
-    // https://bintray.com/eaglesakura/maven/swagger2-codegen
-    swaggerCodegen 'com.eaglesakura.swagger.swagger2-codegen:swagger2-codegen:+'
+    swaggerCodegen 'io.github.eaglesakura.swagger-codegen-extensions:swagger-codegen-extensions:+'
 }
 
 swaggerSources {

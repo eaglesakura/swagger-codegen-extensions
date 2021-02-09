@@ -10,34 +10,34 @@ fun Swagger.normalize() {
     paths.forEach { (path, pathModel) ->
         pathModel.operationMap.forEach { (method, op) ->
             op.parameters
-                    .filterIsInstance(BodyParameter::class.java)
-                    .filter { it.schema?.properties?.isNotEmpty() == true }
-                    .forEach { param ->
-                        param.schema.title = "${path}_${method}_${param.name}"
-                                .replace("/", "_")
-                                .replace("__", "_")
-                                .toLowerCase()
-                                .let {
-                                    if (it.startsWith("_")) {
-                                        it.substring(1)
-                                    } else {
-                                        it
-                                    }
-                                }
-                    }
+                .filterIsInstance(BodyParameter::class.java)
+                .filter { it.schema?.properties?.isNotEmpty() == true }
+                .forEach { param ->
+                    param.schema.title = "${path}_${method}_${param.name}"
+                        .replace("/", "_")
+                        .replace("__", "_")
+                        .toLowerCase()
+                        .let {
+                            if (it.startsWith("_")) {
+                                it.substring(1)
+                            } else {
+                                it
+                            }
+                        }
+                }
             op.responses.forEach { (status, resp) ->
                 if (resp.responseSchema?.properties?.isNotEmpty() == true) {
                     resp.responseSchema.title = "${path}_${method}_$status"
-                            .replace("/", "_")
-                            .replace("__", "_")
-                            .toLowerCase()
-                            .let {
-                                if (it.startsWith("_")) {
-                                    it.substring(1)
-                                } else {
-                                    it
-                                }
+                        .replace("/", "_")
+                        .replace("__", "_")
+                        .toLowerCase()
+                        .let {
+                            if (it.startsWith("_")) {
+                                it.substring(1)
+                            } else {
+                                it
                             }
+                        }
                 }
             }
         }
