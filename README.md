@@ -34,7 +34,7 @@ plugins {
 
 dependencies {
     // Replace swagger-codegen-extensions version!!
-    swaggerCodegen 'io.github.eaglesakura.swagger-codegen-extensions:swagger-codegen-extensions:+'
+    swaggerCodegen 'io.github.eaglesakura.swagger2-codegen:swagger2-codegen:+'
 }
 
 swaggerSources {
