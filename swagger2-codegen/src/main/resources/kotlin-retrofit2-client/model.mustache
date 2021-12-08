@@ -61,6 +61,7 @@ data class {{classname}}(
      * {{{description}}}
      */
     @Json(name = "{{baseName}}")
+    @JvmField @field:Json(name = "{{baseName}}")
     {{#isEnum}}
     val {{nameInCamelCase}}: {{classname}}{{datatypeWithEnum}}{{^required}}? = null{{/required}},
     {{/isEnum}}
