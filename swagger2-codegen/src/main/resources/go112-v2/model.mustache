@@ -242,10 +242,10 @@ func (it *{{classname}})compilerDummy() {
     var modelArray {{classname}}Array
     swaggerResponseRef = modelArray
 
-    iModel = iModel
-    swaggerModelRef = swaggerModelRef
-    swaggerResponseRef = swaggerResponseRef
-    swaggerValidatableRef = swaggerValidatableRef
+    devNull(iModel)
+    devNull(swaggerModelRef)
+    devNull(swaggerResponseRef)
+    devNull(swaggerValidatableRef)
 }
 
 {{/isEnum}}
