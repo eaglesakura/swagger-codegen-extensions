@@ -5,7 +5,7 @@ package {{packageName}}
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
+	"github.com/go-chi/chi/v5"
 	"golang.org/x/xerrors"
 	"io"
 	"io/ioutil"
@@ -15,7 +15,7 @@ import (
 	"strings"
 )
 type {{classname}}Controller struct {
-    router *mux.Router
+    router chi.Router
 
 	// Custom response write handler.
 	Responder func(writer http.ResponseWriter, request *http.Request, handlerResponse SwaggerResponse, handlerError error)
@@ -27,12 +27,11 @@ type {{classname}}Controller struct {
         result := &{{classname}}{{operationIdCamelCase}}Request{
         }
 
-        pathValues := mux.Vars(request)
         queryValues := request.URL.Query()
         headerValues := request.Header
 
         {{#pathParams}}
-            _ = parsePath(pathValues, "{{baseName}}", &result.{{paramName}})
+            convertValue(chi.URLParam(request, "{{baseName}}"), &result.{{paramName}})
         {{/pathParams}}
 
         {{#queryParams}}
@@ -58,11 +57,9 @@ type {{classname}}Controller struct {
 
         // dummy access for Compiler
         //noinspection GoSelfAssignment
-        pathValues = pathValues
+        devNull(queryValues)
         //noinspection GoSelfAssignment
-        queryValues = queryValues
-        //noinspection GoSelfAssignment
-        headerValues = headerValues
+        devNull(headerValues)
 
         return result, nil
     }
@@ -73,7 +70,7 @@ type {{classname}}Controller struct {
     // {{{notes}}}
     func (it *{{classname}}Controller)Handle{{{nickname}}}(handler func(httpRequest *http.Request, swaggerRequest *{{classname}}{{operationIdCamelCase}}Request) (response SwaggerResponse, err error)) {
         r := it.router
-        r.Methods(strings.ToUpper("{{httpMethod}}")).Path(path.Join("{{basePathWithoutHost}}", "{{path}}")).HandlerFunc(func(writer http.ResponseWriter, request *http.Request) {
+        r.{{httpMethod}}(path.Join("{{basePathWithoutHost}}", "{{path}}"), func(writer http.ResponseWriter, request *http.Request) {
             var response SwaggerResponse
             var responseError error
             defer func() {
@@ -99,7 +96,7 @@ type {{classname}}Controller struct {
 //
 //
 // e.g.) How to use on HttpServer.
-//  router := mux.NewRouter()
+//  router := chi.NewRouter()
 //  controller := {{packageName}}.New{{classname}}Controller(router)
 //  controller.Handlers.HandlePathToFooApi(func(req, params) (SwaggerResponse, error) {
 //      // Handle Foo API.
@@ -113,7 +110,7 @@ type {{classname}}Controller struct {
 //  func FooCloudFunction(writer http.ResponseWriter, request *http.Request) {
 //      router.ServeHTTP(writer, request)
 //  }
-func New{{classname}}Controller(router *mux.Router) *{{classname}}Controller {
+func New{{classname}}Controller(router chi.Router) *{{classname}}Controller {
     return &{{classname}}Controller {
         router: router,
 		Responder: func(writer http.ResponseWriter, request *http.Request, handlerResponse SwaggerResponse, handlerError error) {
@@ -142,5 +139,6 @@ func _{{classname}}_this_is_call_dummy() {
 	strings.ToUpper("")
 	_ = fmt.Sprintf("%v", "")
 	_, _ = io.ReadAtLeast(nil, nil, 0)
-	_ = json.Unmarshal(nil, nil)
+	a := ""
+	_ = json.Unmarshal(nil, &a)
 }
