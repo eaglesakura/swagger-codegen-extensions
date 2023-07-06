@@ -7,7 +7,7 @@ This library is [Swagger Codegen] custom language generator.
 |Kotlin|Client|Java VM, Android|Retrofit2|com.eaglesakura.swagger2.languages.Retrofit2ClientCodegen|
 |Golang|Server|Go1.12+|[swagger-go-core](https://github.com/eaglesakura/swagger-go-core)|com.eaglesakura.swagger2.languages.Go112ServerCodegen|
 |Golang|Client|Go1.12+|[swagger-go-core](https://github.com/eaglesakura/swagger-go-core)|com.eaglesakura.swagger2.languages.Go112ClientCodegen|
-|Golang|Server|Go1.12+|[gorilla/mux](https://github.com/gorilla/mux)|com.eaglesakura.swagger2.languages.Go112ServerCodegen2|
+|Golang|Server|Go1.12+|[go-chi/chi](https://github.com/go-chi/chi)|com.eaglesakura.swagger2.languages.Go112ServerCodegen2|
 |Golang|Client|Go1.12+|-|com.eaglesakura.swagger2.languages.Go112ClientCodegen2|
 |Dart|Client|Dart2.0, Flutter|-|com.eaglesakura.swagger2.languages.Dart2ClientCodegen|
 
